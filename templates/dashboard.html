@@ -23,10 +23,10 @@
                 <span class="nav-icon">📊</span> OVERVIEW
             </a>
             <a href="#" class="nav-item" onclick="showPanel('deploy')">
-                <span class="nav-icon">🚀</span> DEPLOY BOT
+                <span class="nav-icon">🚀</span> DEPLOY AGENT
             </a>
             <a href="#" class="nav-item" onclick="showPanel('bots')">
-                <span class="nav-icon">🤖</span> MY BOTS
+                <span class="nav-icon">🤖</span> MY AGENTS
             </a>
             <a href="#" class="nav-item" onclick="showPanel('logs')">
                 <span class="nav-icon">📜</span> LOGS
@@ -56,7 +56,7 @@
                     <div class="stat-icon green">🤖</div>
                     <div class="stat-content">
                         <h3 class="stat-value" id="active-bots">{{ active_count }}</h3>
-                        <p class="stat-label">ACTIVE BOTS</p>
+                        <p class="stat-label">ACTIVE AGENTS</p>
                     </div>
                     <div class="stat-pulse"></div>
                 </div>
@@ -65,7 +65,7 @@
                     <div class="stat-icon cyan">💬</div>
                     <div class="stat-content">
                         <h3 class="stat-value" id="total-bots">{{ bot_count }}</h3>
-                        <p class="stat-label">TOTAL BOTS</p>
+                        <p class="stat-label">TOTAL AGENTS</p>
                     </div>
                     <div class="stat-pulse"></div>
                 </div>
@@ -89,23 +89,23 @@
                 </div>
             </div>
 
-            <!-- Bots List -->
+            <!-- Agents List -->
             <div class="section">
-                <h2 class="section-title">&gt;&gt; DEPLOYED BOTS</h2>
+                <h2 class="section-title">&gt;&gt; DEPLOYED AGENTS</h2>
                 <div id="bots-list" class="bots-grid">
-                    <!-- Bots will be loaded here -->
+                    <!-- Agents will be loaded here -->
                 </div>
             </div>
         </div>
 
         <!-- Deploy Panel -->
         <div id="deploy-panel" class="content-panel">
-            <h1 class="page-title">DEPLOY NEW BOT</h1>
+            <h1 class="page-title">DEPLOY NEW AGENT</h1>
             <div class="scan-line"></div>
 
             <div class="terminal-window large">
                 <div class="terminal-header">
-                    <span class="terminal-title">// BOT CONFIGURATION</span>
+                    <span class="terminal-title">// AGENT CONFIGURATION</span>
                     <div class="terminal-controls">
                         <span class="dot red"></span>
                         <span class="dot yellow"></span>
@@ -131,7 +131,7 @@
 
                         <button type="submit" class="btn-primary large">
                             <span class="btn-glow"></span>
-                            ⚡ DEPLOY BOT
+                            ⚡ DEPLOY AGENT
                         </button>
                     </form>
                     <div id="deploy-message" class="message"></div>
@@ -145,24 +145,24 @@
             </div>
         </div>
 
-        <!-- Bots Management Panel -->
+        <!-- Agents Management Panel -->
         <div id="bots-panel" class="content-panel">
-            <h1 class="page-title">MY BOTS</h1>
+            <h1 class="page-title">MY AGENTS</h1>
             <div class="scan-line"></div>
             <div id="bots-management" class="bots-grid">
-                <!-- Bots will be loaded here -->
+                <!-- Agents will be loaded here -->
             </div>
         </div>
 
         <!-- Logs Panel -->
         <div id="logs-panel" class="content-panel">
-            <h1 class="page-title">BOT LOGS</h1>
+            <h1 class="page-title">AGENT LOGS</h1>
             <div class="scan-line"></div>
 
             <div class="input-group">
-                <label>SELECT BOT</label>
+                <label>SELECT AGENT</label>
                 <select id="log-bot-select" onchange="loadLogs()">
-                    <option value="">-- Select a bot --</option>
+                    <option value="">-- Select an agent --</option>
                 </select>
             </div>
 
@@ -172,7 +172,7 @@
                     <button onclick="loadLogs()" class="refresh-btn">🔄 REFRESH</button>
                 </div>
                 <div class="terminal-body">
-                    <pre id="logs-content" class="logs-content">Select a bot to view logs...</pre>
+                    <pre id="logs-content" class="logs-content">Select an agent to view logs...</pre>
                 </div>
             </div>
         </div>
