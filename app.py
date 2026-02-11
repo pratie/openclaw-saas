@@ -37,13 +37,15 @@ def dashboard():
         return redirect(url_for('index'))
 
     username = session['username']
+    user = db.get_user(username)
     bots = db.get_user_bots(username)
 
     return render_template('dashboard.html',
                          username=username,
                          bots=bots,
                          bot_count=len(bots),
-                         active_count=len([b for b in bots if b['status'] == 'running']))
+                         active_count=len([b for b in bots if b['status'] == 'running']),
+                         has_paid=user.get('has_paid', 0) if user else 0)
 
 @app.route('/api/login', methods=['POST'])
 def login():
@@ -90,6 +92,15 @@ def deploy_bot():
 
     data = request.json
     username = session['username']
+
+    # Check if user has paid subscription
+    user = db.get_user(username)
+    if not user or not user.get('has_paid'):
+        return jsonify({
+            'success': False,
+            'message': 'Active subscription required. Please subscribe to deploy AI agents.',
+            'requires_payment': True
+        }), 402  # 402 Payment Required
 
     # Get stored Anthropic API key
     api_keys = db.get_api_keys(username)

@@ -321,6 +321,41 @@ function showMessage(element, type, message) {
     element.style.display = 'block';
 }
 
+async function subscribeToDeploy() {
+    // For logged-in users, we need their email to create checkout
+    const email = prompt('Enter your email address for payment:');
+
+    if (!email || !email.includes('@')) {
+        alert('⚠️ Valid email required');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/payment/create-checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Store email for post-payment (though they're already logged in)
+            sessionStorage.setItem('payment_email', email);
+
+            // Redirect to Dodo checkout
+            window.location.href = data.checkout_url;
+        } else {
+            alert('✗ ' + data.message);
+        }
+    } catch (error) {
+        alert('✗ Connection error');
+        console.error('Payment error:', error);
+    }
+}
+
 async function checkBotStatus(botId, botUsername) {
     try {
         console.log(`[Bot ${botId}] Checking Telegram status...`);
