@@ -372,7 +372,7 @@ def create_checkout():
         return jsonify({
             'success': True,
             'checkout_url': payment.payment_link,
-            'price': '$50'
+            'price': '$1'
         })
 
     except Exception as e:
