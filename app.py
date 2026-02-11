@@ -400,7 +400,7 @@ def create_checkout():
         return jsonify({
             'success': True,
             'checkout_url': payment.payment_link,
-            'price': '$1'
+            'price': '$3/day'
         })
 
     except Exception as e:
@@ -448,12 +448,12 @@ def payment_webhook():
                 # Try to update existing user first
                 user = db.get_user_by_email(customer_email)
                 if user:
-                    # User exists, activate payment immediately
-                    db.update_payment_status(customer_email, payment_id, 'monthly')
+                    # User exists, activate payment immediately (daily subscription)
+                    db.update_payment_status(customer_email, payment_id, 'daily')
                 else:
                     # User doesn't exist yet, store as pending payment
                     # Will be auto-activated when they register
-                    db.store_pending_payment(customer_email, payment_id, 'monthly')
+                    db.store_pending_payment(customer_email, payment_id, 'daily')
 
         return jsonify({'status': 'ok'})
 
@@ -470,7 +470,7 @@ def payment_success():
     if email:
         user = db.get_user_by_email(email)
         if user and not user.get('has_paid'):
-            db.update_payment_status(email, payment_id or 'manual', 'monthly')
+            db.update_payment_status(email, payment_id or 'manual', 'daily')
 
     return jsonify({'success': True})
 

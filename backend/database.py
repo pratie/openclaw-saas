@@ -75,7 +75,7 @@ class Database:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT NOT NULL,
                 payment_id TEXT NOT NULL,
-                subscription_plan TEXT DEFAULT 'monthly',
+                subscription_plan TEXT DEFAULT 'daily',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
@@ -121,8 +121,8 @@ class Database:
             pending = self.get_pending_payment(email)
 
             if pending:
-                # Create user with payment already activated
-                plan_expires_at = datetime.now() + timedelta(days=30)
+                # Create user with payment already activated (daily subscription)
+                plan_expires_at = datetime.now() + timedelta(days=1)
                 cursor.execute('''
                     INSERT INTO users (username, email, password_hash, has_paid,
                                      payment_date, dodo_payment_id, subscription_plan, plan_expires_at)
@@ -329,14 +329,16 @@ class Database:
             return dict(user)
         return None
 
-    def update_payment_status(self, email, payment_id, subscription_plan='monthly'):
+    def update_payment_status(self, email, payment_id, subscription_plan='daily'):
         """Update user payment status"""
         from datetime import timedelta
 
         conn = self.get_connection()
         cursor = conn.cursor()
 
-        plan_expires_at = datetime.now() + timedelta(days=30)
+        # For daily subscriptions, set expiration to 1 day from now
+        # Note: Dodo handles the recurring billing automatically
+        plan_expires_at = datetime.now() + timedelta(days=1)
 
         cursor.execute('''
             UPDATE users
@@ -352,7 +354,7 @@ class Database:
         conn.close()
         return True
 
-    def store_pending_payment(self, email, payment_id, subscription_plan='monthly'):
+    def store_pending_payment(self, email, payment_id, subscription_plan='daily'):
         """Store pending payment for users who haven't registered yet"""
         conn = self.get_connection()
         cursor = conn.cursor()
@@ -363,7 +365,7 @@ class Database:
             cursor.execute('''
                 UPDATE users
                 SET dodo_payment_id = ?,
-                    subscription_plan = 'pending_monthly'
+                    subscription_plan = 'pending_daily'
                 WHERE email = ?
             ''', (payment_id, email))
         else:
