@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | OpenClaw SaaS</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h2 class="glitch-small" data-text="OPENCLAW">OPENCLAW</h2>
+            <p class="user-badge">{{ username }}</p>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" onclick="showPanel('overview')">
+                <span class="nav-icon">📊</span> OVERVIEW
+            </a>
+            <a href="#" class="nav-item" onclick="showPanel('deploy')">
+                <span class="nav-icon">🚀</span> DEPLOY BOT
+            </a>
+            <a href="#" class="nav-item" onclick="showPanel('bots')">
+                <span class="nav-icon">🤖</span> MY BOTS
+            </a>
+            <a href="#" class="nav-item" onclick="showPanel('logs')">
+                <span class="nav-icon">📜</span> LOGS
+            </a>
+            <a href="#" class="nav-item" onclick="showPanel('settings')">
+                <span class="nav-icon">⚙️</span> SETTINGS
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <button onclick="logout()" class="btn-secondary">
+                LOGOUT
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Overview Panel -->
+        <div id="overview-panel" class="content-panel active">
+            <h1 class="page-title">SYSTEM STATUS</h1>
+            <div class="scan-line"></div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon green">🤖</div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="active-bots">{{ active_count }}</h3>
+                        <p class="stat-label">ACTIVE BOTS</p>
+                    </div>
+                    <div class="stat-pulse"></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon cyan">💬</div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="total-bots">{{ bot_count }}</h3>
+                        <p class="stat-label">TOTAL BOTS</p>
+                    </div>
+                    <div class="stat-pulse"></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">📨</div>
+                    <div class="stat-content">
+                        <h3 class="stat-value" id="messages">0</h3>
+                        <p class="stat-label">MESSAGES</p>
+                    </div>
+                    <div class="stat-pulse"></div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon yellow">💰</div>
+                    <div class="stat-content">
+                        <h3 class="stat-value">$50</h3>
+                        <p class="stat-label">CREDITS</p>
+                    </div>
+                    <div class="stat-pulse"></div>
+                </div>
+            </div>
+
+            <!-- Bots List -->
+            <div class="section">
+                <h2 class="section-title">&gt;&gt; DEPLOYED BOTS</h2>
+                <div id="bots-list" class="bots-grid">
+                    <!-- Bots will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Deploy Panel -->
+        <div id="deploy-panel" class="content-panel">
+            <h1 class="page-title">DEPLOY NEW BOT</h1>
+            <div class="scan-line"></div>
+
+            <div class="terminal-window large">
+                <div class="terminal-header">
+                    <span class="terminal-title">// BOT CONFIGURATION</span>
+                    <div class="terminal-controls">
+                        <span class="dot red"></span>
+                        <span class="dot yellow"></span>
+                        <span class="dot green"></span>
+                    </div>
+                </div>
+                <div class="terminal-body">
+                    <form onsubmit="deployBot(event)" id="deploy-form">
+                        <div class="input-group">
+                            <label>TELEGRAM BOT TOKEN</label>
+                            <input type="password" id="telegram-token" placeholder="123456:ABC-DEF..." required>
+                            <small style="color: var(--primary-cyan); margin-top: 8px; display: block;">
+                                Get your token from @BotFather on Telegram
+                            </small>
+                        </div>
+
+                        <div class="deploy-progress" id="deploy-progress" style="display: none;">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <p class="progress-text" id="progress-text">Initializing...</p>
+                        </div>
+
+                        <button type="submit" class="btn-primary large">
+                            <span class="btn-glow"></span>
+                            ⚡ DEPLOY BOT
+                        </button>
+                    </form>
+                    <div id="deploy-message" class="message"></div>
+
+                    <div style="margin-top: 24px; padding: 16px; background: rgba(0, 255, 65, 0.1); border: 1px solid var(--primary-green); border-radius: 4px;">
+                        <p style="color: var(--primary-green); margin: 0;">
+                            ⚙️ Configure your Anthropic API key in <a href="#" onclick="showPanel('settings')" style="color: var(--primary-cyan); text-decoration: underline;">Settings</a> first
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bots Management Panel -->
+        <div id="bots-panel" class="content-panel">
+            <h1 class="page-title">MY BOTS</h1>
+            <div class="scan-line"></div>
+            <div id="bots-management" class="bots-grid">
+                <!-- Bots will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Logs Panel -->
+        <div id="logs-panel" class="content-panel">
+            <h1 class="page-title">BOT LOGS</h1>
+            <div class="scan-line"></div>
+
+            <div class="input-group">
+                <label>SELECT BOT</label>
+                <select id="log-bot-select" onchange="loadLogs()">
+                    <option value="">-- Select a bot --</option>
+                </select>
+            </div>
+
+            <div class="terminal-window large logs-terminal" id="logs-container">
+                <div class="terminal-header">
+                    <span class="terminal-title">// SYSTEM LOGS</span>
+                    <button onclick="loadLogs()" class="refresh-btn">🔄 REFRESH</button>
+                </div>
+                <div class="terminal-body">
+                    <pre id="logs-content" class="logs-content">Select a bot to view logs...</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="content-panel">
+            <h1 class="page-title">SETTINGS</h1>
+            <div class="scan-line"></div>
+
+            <div class="terminal-window large">
+                <div class="terminal-header">
+                    <span class="terminal-title">// API CONFIGURATION</span>
+                </div>
+                <div class="terminal-body">
+                    <p class="info-text">Configure your Anthropic API key for Claude AI</p>
+
+                    <div class="input-group">
+                        <label>ANTHROPIC API KEY</label>
+                        <input type="password" id="settings-anthropic" placeholder="sk-ant-api03-...">
+                        <small style="color: var(--primary-cyan); margin-top: 8px; display: block;">
+                            Get your API key from console.anthropic.com
+                        </small>
+                    </div>
+
+                    <button onclick="saveSettings()" class="btn-primary">
+                        <span class="btn-glow"></span>
+                        💾 SAVE API KEY
+                    </button>
+                </div>
+            </div>
+
+            <div class="terminal-window large danger-zone">
+                <div class="terminal-header">
+                    <span class="terminal-title">// DANGER ZONE</span>
+                </div>
+                <div class="terminal-body">
+                    <p class="warning-text">⚠️ Permanent actions cannot be undone</p>
+                    <button onclick="deleteAccount()" class="btn-danger">
+                        🗑️ DELETE ACCOUNT
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}?v={{ range(1, 999999) | random }}"></script>
+</body>
+</html>

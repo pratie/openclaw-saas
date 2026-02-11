@@ -1,0 +1,289 @@
+"""
+Bot Deployer module for OpenClaw SaaS
+Handles bot deployment to DigitalOcean
+"""
+
+import os
+import sys
+import time
+import random
+import string
+import subprocess
+import requests
+
+# Add parent directory to path to import the deployment script
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+try:
+    from pydo import Client
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", "pydo"])
+    from pydo import Client
+
+class BotDeployer:
+    def __init__(self, do_token):
+        """Initialize deployer with DigitalOcean token"""
+        self.do_token = do_token
+        self.client = Client(token=do_token)
+
+    def generate_token(self, length=32):
+        """Generate secure random token"""
+        chars = string.ascii_letters + string.digits + '_-'
+        return ''.join(random.choice(chars) for _ in range(length))
+
+    def get_bot_username(self, telegram_token):
+        """Get Telegram bot username from token"""
+        try:
+            url = f"https://api.telegram.org/bot{telegram_token}/getMe"
+            response = requests.get(url, timeout=10)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('ok'):
+                    return data['result']['username']
+        except:
+            pass
+        return 'unknown_bot'
+
+    def create_cloud_init_script(self, telegram_token, anthropic_key, gateway_token):
+        """Create cloud-init script for bot deployment"""
+        return f"""#!/bin/bash
+set -e
+
+# Update system
+apt-get update
+DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
+
+# Install dependencies
+apt-get install -y curl git build-essential python3-pip ufw fail2ban jq
+
+# Install Node.js 22
+curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+apt-get install -y nodejs
+
+# Install OpenClaw
+npm install -g pnpm@latest
+npm install -g openclaw@latest
+
+# Configure firewall
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow ssh
+ufw allow 18789/tcp
+ufw --force enable
+
+# Create OpenClaw directories
+mkdir -p /root/.openclaw/workspace
+
+# Write OpenClaw configuration
+cat > /root/.openclaw/openclaw.json << 'EOF'
+{{
+  "gateway": {{
+    "port": 18789,
+    "mode": "local",
+    "bind": "lan",
+    "auth": {{
+      "mode": "token",
+      "token": "{gateway_token}"
+    }},
+    "controlUi": {{
+      "enabled": true
+    }}
+  }},
+  "agents": {{
+    "defaults": {{
+      "model": {{
+        "primary": "anthropic/claude-opus-4-6",
+        "fallbacks": ["anthropic/claude-3-5-haiku-20241022"]
+      }},
+      "workspace": "~/.openclaw/workspace",
+      "memorySearch": {{
+        "enabled": true
+      }}
+    }}
+  }},
+  "channels": {{
+    "telegram": {{
+      "enabled": true,
+      "botToken": "{telegram_token}",
+      "dmPolicy": "open",
+      "allowFrom": ["*"],
+      "groupPolicy": "open",
+      "groupAllowFrom": ["*"],
+      "textChunkLimit": 4000,
+      "chunkMode": "length",
+      "linkPreview": true,
+      "streamMode": "partial",
+      "commands": {{
+        "native": true
+      }},
+      "capabilities": {{
+        "inlineButtons": "all"
+      }},
+      "reactionNotifications": "own",
+      "actions": {{
+        "reactions": true,
+        "sendMessage": true,
+        "sticker": true
+      }}
+    }}
+  }},
+  "auth": {{
+    "profiles": {{
+      "anthropic-main": {{
+        "provider": "anthropic",
+        "mode": "token"
+      }}
+    }}
+  }},
+  "plugins": {{
+    "entries": {{
+      "telegram": {{
+        "enabled": true
+      }}
+    }}
+  }},
+  "session": {{
+    "dmScope": "per-peer"
+  }},
+  "commands": {{
+    "native": true,
+    "nativeSkills": true,
+    "config": false,
+    "restart": false
+  }},
+  "update": {{
+    "channel": "stable",
+    "checkOnStart": true
+  }}
+}}
+EOF
+
+# Write environment file
+cat > /root/.openclaw/.env << 'EOF'
+ANTHROPIC_API_KEY={anthropic_key}
+OPENCLAW_GATEWAY_TOKEN={gateway_token}
+NODE_ENV=production
+EOF
+
+# Run openclaw doctor to enable Telegram
+cd /root && openclaw doctor --fix --yes || true
+
+# Create systemd service
+cat > /etc/systemd/system/openclaw-gateway.service << 'EOF'
+[Unit]
+Description=OpenClaw Gateway
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root
+Environment="NODE_ENV=production"
+Environment="HOME=/root"
+EnvironmentFile=/root/.openclaw/.env
+ExecStart=/usr/bin/openclaw gateway --bind lan --port 18789
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=openclaw
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+# Enable and start the service
+systemctl daemon-reload
+systemctl enable openclaw-gateway
+systemctl start openclaw-gateway
+
+echo "OpenClaw deployment completed!"
+"""
+
+    def deploy(self, telegram_token, anthropic_key, region='nyc3', size='s-2vcpu-4gb', bot_name='openclaw-bot'):
+        """Deploy a new bot"""
+        try:
+            # Generate gateway token
+            gateway_token = self.generate_token()
+
+            # Get bot username
+            bot_username = self.get_bot_username(telegram_token)
+
+            # Get SSH keys
+            ssh_key_ids = []
+            try:
+                ssh_keys_resp = self.client.ssh_keys.list()
+                ssh_key_ids = [key["id"] for key in ssh_keys_resp["ssh_keys"]]
+            except:
+                pass
+
+            # Create cloud-init script
+            user_data = self.create_cloud_init_script(telegram_token, anthropic_key, gateway_token)
+
+            # Create droplet
+            droplet_name = f"{bot_name}-{int(time.time())}"
+            req = {
+                "name": droplet_name,
+                "region": region,
+                "size": size,
+                "image": "ubuntu-24-04-x64",
+                "ssh_keys": ssh_key_ids,
+                "backups": False,
+                "ipv6": True,
+                "monitoring": True,
+                "tags": ["openclaw", "saas", "bot"],
+                "user_data": user_data
+            }
+
+            resp = self.client.droplets.create(body=req)
+            droplet_id = resp["droplet"]["id"]
+
+            # Wait for droplet to become active
+            max_wait = 120  # 2 minutes
+            start_time = time.time()
+            ip_address = None
+
+            while time.time() - start_time < max_wait:
+                droplet = self.client.droplets.get(droplet_id=droplet_id)
+                status = droplet["droplet"]["status"]
+
+                if status == "active":
+                    networks = droplet["droplet"]["networks"]["v4"]
+                    ip_address = next(
+                        (net["ip_address"] for net in networks if net["type"] == "public"),
+                        None
+                    )
+                    if ip_address:
+                        break
+
+                time.sleep(5)
+
+            if not ip_address:
+                return {
+                    'success': False,
+                    'error': 'Could not get IP address'
+                }
+
+            return {
+                'success': True,
+                'droplet_id': droplet_id,
+                'ip_address': ip_address,
+                'gateway_token': gateway_token,
+                'bot_username': bot_username,
+                'gateway_url': f'ws://{ip_address}:18789'
+            }
+
+        except Exception as e:
+            return {
+                'success': False,
+                'error': str(e)
+            }
+
+    def delete_droplet(self, droplet_id):
+        """Delete a droplet"""
+        try:
+            self.client.droplets.destroy(droplet_id=droplet_id)
+            return True
+        except:
+            return False

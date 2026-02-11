@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw SaaS | Cyberpunk Terminal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="glitch" data-text="OPENCLAW">OPENCLAW</h1>
+            <p class="subtitle">AI BOT DEPLOYMENT PLATFORM</p>
+            <div class="scan-line"></div>
+        </div>
+
+        <!-- Login/Register Forms -->
+        <div class="auth-container">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('login')">
+                    <span class="bracket">[</span> LOGIN <span class="bracket">]</span>
+                </button>
+                <button class="tab" onclick="showTab('register')">
+                    <span class="bracket">[</span> REGISTER <span class="bracket">]</span>
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="form-panel active">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <span class="terminal-title">// ACCESS TERMINAL</span>
+                        <div class="terminal-controls">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                    </div>
+                    <div class="terminal-body">
+                        <form onsubmit="login(event)">
+                            <div class="input-group">
+                                <label class="terminal-prompt">root@openclaw:~$</label>
+                                <input type="text" id="login-username" placeholder="username" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="terminal-prompt">password:</label>
+                                <input type="password" id="login-password" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <span class="btn-glow"></span>
+                                AUTHENTICATE
+                            </button>
+                        </form>
+                        <div id="login-message" class="message"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="form-panel">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <span class="terminal-title">// CREATE ACCOUNT</span>
+                        <div class="terminal-controls">
+                            <span class="dot red"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                    </div>
+                    <div class="terminal-body">
+                        <form onsubmit="register(event)">
+                            <div class="input-group">
+                                <label class="terminal-prompt">username:</label>
+                                <input type="text" id="reg-username" placeholder="newuser" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="terminal-prompt">email:</label>
+                                <input type="email" id="reg-email" placeholder="user@example.com" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="terminal-prompt">password:</label>
+                                <input type="password" id="reg-password" placeholder="••••••••" required minlength="6">
+                            </div>
+                            <div class="input-group">
+                                <label class="terminal-prompt">confirm:</label>
+                                <input type="password" id="reg-confirm" placeholder="••••••••" required minlength="6">
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <span class="btn-glow"></span>
+                                CREATE ACCOUNT
+                            </button>
+                        </form>
+                        <div id="register-message" class="message"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>INSTANT DEPLOY</h3>
+                <p>Launch AI bots in seconds</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>SECURE</h3>
+                <p>Enterprise-grade encryption</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>ANALYTICS</h3>
+                <p>Real-time monitoring</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
