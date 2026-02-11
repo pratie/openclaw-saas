@@ -98,3 +98,85 @@ function showMessage(element, type, message) {
     element.className = 'message ' + type;
     element.style.display = 'block';
 }
+
+// Payment Modal Functions
+function showPaymentModal() {
+    document.getElementById('payment-modal').style.display = 'flex';
+}
+
+function closePaymentModal() {
+    document.getElementById('payment-modal').style.display = 'none';
+}
+
+// Close modal if clicked outside
+window.onclick = function(event) {
+    const modal = document.getElementById('payment-modal');
+    if (event.target === modal) {
+        closePaymentModal();
+    }
+}
+
+async function createCheckout(event) {
+    event.preventDefault();
+
+    const email = document.getElementById('payment-email').value;
+    const messageEl = document.getElementById('payment-modal-message');
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'PROCESSING...';
+
+    try {
+        const response = await fetch('/api/payment/create-checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Store email in sessionStorage for post-payment registration
+            sessionStorage.setItem('payment_email', email);
+
+            // Redirect to Dodo checkout
+            window.location.href = data.checkout_url;
+        } else {
+            showMessage(messageEl, 'error', '✗ ' + data.message);
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span class="btn-glow"></span>CONTINUE TO PAYMENT';
+        }
+    } catch (error) {
+        showMessage(messageEl, 'error', '✗ Connection error');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span class="btn-glow"></span>CONTINUE TO PAYMENT';
+        console.error('Payment error:', error);
+    }
+}
+
+// Check for payment success on page load
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentSuccess = urlParams.get('payment');
+
+    if (paymentSuccess === 'success') {
+        const email = sessionStorage.getItem('payment_email');
+        if (email) {
+            // Pre-fill email in registration form
+            document.getElementById('reg-email').value = email;
+
+            // Switch to register tab
+            const registerTab = document.querySelectorAll('.tab')[1];
+            registerTab.click();
+
+            // Show success message
+            const messageEl = document.getElementById('register-message');
+            showMessage(messageEl, 'success', '✓ Payment successful! Complete your registration below.');
+
+            // Clear payment email from storage
+            sessionStorage.removeItem('payment_email');
+        }
+    }
+});

@@ -69,6 +69,32 @@ class Database:
             )
         ''')
 
+        # Add payment columns if they don't exist (for existing databases)
+        try:
+            cursor.execute('ALTER TABLE users ADD COLUMN has_paid INTEGER DEFAULT 0')
+        except sqlite3.OperationalError:
+            pass  # Column already exists
+
+        try:
+            cursor.execute('ALTER TABLE users ADD COLUMN payment_date TIMESTAMP')
+        except sqlite3.OperationalError:
+            pass
+
+        try:
+            cursor.execute('ALTER TABLE users ADD COLUMN dodo_payment_id TEXT')
+        except sqlite3.OperationalError:
+            pass
+
+        try:
+            cursor.execute("ALTER TABLE users ADD COLUMN subscription_plan TEXT DEFAULT 'none'")
+        except sqlite3.OperationalError:
+            pass
+
+        try:
+            cursor.execute('ALTER TABLE users ADD COLUMN plan_expires_at TIMESTAMP')
+        except sqlite3.OperationalError:
+            pass
+
         conn.commit()
         conn.close()
 
@@ -258,3 +284,56 @@ class Database:
         if keys:
             return dict(keys)
         return None
+
+    def get_user_by_email(self, email):
+        """Get user by email"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM users WHERE email = ?', (email,))
+        user = cursor.fetchone()
+
+        conn.close()
+
+        if user:
+            return dict(user)
+        return None
+
+    def update_payment_status(self, email, payment_id, subscription_plan='monthly'):
+        """Update user payment status"""
+        from datetime import timedelta
+
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        plan_expires_at = datetime.now() + timedelta(days=30)
+
+        cursor.execute('''
+            UPDATE users
+            SET has_paid = 1,
+                payment_date = ?,
+                dodo_payment_id = ?,
+                subscription_plan = ?,
+                plan_expires_at = ?
+            WHERE email = ?
+        ''', (datetime.now(), payment_id, subscription_plan, plan_expires_at, email))
+
+        conn.commit()
+        conn.close()
+        return True
+
+    def store_pending_payment(self, email, payment_id):
+        """Store pending payment ID for a user"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            UPDATE users
+            SET dodo_payment_id = ?,
+                subscription_plan = 'pending_monthly'
+            WHERE email = ?
+        ''', (payment_id, email))
+
+        conn.commit()
+        conn.close()
+        return True

@@ -320,5 +320,128 @@ def save_settings():
 
     return jsonify({'success': False, 'message': 'Failed to save API key'}), 500
 
+# ========== PAYMENT ROUTES ==========
+
+@app.route('/api/payment/create-checkout', methods=['POST'])
+def create_checkout():
+    """Create Dodo Payments checkout link (can be called before signup for max conversion)"""
+    try:
+        from dodopayments import DodoPayments
+
+        data = request.json
+        email = data.get('email')
+
+        if not email:
+            return jsonify({'success': False, 'message': 'Email is required'}), 400
+
+        # Get Dodo credentials from environment
+        dodo_api_key = os.environ.get('DODO_PAYMENTS_API_KEY')
+        dodo_product_id = os.environ.get('DODO_PRODUCT_ID')
+
+        if not dodo_api_key or not dodo_product_id:
+            return jsonify({'success': False, 'message': 'Payment system not configured'}), 500
+
+        # Initialize Dodo client
+        env_mode = os.environ.get('ENV', 'development')
+        client = DodoPayments(
+            bearer_token=dodo_api_key,
+            environment="test_mode" if env_mode == "development" else "live_mode"
+        )
+
+        # Create payment
+        payment = client.payments.create(
+            payment_link=True,
+            billing={
+                "city": "New York",
+                "country": "US",
+                "state": "NY",
+                "street": "123 Example Street",
+                "zipcode": 10001,
+            },
+            customer={
+                "email": email,
+                "name": email.split("@")[0],
+            },
+            product_cart=[
+                {"product_id": dodo_product_id, "quantity": 1}
+            ],
+            return_url=os.environ.get('DODO_SUCCESS_URL', 'https://open-claw.space/?payment=success')
+        )
+
+        # Store pending payment if user exists, otherwise they'll register after payment
+        user = db.get_user_by_email(email)
+        if user and hasattr(payment, 'id'):
+            db.store_pending_payment(email, payment.id)
+
+        return jsonify({
+            'success': True,
+            'checkout_url': payment.payment_link,
+            'price': '$50'
+        })
+
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
+
+@app.route('/api/payment/webhook', methods=['POST'])
+def payment_webhook():
+    """Handle Dodo Payments webhook (server-to-server payment confirmation)"""
+    try:
+        from standardwebhooks import Webhook
+
+        webhook_secret = os.environ.get('DODO_PAYMENTS_WEBHOOK_SECRET')
+        if not webhook_secret:
+            return jsonify({'error': 'Webhook not configured'}), 500
+
+        # Get webhook headers
+        webhook_id = request.headers.get('webhook-id')
+        webhook_signature = request.headers.get('webhook-signature')
+        webhook_timestamp = request.headers.get('webhook-timestamp')
+
+        # Verify signature
+        wh = Webhook(webhook_secret)
+        raw_body = request.get_data()
+
+        try:
+            wh.verify(raw_body, {
+                "webhook-id": webhook_id,
+                "webhook-signature": webhook_signature,
+                "webhook-timestamp": webhook_timestamp,
+            })
+        except Exception:
+            return jsonify({'error': 'Invalid signature'}), 400
+
+        # Process webhook
+        payload = request.json
+        event_type = payload.get('type')
+
+        if event_type == 'payment.succeeded':
+            data = payload.get('data', {})
+            payment_id = data.get('payment_id')
+            customer = data.get('customer', {})
+            customer_email = customer.get('email')
+
+            if customer_email:
+                # Update user payment status
+                db.update_payment_status(customer_email, payment_id, 'monthly')
+
+        return jsonify({'status': 'ok'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/payment/success', methods=['POST'])
+def payment_success():
+    """Called by frontend after user returns from Dodo checkout"""
+    data = request.json
+    email = data.get('email')
+    payment_id = data.get('paymentId')
+
+    if email:
+        user = db.get_user_by_email(email)
+        if user and not user.get('has_paid'):
+            db.update_payment_status(email, payment_id or 'manual', 'monthly')
+
+    return jsonify({'success': True})
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

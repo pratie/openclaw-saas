@@ -17,6 +17,45 @@
             <h1 class="glitch" data-text="OPENCLAW">OPENCLAW</h1>
             <p class="subtitle">AI AGENT DEPLOYMENT PLATFORM</p>
             <div class="scan-line"></div>
+
+            <!-- Payment CTA -->
+            <button class="btn-payment-cta" onclick="showPaymentModal()">
+                <span class="btn-glow"></span>
+                <span class="payment-text">🚀 GET STARTED - $50/MONTH</span>
+            </button>
+            <p style="color: #5BC0BE; font-size: 14px; margin-top: 15px; opacity: 0.9;">
+                Deploy your AI agent in 60 seconds • No credit card for trial
+            </p>
+        </div>
+
+        <!-- Email Payment Modal -->
+        <div id="payment-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <span class="terminal-title">// GET STARTED</span>
+                        <div class="terminal-controls">
+                            <span class="dot red" onclick="closePaymentModal()"></span>
+                            <span class="dot yellow"></span>
+                            <span class="dot green"></span>
+                        </div>
+                    </div>
+                    <div class="terminal-body">
+                        <p style="color: #5BC0BE; margin-bottom: 20px;">Enter your email to proceed to checkout</p>
+                        <form onsubmit="createCheckout(event)" id="payment-form">
+                            <div class="input-group">
+                                <label>EMAIL ADDRESS</label>
+                                <input type="email" id="payment-email" placeholder="you@example.com" required>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <span class="btn-glow"></span>
+                                CONTINUE TO PAYMENT
+                            </button>
+                        </form>
+                        <div id="payment-modal-message" class="message"></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Login/Register Forms -->
