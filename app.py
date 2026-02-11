@@ -14,7 +14,23 @@ from backend.auth import hash_password, verify_password
 import secrets
 
 app = Flask(__name__)
-app.secret_key = secrets.token_hex(32)
+
+# Use persistent secret key from environment variable
+# IMPORTANT: Set SECRET_KEY in Railway to a random hex string
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if not SECRET_KEY:
+    # Generate a random key for local development
+    SECRET_KEY = secrets.token_hex(32)
+    print("⚠️  WARNING: Using random SECRET_KEY. Set SECRET_KEY environment variable in production!")
+
+app.secret_key = SECRET_KEY
+
+# Session configuration for production
+app.config['SESSION_COOKIE_SECURE'] = os.environ.get('ENV') == 'production'  # HTTPS only in prod
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent XSS attacks
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # CSRF protection
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)  # 7-day sessions
+
 CORS(app)
 
 # Initialize database
@@ -56,6 +72,7 @@ def login():
 
     user = db.get_user(username)
     if user and verify_password(password, user['password_hash']):
+        session.permanent = True  # Make session last for PERMANENT_SESSION_LIFETIME
         session['username'] = username
         return jsonify({'success': True, 'message': 'Login successful'})
 
