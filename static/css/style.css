@@ -61,6 +61,18 @@ body {
     position: relative;
 }
 
+.logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 0 20px rgba(237, 106, 90, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
 .glitch {
     font-family: 'Rajdhani', 'Space Grotesk', sans-serif;
     font-size: 72px;
@@ -470,6 +482,14 @@ body {
 .sidebar-header {
     padding: 30px 20px;
     border-bottom: 1px solid #e0e0e0;
+    text-align: center;
+}
+
+.sidebar-logo {
+    width: 120px;
+    height: auto;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 0 10px rgba(237, 106, 90, 0.2));
 }
 
 .glitch-small {
