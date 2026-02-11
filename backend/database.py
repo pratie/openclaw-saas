@@ -69,6 +69,17 @@ class Database:
             )
         ''')
 
+        # Pending Payments table (for payments before user registration)
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS pending_payments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                email TEXT NOT NULL,
+                payment_id TEXT NOT NULL,
+                subscription_plan TEXT DEFAULT 'monthly',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+
         # Add payment columns if they don't exist (for existing databases)
         try:
             cursor.execute('ALTER TABLE users ADD COLUMN has_paid INTEGER DEFAULT 0')
@@ -99,15 +110,34 @@ class Database:
         conn.close()
 
     def create_user(self, username, email, password_hash):
-        """Create a new user"""
+        """Create a new user and auto-activate if pending payment exists"""
         try:
+            from datetime import timedelta
+
             conn = self.get_connection()
             cursor = conn.cursor()
 
-            cursor.execute('''
-                INSERT INTO users (username, email, password_hash)
-                VALUES (?, ?, ?)
-            ''', (username, email, password_hash))
+            # Check for pending payment
+            pending = self.get_pending_payment(email)
+
+            if pending:
+                # Create user with payment already activated
+                plan_expires_at = datetime.now() + timedelta(days=30)
+                cursor.execute('''
+                    INSERT INTO users (username, email, password_hash, has_paid,
+                                     payment_date, dodo_payment_id, subscription_plan, plan_expires_at)
+                    VALUES (?, ?, ?, 1, ?, ?, ?, ?)
+                ''', (username, email, password_hash, datetime.now(),
+                      pending['payment_id'], pending['subscription_plan'], plan_expires_at))
+
+                # Clear pending payment
+                self.clear_pending_payment(email)
+            else:
+                # Create user normally
+                cursor.execute('''
+                    INSERT INTO users (username, email, password_hash)
+                    VALUES (?, ?, ?)
+                ''', (username, email, password_hash))
 
             conn.commit()
             conn.close()
@@ -322,17 +352,56 @@ class Database:
         conn.close()
         return True
 
-    def store_pending_payment(self, email, payment_id):
-        """Store pending payment ID for a user"""
+    def store_pending_payment(self, email, payment_id, subscription_plan='monthly'):
+        """Store pending payment for users who haven't registered yet"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        # First try to update existing user (if they exist)
+        user = self.get_user_by_email(email)
+        if user:
+            cursor.execute('''
+                UPDATE users
+                SET dodo_payment_id = ?,
+                    subscription_plan = 'pending_monthly'
+                WHERE email = ?
+            ''', (payment_id, email))
+        else:
+            # Store in pending_payments table for future registration
+            cursor.execute('''
+                INSERT INTO pending_payments (email, payment_id, subscription_plan)
+                VALUES (?, ?, ?)
+            ''', (email, payment_id, subscription_plan))
+
+        conn.commit()
+        conn.close()
+        return True
+
+    def get_pending_payment(self, email):
+        """Get pending payment for an email"""
         conn = self.get_connection()
         cursor = conn.cursor()
 
         cursor.execute('''
-            UPDATE users
-            SET dodo_payment_id = ?,
-                subscription_plan = 'pending_monthly'
+            SELECT * FROM pending_payments
             WHERE email = ?
-        ''', (payment_id, email))
+            ORDER BY created_at DESC
+            LIMIT 1
+        ''', (email,))
+
+        payment = cursor.fetchone()
+        conn.close()
+
+        if payment:
+            return dict(payment)
+        return None
+
+    def clear_pending_payment(self, email):
+        """Clear pending payment after user registration"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('DELETE FROM pending_payments WHERE email = ?', (email,))
 
         conn.commit()
         conn.close()

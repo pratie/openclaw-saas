@@ -368,11 +368,7 @@ def create_checkout():
             return_url=os.environ.get('DODO_SUCCESS_URL', 'https://open-claw.space/?payment=success')
         )
 
-        # Store pending payment if user exists, otherwise they'll register after payment
-        user = db.get_user_by_email(email)
-        if user and hasattr(payment, 'id'):
-            db.store_pending_payment(email, payment.id)
-
+        # Webhook will handle storing payment status when user pays
         return jsonify({
             'success': True,
             'checkout_url': payment.payment_link,
@@ -421,8 +417,15 @@ def payment_webhook():
             customer_email = customer.get('email')
 
             if customer_email:
-                # Update user payment status
-                db.update_payment_status(customer_email, payment_id, 'monthly')
+                # Try to update existing user first
+                user = db.get_user_by_email(customer_email)
+                if user:
+                    # User exists, activate payment immediately
+                    db.update_payment_status(customer_email, payment_id, 'monthly')
+                else:
+                    # User doesn't exist yet, store as pending payment
+                    # Will be auto-activated when they register
+                    db.store_pending_payment(customer_email, payment_id, 'monthly')
 
         return jsonify({'status': 'ok'})
 
