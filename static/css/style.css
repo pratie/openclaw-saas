@@ -103,12 +103,54 @@ body {
     }
 }
 
-.subtitle {
+.value-prop {
+    max-width: 700px;
+    margin: 30px auto;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.98);
+    padding: 32px 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.value-prop .story {
     font-size: 18px;
+    line-height: 1.6;
+    color: #2d3748;
+    margin-bottom: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.value-prop .highlight {
     color: var(--primary-cyan);
-    letter-spacing: 4px;
-    margin-top: 10px;
-    opacity: 0.8;
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+.value-prop .benefits {
+    margin: 20px 0;
+    padding-left: 10px;
+}
+
+.value-prop .benefits p {
+    font-size: 16px;
+    color: #4a5568;
+    margin: 8px 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 500;
+}
+
+.value-prop .tagline {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #2d3748;
+    margin-top: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+}
+
+.value-prop .tagline strong {
+    color: var(--primary-green);
+    font-weight: 700;
 }
 
 .scan-line {
