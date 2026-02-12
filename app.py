@@ -397,30 +397,29 @@ def create_checkout():
             environment="live_mode"
         )
 
-        # Create payment
-        payment = client.payments.create(
-            payment_link=True,
-            billing={
-                "city": "New York",
-                "country": "US",
-                "state": "NY",
-                "street": "123 Example Street",
-                "zipcode": 10001,
-            },
+        # Create checkout session (correct method for subscription products)
+        checkout_session = client.checkout_sessions.create(
+            product_cart=[
+                {"product_id": dodo_product_id, "quantity": 1}
+            ],
             customer={
                 "email": email,
                 "name": email.split("@")[0],
             },
-            product_cart=[
-                {"product_id": dodo_product_id, "quantity": 1}
-            ],
+            billing_address={
+                "city": "New York",
+                "country": "US",
+                "state": "NY",
+                "street": "123 Example Street",
+                "zipcode": "10001",
+            },
             return_url=os.environ.get('DODO_SUCCESS_URL', 'https://open-claw.space/?payment=success')
         )
 
         # Webhook will handle storing payment status when user pays
         return jsonify({
             'success': True,
-            'checkout_url': payment.payment_link,
+            'checkout_url': checkout_session.checkout_url,
             'price': '$3/day'
         })
 
