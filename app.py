@@ -369,11 +369,10 @@ def create_checkout():
         if not dodo_api_key or not dodo_product_id:
             return jsonify({'success': False, 'message': 'Payment system not configured'}), 500
 
-        # Initialize Dodo client
-        env_mode = os.environ.get('ENV', 'development')
+        # Initialize Dodo client (always use live_mode in production)
         client = DodoPayments(
             bearer_token=dodo_api_key,
-            environment="test_mode" if env_mode == "development" else "live_mode"
+            environment="live_mode"
         )
 
         # Create payment
