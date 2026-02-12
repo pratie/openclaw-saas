@@ -13,8 +13,10 @@
     <div class="container">
         <!-- Header -->
         <div class="header">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="OpenClaw Logo" class="logo">
-            <h1 class="glitch" data-text="OPENCLAW">OPENCLAW</h1>
+            <div class="brand-header">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="OpenClaw Logo" class="logo">
+                <h1 class="glitch" data-text="OPENCLAW">OPENCLAW</h1>
+            </div>
             <div class="value-prop">
                 <p class="story">As a dev who hates setting up tools just to try them, I built <span class="highlight">open-claw.space</span> to run OpenClaw for you!</p>
                 <div class="benefits">

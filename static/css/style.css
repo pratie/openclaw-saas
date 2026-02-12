@@ -61,10 +61,17 @@ body {
     position: relative;
 }
 
+.brand-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
 .logo {
-    width: 200px;
+    width: 80px;
     height: auto;
-    margin-bottom: 20px;
     filter: drop-shadow(0 0 20px rgba(237, 106, 90, 0.3));
     transition: transform 0.3s ease;
 }
