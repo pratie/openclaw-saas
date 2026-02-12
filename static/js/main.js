@@ -108,11 +108,49 @@ function closePaymentModal() {
     document.getElementById('payment-modal').style.display = 'none';
 }
 
+// Auth Modal Functions
+function showAuthModal(type) {
+    const modal = document.getElementById('auth-modal');
+    const title = document.getElementById('auth-modal-title');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+
+    if (type === 'login') {
+        title.textContent = 'Login';
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+    } else {
+        title.textContent = 'Create Account';
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+    }
+
+    modal.style.display = 'flex';
+}
+
+function closeAuthModal() {
+    document.getElementById('auth-modal').style.display = 'none';
+}
+
+function switchToRegister() {
+    showAuthModal('register');
+}
+
+function switchToLogin() {
+    showAuthModal('login');
+}
+
+
 // Close modal if clicked outside
 window.onclick = function(event) {
-    const modal = document.getElementById('payment-modal');
-    if (event.target === modal) {
+    const paymentModal = document.getElementById('payment-modal');
+    const authModal = document.getElementById('auth-modal');
+
+    if (event.target === paymentModal) {
         closePaymentModal();
+    }
+    if (event.target === authModal) {
+        closeAuthModal();
     }
 }
 
@@ -156,27 +194,50 @@ async function createCheckout(event) {
     }
 }
 
-// Check for payment success on page load
+// Initialize on page load
 window.addEventListener('DOMContentLoaded', () => {
+    // Handle model option clicks
+    const modelOptions = document.querySelectorAll('.model-option');
+    modelOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            modelOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            this.querySelector('input[type="radio"]').checked = true;
+        });
+    });
+
+    // Handle channel option clicks
+    const channelOptions = document.querySelectorAll('.channel-option');
+    channelOptions.forEach(option => {
+        option.addEventListener('click', function() {
+            channelOptions.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            this.querySelector('input[type="radio"]').checked = true;
+        });
+    });
+
+    // Check for payment success
     const urlParams = new URLSearchParams(window.location.search);
     const paymentSuccess = urlParams.get('payment');
 
     if (paymentSuccess === 'success') {
         const email = sessionStorage.getItem('payment_email');
         if (email) {
-            // Pre-fill email in registration form
-            document.getElementById('reg-email').value = email;
+            const regEmailField = document.getElementById('reg-email');
+            if (regEmailField) {
+                // Pre-fill email in registration form
+                regEmailField.value = email;
 
-            // Switch to register tab
-            const registerTab = document.querySelectorAll('.tab')[1];
-            registerTab.click();
+                // Switch to register modal
+                showAuthModal('register');
 
-            // Show success message
-            const messageEl = document.getElementById('register-message');
-            showMessage(messageEl, 'success', '✓ Payment successful! Complete your registration below.');
+                // Show success message
+                const messageEl = document.getElementById('register-message');
+                showMessage(messageEl, 'success', '✓ Payment successful! Complete your registration below.');
 
-            // Clear payment email from storage
-            sessionStorage.removeItem('payment_email');
+                // Clear payment email from storage
+                sessionStorage.removeItem('payment_email');
+            }
         }
     }
 });

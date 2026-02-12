@@ -3,299 +3,213 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw | AI Agent Deployment Platform</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>OpenClaw | Deploy in Under 1 Minute</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
 </head>
-<body>
-    <div class="stars"></div>
-    <div class="twinkling"></div>
-
-    <div class="container">
-        <!-- Header -->
-        <div class="header">
-            <div class="brand-header">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="OpenClaw Logo" class="logo">
-                <h1 class="glitch" data-text="OPENCLAW">OPENCLAW</h1>
-            </div>
-            <div class="value-prop">
-                <p class="story">As a dev who hates setting up tools just to try them, I built <span class="highlight">open-claw.space</span> to run OpenClaw for you!</p>
-                <div class="benefits">
-                    <p>→ Fully managed</p>
-                    <p>→ No local install</p>
-                    <p>→ No servers</p>
-                    <p>→ No maintenance</p>
-                </div>
-                <p class="tagline">Instant access to your own private, always-on OpenClaw instance in the cloud. <strong>Finally, an agent who is always there.</strong></p>
-            </div>
-            <div class="scan-line"></div>
-
-            <!-- Payment CTA -->
-            <button class="btn-payment-cta" onclick="showPaymentModal()">
-                TRY OPENCLAW RISK-FREE
-            </button>
-            <p style="color: #5BC0BE; font-size: 16px; margin-top: 12px; font-weight: 600;">
-                Just $3/day • Cancel anytime • 24-hour money-back guarantee
-            </p>
-            <p style="color: #8892b0; font-size: 13px; margin-top: 8px; opacity: 0.8;">
-                ✓ No credit card for trial • ✓ Setup in 2 minutes • ✓ Your own dedicated VPS
-            </p>
+<body class="landing-body">
+    <div class="landing-container">
+        <!-- Offer Badge -->
+        <div class="offer-badge-container">
+            <span class="offer-badge">50% OFF</span>
+            <span class="offer-text">Limited Time Offer</span>
         </div>
 
-        <!-- Email Payment Modal -->
-        <div id="payment-modal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <span class="terminal-title">// GET STARTED</span>
-                        <div class="terminal-controls">
-                            <span class="dot red" onclick="closePaymentModal()"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
-                    </div>
-                    <div class="terminal-body">
-                        <p style="color: #5BC0BE; margin-bottom: 20px;">Enter your email to proceed to checkout</p>
-                        <form onsubmit="createCheckout(event)" id="payment-form">
-                            <div class="input-group">
-                                <label>EMAIL ADDRESS</label>
-                                <input type="email" id="payment-email" placeholder="you@example.com" required>
-                            </div>
-                            <button type="submit" class="btn-primary">
-                                <span class="btn-glow"></span>
-                                CONTINUE TO PAYMENT
-                            </button>
-                        </form>
-                        <div id="payment-modal-message" class="message"></div>
-                    </div>
-                </div>
+        <!-- Main Headline -->
+        <h1 class="main-headline">
+            Deploy OpenClaw<br>
+            <span class="headline-secondary">In Under 1 Minute</span>
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="main-subheadline">
+            Avoid technical complexity and one-click deploy your<br>
+            own 24/7 active AI OpenClaw instance in under 1 minute.
+        </p>
+
+        <!-- Powered By Section -->
+        <div class="powered-section">
+            <span class="powered-label">POWERED BY</span>
+            <div class="ai-models">
+                <span class="ai-badge anthropic">🔶 Claude</span>
+                <span class="ai-badge openai">🟢 ChatGPT</span>
+                <span class="ai-badge google">🔷 Gemini</span>
             </div>
         </div>
 
-        <!-- Login/Register Forms -->
-        <div class="auth-container">
-            <div class="tabs">
-                <button class="tab active" onclick="showTab('login')">
-                    <span class="bracket">[</span> LOGIN <span class="bracket">]</span>
-                </button>
-                <button class="tab" onclick="showTab('register')">
-                    <span class="bracket">[</span> REGISTER <span class="bracket">]</span>
-                </button>
+        <!-- Available On Section -->
+        <div class="available-section">
+            <span class="available-label">AVAILABLE ON</span>
+            <div class="platforms">
+                <span class="platform-badge">📱 Telegram</span>
+                <span class="platform-badge">💬 Discord</span>
+                <span class="platform-badge">📲 WhatsApp</span>
             </div>
+        </div>
 
-            <!-- Login Form -->
-            <div id="login-form" class="form-panel active">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <span class="terminal-title">// ACCESS TERMINAL</span>
-                        <div class="terminal-controls">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
+        <!-- Scarcity Section -->
+        <div class="scarcity-container">
+            <div class="scarcity-header">
+                <span class="scarcity-text">🔴 13 OpenClaw Pro Instances available</span>
+                <span class="scarcity-count">13 left</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 87%"></div>
+            </div>
+            <div class="progress-info">
+                <span class="progress-claimed">87 claimed</span>
+                <span class="progress-gone">87% gone</span>
+            </div>
+        </div>
+
+        <!-- Model Selection -->
+        <div class="selection-section">
+            <h3 class="selection-title">Which model do you want as default?</h3>
+            <div class="model-options">
+                <label class="model-option selected">
+                    <input type="radio" name="model" value="claude" checked>
+                    <span class="model-icon">🔶</span>
+                    <span class="model-name">Claude Opus 4.6</span>
+                </label>
+                <label class="model-option">
+                    <input type="radio" name="model" value="gpt">
+                    <span class="model-icon">🟢</span>
+                    <span class="model-name">GPT-5.2</span>
+                </label>
+                <label class="model-option">
+                    <input type="radio" name="model" value="gemini">
+                    <span class="model-icon">🔷</span>
+                    <span class="model-name">Gemini 3 Flash</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Channel Selection -->
+        <div class="selection-section">
+            <h3 class="selection-title">Which channel do you want to use for sending messages?</h3>
+            <div class="channel-options">
+                <label class="channel-option selected">
+                    <input type="radio" name="channel" value="telegram" checked>
+                    <span class="channel-icon">📱</span>
+                    <span class="channel-name">Telegram</span>
+                </label>
+                <label class="channel-option">
+                    <input type="radio" name="channel" value="discord">
+                    <span class="channel-icon">💬</span>
+                    <span class="channel-name">Discord</span>
+                </label>
+                <label class="channel-option">
+                    <input type="radio" name="channel" value="whatsapp">
+                    <span class="channel-icon">📲</span>
+                    <span class="channel-name">WhatsApp</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- CTA Button -->
+        <button class="cta-button" onclick="showPaymentModal()">
+            Deploy My OpenClaw Instance Now
+        </button>
+        <p class="cta-subtext">
+            Just $3/day • Cancel anytime • 24-hour money-back guarantee
+        </p>
+
+        <!-- Login/Register Section -->
+        <div class="auth-section">
+            <p class="auth-prompt">Already have an account?</p>
+            <div class="auth-buttons">
+                <button class="auth-btn" onclick="showAuthModal('login')">Login</button>
+                <span class="auth-divider">or</span>
+                <button class="auth-btn" onclick="showAuthModal('register')">Register</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Payment Modal -->
+    <div id="payment-modal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closePaymentModal()"></div>
+        <div class="modal-content">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h2>Get Started</h2>
+                    <button class="modal-close" onclick="closePaymentModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-description">Enter your email to proceed to checkout</p>
+                    <form onsubmit="createCheckout(event)" id="payment-form">
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="payment-email" placeholder="you@example.com" required>
                         </div>
-                    </div>
-                    <div class="terminal-body">
+                        <button type="submit" class="btn-submit">
+                            Continue to Payment
+                        </button>
+                    </form>
+                    <div id="payment-modal-message" class="message"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Login/Register) -->
+    <div id="auth-modal" class="modal" style="display: none;">
+        <div class="modal-overlay" onclick="closeAuthModal()"></div>
+        <div class="modal-content">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <h2 id="auth-modal-title">Login</h2>
+                    <button class="modal-close" onclick="closeAuthModal()">×</button>
+                </div>
+                <div class="modal-body">
+                    <!-- Login Form -->
+                    <div id="login-form" style="display: none;">
                         <form onsubmit="login(event)">
-                            <div class="input-group">
-                                <label class="terminal-prompt">root@openclaw:~$</label>
+                            <div class="form-group">
+                                <label>Username</label>
                                 <input type="text" id="login-username" placeholder="username" required>
                             </div>
-                            <div class="input-group">
-                                <label class="terminal-prompt">password:</label>
+                            <div class="form-group">
+                                <label>Password</label>
                                 <input type="password" id="login-password" placeholder="••••••••" required>
                             </div>
-                            <button type="submit" class="btn-primary">
-                                <span class="btn-glow"></span>
-                                AUTHENTICATE
-                            </button>
+                            <button type="submit" class="btn-submit">Login</button>
                         </form>
                         <div id="login-message" class="message"></div>
+                        <p class="switch-auth">
+                            Don't have an account? <a href="#" onclick="switchToRegister(); return false;">Register</a>
+                        </p>
                     </div>
-                </div>
-            </div>
 
-            <!-- Register Form -->
-            <div id="register-form" class="form-panel">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <span class="terminal-title">// CREATE ACCOUNT</span>
-                        <div class="terminal-controls">
-                            <span class="dot red"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
-                    </div>
-                    <div class="terminal-body">
+                    <!-- Register Form -->
+                    <div id="register-form" style="display: none;">
                         <form onsubmit="register(event)">
-                            <div class="input-group">
-                                <label class="terminal-prompt">username:</label>
-                                <input type="text" id="reg-username" placeholder="newuser" required>
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" id="reg-username" placeholder="username" required>
                             </div>
-                            <div class="input-group">
-                                <label class="terminal-prompt">email:</label>
-                                <input type="email" id="reg-email" placeholder="user@example.com" required>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="reg-email" placeholder="you@example.com" required>
                             </div>
-                            <div class="input-group">
-                                <label class="terminal-prompt">password:</label>
+                            <div class="form-group">
+                                <label>Password</label>
                                 <input type="password" id="reg-password" placeholder="••••••••" required minlength="6">
                             </div>
-                            <div class="input-group">
-                                <label class="terminal-prompt">confirm:</label>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
                                 <input type="password" id="reg-confirm" placeholder="••••••••" required minlength="6">
                             </div>
-                            <button type="submit" class="btn-primary">
-                                <span class="btn-glow"></span>
-                                CREATE ACCOUNT
-                            </button>
+                            <button type="submit" class="btn-submit">Create Account</button>
                         </form>
                         <div id="register-message" class="message"></div>
+                        <p class="switch-auth">
+                            Already have an account? <a href="#" onclick="switchToLogin(); return false;">Login</a>
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Testimonials Section -->
-        <div class="testimonials-section">
-            <h2 class="section-heading">Developers Love OpenClaw</h2>
-            <p class="section-subheading">Join hundreds of developers who stopped managing servers</p>
-
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="stars">★★★★★</div>
-                    <p class="testimonial-text">"Setup OpenClaw yesterday. All I have to say is, wow. Finally an AI assistant that's actually always available when I need it."</p>
-                    <p class="testimonial-author">— Alex M., Full Stack Developer</p>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="stars">★★★★★</div>
-                    <p class="testimonial-text">"I was spending hours trying to deploy on my own server. This took literally 3 minutes. Worth every penny."</p>
-                    <p class="testimonial-author">— Sarah K., Product Manager</p>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="stars">★★★★★</div>
-                    <p class="testimonial-text">"The fact that I own my data and it runs on my own VPS is huge. Plus the 24/7 uptime actually works unlike other solutions."</p>
-                    <p class="testimonial-author">— James R., Security Engineer</p>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="stars">★★★★★</div>
-                    <p class="testimonial-text">"Best $3/day I've ever spent. My AI agent handles my emails, schedules meetings, and never goes down. Game changer."</p>
-                    <p class="testimonial-author">— Maria L., Startup Founder</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Use Cases Section -->
-        <div class="use-cases-section">
-            <h2 class="section-heading">What Can Your AI Agent Do?</h2>
-            <p class="section-subheading">Real tasks developers automate with OpenClaw</p>
-
-            <div class="use-cases-grid">
-                <div class="use-case-card">
-                    <div class="use-case-icon">📧</div>
-                    <h3>Email Automation</h3>
-                    <p>Triage emails, draft responses, flag important messages, and keep your inbox organized automatically.</p>
-                </div>
-
-                <div class="use-case-card">
-                    <div class="use-case-icon">📅</div>
-                    <h3>Smart Scheduling</h3>
-                    <p>Book meetings, coordinate across time zones, send reminders, and manage your calendar without lifting a finger.</p>
-                </div>
-
-                <div class="use-case-card">
-                    <div class="use-case-icon">💰</div>
-                    <h3>Expense Tracking</h3>
-                    <p>Log expenses via Telegram, categorize spending, generate reports, and keep your finances organized on the go.</p>
-                </div>
-
-                <div class="use-case-card">
-                    <div class="use-case-icon">📝</div>
-                    <h3>Content Creation</h3>
-                    <p>Generate blog posts, social media content, documentation, and marketing copy with AI that knows your voice.</p>
-                </div>
-
-                <div class="use-case-card">
-                    <div class="use-case-icon">🔍</div>
-                    <h3>Research Assistant</h3>
-                    <p>Summarize articles, extract key insights, gather competitive intel, and compile research reports instantly.</p>
-                </div>
-
-                <div class="use-case-card">
-                    <div class="use-case-icon">⚡</div>
-                    <h3>Team Automation</h3>
-                    <p>Coordinate with team members, track project status, automate workflows, and keep everyone in sync.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Features Section -->
-        <div class="features">
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3>READY IN MINUTES</h3>
-                <p>Connect your Telegram bot token, and your AI agent will be live in just a few minutes. Start chatting immediately once deployed.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔐</div>
-                <h3>YOU OWN YOUR DATA</h3>
-                <p>Your own dedicated DigitalOcean VPS. Your conversations, your infrastructure, your control. We never see your data. When you delete your bot, your VPS is destroyed and everything is permanently erased.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3>GUARANTEED UPTIME</h3>
-                <p>99.9% uptime guarantee. Fast response times. No more waiting. Your AI agent is always ready when you need it. (I tried hosting on other platforms and found bots weren't active 24/7. After extensive research, I solved this issue completely.)</p>
-            </div>
-        </div>
-
-        <!-- FAQ Section -->
-        <div class="faq-section">
-            <h2 class="section-heading">Frequently Asked Questions</h2>
-            <p class="section-subheading">Everything you need to know</p>
-
-            <div class="faq-container">
-                <div class="faq-item">
-                    <h3 class="faq-question">What happens to my data?</h3>
-                    <p class="faq-answer">Your data stays on YOUR dedicated DigitalOcean VPS. We never see your conversations or personal information. When you delete your bot, the entire VPS is destroyed and all data is permanently erased.</p>
-                </div>
-
-                <div class="faq-item">
-                    <h3 class="faq-question">Can I cancel anytime?</h3>
-                    <p class="faq-answer">Yes! Cancel anytime with one click. No questions asked, no cancellation fees. Plus, we offer a 24-hour money-back guarantee if you're not satisfied.</p>
-                </div>
-
-                <div class="faq-item">
-                    <h3 class="faq-question">Do I need technical skills?</h3>
-                    <p class="faq-answer">Nope! Just paste your Telegram bot token (we'll show you how to get one from @BotFather) and we handle everything else. No terminal, no code, no DevOps knowledge required.</p>
-                </div>
-
-                <div class="faq-item">
-                    <h3 class="faq-question">How is this different from ChatGPT?</h3>
-                    <p class="faq-answer">OpenClaw is your personal AI agent that runs 24/7 on Telegram. It has persistent memory, can execute complex workflows, integrates with your tools, and is always available—even when ChatGPT is down or rate-limited.</p>
-                </div>
-
-                <div class="faq-item">
-                    <h3 class="faq-question">What's included in $3/day?</h3>
-                    <p class="faq-answer">Everything! Your own dedicated VPS, automatic SSL, daily backups, 24/7 monitoring, unlimited messages, and full access to all OpenClaw features. No hidden costs or surprise charges.</p>
-                </div>
-
-                <div class="faq-item">
-                    <h3 class="faq-question">How long does setup take?</h3>
-                    <p class="faq-answer">About 2-3 minutes. Enter your email, get your Telegram bot token, paste it in the dashboard, and we deploy your AI agent automatically. Start chatting immediately after deployment completes.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Final CTA Section -->
-        <div class="final-cta-section">
-            <h2 class="final-cta-heading">Ready to Try OpenClaw Risk-Free?</h2>
-            <p class="final-cta-subheading">Join developers who stopped managing servers and started shipping faster</p>
-            <button class="btn-payment-cta" onclick="showPaymentModal()">
-                TRY OPENCLAW RISK-FREE
-            </button>
-            <p style="color: #5BC0BE; font-size: 16px; margin-top: 12px; font-weight: 600;">
-                Just $3/day • Cancel anytime • 24-hour money-back guarantee
-            </p>
         </div>
     </div>
 
