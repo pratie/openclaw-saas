@@ -177,7 +177,14 @@ def deploy_bot():
         return jsonify(result), 500
 
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+        # Log error for debugging (server-side only)
+        print(f"❌ Deployment error: {str(e)}")
+
+        # Return user-friendly error message
+        return jsonify({
+            'success': False,
+            'message': 'Failed to deploy AI agent. Please check your tokens and try again.'
+        }), 500
 
 @app.route('/api/bots', methods=['GET'])
 def get_bots():
@@ -214,9 +221,17 @@ def delete_bot(bot_id):
         return jsonify({'success': False, 'message': 'Droplet deleted but failed to remove from database'}), 500
 
     except Exception as e:
+        # Log error for debugging (server-side only)
+        print(f"❌ Delete droplet error: {str(e)}")
+
         # Try to delete from database even if droplet deletion fails
         db.delete_bot(bot_id)
-        return jsonify({'success': False, 'message': f'Error deleting droplet: {str(e)}'}), 500
+
+        # Return user-friendly error message
+        return jsonify({
+            'success': False,
+            'message': 'Failed to delete bot. The bot may have been removed from the list. Please contact support if the issue persists.'
+        }), 500
 
 @app.route('/api/logs/<int:bot_id>', methods=['GET'])
 def get_logs(bot_id):
@@ -245,7 +260,14 @@ def get_logs(bot_id):
         return jsonify({'success': False, 'message': 'Could not fetch logs'}), 500
 
     except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
+        # Log error for debugging (server-side only)
+        print(f"❌ Fetch logs error: {str(e)}")
+
+        # Return user-friendly error message
+        return jsonify({
+            'success': False,
+            'message': 'Unable to retrieve logs at this time. Please try again later.'
+        }), 500
 
 @app.route('/api/bots/<int:bot_id>/status', methods=['GET'])
 def check_bot_status(bot_id):
@@ -403,7 +425,14 @@ def create_checkout():
         })
 
     except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
+        # Log the actual error for debugging (server-side only)
+        print(f"❌ Payment error: {str(e)}")
+
+        # Return user-friendly error message (never expose internal details)
+        return jsonify({
+            'success': False,
+            'message': 'Payment system temporarily unavailable. Please try again or contact support.'
+        }), 500
 
 @app.route('/api/payment/webhook', methods=['POST'])
 def payment_webhook():
@@ -457,7 +486,11 @@ def payment_webhook():
         return jsonify({'status': 'ok'})
 
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        # Log error for debugging (server-side only)
+        print(f"❌ Webhook error: {str(e)}")
+
+        # Return generic error (never expose internal webhook details)
+        return jsonify({'error': 'Webhook processing failed'}), 500
 
 @app.route('/api/payment/success', methods=['POST'])
 def payment_success():
