@@ -660,6 +660,93 @@ body.landing-body::before {
     line-height: 20px;
 }
 
+/* ========== SECURITY SECTION ========== */
+.security-section {
+    max-width: 1200px;
+    margin: var(--space-32) auto;
+    padding: 0 var(--space-6);
+}
+
+.security-title {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    line-height: 48px;
+    text-align: center;
+    margin-bottom: var(--space-3);
+    letter-spacing: var(--tracking-tight);
+}
+
+.security-subtitle {
+    font-size: var(--text-lg);
+    color: var(--text-secondary);
+    line-height: 28px;
+    text-align: center;
+    margin-bottom: var(--space-12);
+}
+
+.security-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+}
+
+.security-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.security-item:hover {
+    border-color: var(--accent-primary);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.2);
+    transform: translateY(-2px);
+}
+
+.security-icon {
+    font-size: 48px;
+    margin-bottom: var(--space-4);
+    line-height: 1;
+}
+
+.security-item-title {
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--text-primary);
+    line-height: 28px;
+    margin-bottom: var(--space-3);
+}
+
+.security-item-text {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 22px;
+    margin: 0;
+}
+
+.security-note {
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.security-note p {
+    font-size: var(--text-base);
+    color: var(--text-secondary);
+    line-height: 26px;
+    margin: 0;
+}
+
+.security-note strong {
+    color: var(--accent-primary);
+    font-weight: var(--font-bold);
+}
+
 /* ========== AUTH SECTION ========== */
 .auth-section {
     margin-top: var(--space-16);
@@ -920,13 +1007,18 @@ body.landing-body::before {
     }
 
     .comparison-title,
-    .use-cases-title {
+    .use-cases-title,
+    .security-title {
         font-size: var(--text-3xl);
         line-height: 40px;
     }
 
     .use-cases-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .security-grid {
+        grid-template-columns: 1fr;
     }
 }
 
