@@ -147,7 +147,7 @@ body.landing-body::before {
     align-items: center;
     justify-content: center;
     gap: var(--space-2);
-    margin-bottom: var(--space-8);
+    margin-bottom: var(--space-12);
     animation: fadeInDown 0.6s ease;
 }
 
@@ -183,8 +183,8 @@ body.landing-body::before {
     font-size: var(--text-6xl);
     font-weight: var(--font-extrabold);
     color: var(--text-primary);
-    line-height: 72px; /* 1.125 - maintains visual rhythm */
-    margin-bottom: var(--space-6);
+    line-height: 80px; /* More breathing room */
+    margin-bottom: var(--space-10);
     letter-spacing: var(--tracking-tight);
     animation: fadeIn 0.8s ease 0.2s both;
 }
@@ -210,8 +210,8 @@ body.landing-body::before {
 .main-subheadline {
     font-size: var(--text-lg);
     color: var(--text-secondary);
-    line-height: 28px; /* 1.556 - WCAG compliant */
-    margin-bottom: var(--space-16);
+    line-height: 32px; /* More breathing room */
+    margin-bottom: var(--space-20);
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
