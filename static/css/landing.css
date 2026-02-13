@@ -1028,8 +1028,8 @@ body.landing-body::before {
     }
 
     .main-headline {
-        font-size: var(--text-5xl);
-        line-height: 52px;
+        font-size: var(--text-4xl);
+        line-height: 48px;
     }
 
     .main-subheadline {
@@ -1114,8 +1114,8 @@ body.landing-body::before {
     }
 
     .main-headline {
-        font-size: var(--text-4xl);
-        line-height: 44px;
+        font-size: var(--text-3xl);
+        line-height: 40px;
     }
 
     .selections-container {
