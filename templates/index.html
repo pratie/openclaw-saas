@@ -51,24 +51,30 @@
                 <h3 class="selection-title">Which model do you want as default?</h3>
                 <div class="model-options">
                     <label class="model-option selected">
-                        <input type="radio" name="model" value="claude" checked>
-                        <svg class="model-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="4" y="4" width="16" height="16" rx="2" fill="#CC9B7A" stroke="#CC9B7A" stroke-width="2"/>
+                        <input type="radio" name="model" value="kimi" checked>
+                        <svg class="model-icon" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32.447 0c.68 0 1.273.465 1.439 1.125a38.904 38.904 0 001.999 5.905c2.152 5 5.105 9.376 8.854 13.125 3.751 3.75 8.126 6.703 13.125 8.855a38.98 38.98 0 005.906 1.999c.66.166 1.124.758 1.124 1.438 0 .68-.464 1.273-1.125 1.439a38.902 38.902 0 00-5.905 1.999c-5 2.152-9.375 5.105-13.125 8.854-3.749 3.751-6.702 8.126-8.854 13.125a38.973 38.973 0 00-2 5.906 1.485 1.485 0 01-1.438 1.124c-.68 0-1.272-.464-1.438-1.125a38.913 38.913 0 00-2-5.905c-2.151-5-5.103-9.375-8.854-13.125-3.75-3.749-8.125-6.702-13.125-8.854a38.973 38.973 0 00-5.905-2A1.485 1.485 0 010 32.448c0-.68.465-1.272 1.125-1.438a38.903 38.903 0 005.905-2c5-2.151 9.376-5.104 13.125-8.854 3.751-3.749 6.703-8.125 8.854-13.125a38.907 38.907 0 002-5.906A1.485 1.485 0 0132.447 0z" fill="#1F51FF"/>
+                        </svg>
+                        <span class="model-name">Moonshot Kimi</span>
+                    </label>
+                    <label class="model-option">
+                        <input type="radio" name="model" value="claude">
+                        <svg class="model-icon" viewBox="0 0 512 509.64" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="512" height="509.64" rx="115.61" fill="#D77655"/>
                         </svg>
                         <span class="model-name">Claude Opus 4.5</span>
                     </label>
                     <label class="model-option">
                         <input type="radio" name="model" value="gpt">
-                        <svg class="model-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="8" fill="#10A37F"/>
-                            <path d="M8 12h8M12 8v8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <svg class="model-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="512" height="512" rx="115.61" fill="#10A37F"/>
                         </svg>
                         <span class="model-name">GPT-5.2</span>
                     </label>
                     <label class="model-option">
                         <input type="radio" name="model" value="gemini">
-                        <svg class="model-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <polygon points="12,2 22,12 12,22 2,12" fill="#4285F4"/>
+                        <svg class="model-icon" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M32.447 0c.68 0 1.273.465 1.439 1.125a38.904 38.904 0 001.999 5.905c2.152 5 5.105 9.376 8.854 13.125 3.751 3.75 8.126 6.703 13.125 8.855a38.98 38.98 0 005.906 1.999c.66.166 1.124.758 1.124 1.438 0 .68-.464 1.273-1.125 1.439a38.902 38.902 0 00-5.905 1.999c-5 2.152-9.375 5.105-13.125 8.854-3.749 3.751-6.702 8.126-8.854 13.125a38.973 38.973 0 00-2 5.906 1.485 1.485 0 01-1.438 1.124c-.68 0-1.272-.464-1.438-1.125a38.913 38.913 0 00-2-5.905c-2.151-5-5.103-9.375-8.854-13.125-3.75-3.749-8.125-6.702-13.125-8.854a38.973 38.973 0 00-5.905-2A1.485 1.485 0 010 32.448c0-.68.465-1.272 1.125-1.438a38.903 38.903 0 005.905-2c5-2.151 9.376-5.104 13.125-8.854 3.751-3.749 6.703-8.125 8.854-13.125a38.907 38.907 0 002-5.906A1.485 1.485 0 0132.447 0z" fill="#4285F4"/>
                         </svg>
                         <span class="model-name">Gemini 3 Flash</span>
                     </label>
@@ -81,15 +87,16 @@
                 <div class="channel-options">
                     <label class="channel-option selected">
                         <input type="radio" name="channel" value="telegram" checked>
-                        <svg class="channel-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="10" fill="#0088CC"/>
-                            <path d="M9 12l3 3 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <svg class="channel-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="256" cy="256" r="256" fill="#0088CC"/>
+                            <path fill="#fff" d="M115.88 253.3c74.63-32.52 124.39-53.95 149.29-64.31 71.1-29.57 85.87-34.71 95.5-34.88 2.12-.03 6.85.49 9.92 2.98 2.59 2.1 3.3 4.94 3.64 6.93.34 2 .77 6.53.43 10.08-3.85 40.48-20.52 138.71-29 184.05-3.59 19.19-10.66 25.62-17.5 26.25-14.86 1.37-26.15-9.83-40.55-19.27-22.53-14.76-35.26-23.96-57.13-38.37-25.28-16.66-8.89-25.81 5.51-40.77 3.77-3.92 69.27-63.5 70.54-68.9.16-.68.31-3.2-1.19-4.53s-3.71-.87-5.3-.51c-2.26.51-38.25 24.3-107.98 71.37-10.22 7.02-19.48 10.43-27.77 10.26-9.14-.2-26.72-5.17-39.79-9.42-16.03-5.21-28.77-7.97-27.66-16.83 1.15-9.21 13.75-18.62 37.78-28.22z"/>
                         </svg>
                         <span class="channel-name">Telegram</span>
                     </label>
                     <label class="channel-option disabled">
-                        <svg class="channel-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="10" fill="#7289DA" opacity="0.4"/>
+                        <svg class="channel-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="256" cy="256" r="256" fill="#5865F2" opacity="0.4"/>
+                            <path fill="#fff" fill-opacity="0.4" fill-rule="nonzero" d="M360.932 160.621a250.49 250.49 0 00-62.384-19.182a174.005 174.005 0 00-7.966 16.243a232.677 232.677 0 00-34.618-2.602c-11.569 0-23.196.879-34.623 2.58-2.334-5.509-5.044-10.972-7.986-16.223a252.55 252.55 0 00-62.397 19.222c-39.483 58.408-50.183 115.357-44.833 171.497a251.546 251.546 0 0076.502 38.398c6.169-8.328 11.695-17.193 16.386-26.418a161.718 161.718 0 01-25.813-12.318c2.165-1.569 4.281-3.186 6.325-4.756c23.912 11.23 50.039 17.088 76.473 17.088c26.436 0 52.563-5.858 76.475-17.09c2.069 1.689 4.186 3.306 6.325 4.756a162 162 0 01-25.838 12.318c4.692 9.225 10.218 18.09 16.387 26.418a251.536 251.536 0 0076.502-38.398c6.396-64.961-10.67-121.353-45.155-171.533z"/>
                         </svg>
                         <div class="channel-info">
                             <span class="channel-name">Discord</span>
@@ -97,8 +104,8 @@
                         </div>
                     </label>
                     <label class="channel-option disabled">
-                        <svg class="channel-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="12" cy="12" r="10" fill="#25D366" opacity="0.4"/>
+                        <svg class="channel-icon" viewBox="0 0 240 241.19" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="#25D366" fill-opacity="0.4" fill-rule="evenodd" d="M205,35.05A118.61,118.61,0,0,0,120.46,0C54.6,0,1,53.61,1,119.51a119.5,119.5,0,0,0,16,59.74L0,241.19l63.36-16.63a119.43,119.43,0,0,0,57.08,14.57h0A119.54,119.54,0,0,0,205,35.07v0ZM120.5,219A99.18,99.18,0,0,1,69.91,205.1l-3.64-2.17-37.6,9.85,10-36.65-2.35-3.76A99.37,99.37,0,0,1,190.79,49.27,99.43,99.43,0,0,1,120.49,219ZM175,144.54c-3-1.51-17.67-8.71-20.39-9.71s-4.72-1.51-6.75,1.51-7.72,9.71-9.46,11.72-3.49,2.27-6.45.76-12.63-4.66-24-14.84A91.1,91.1,0,0,1,91.25,113.3c-1.75-3-.19-4.61,1.33-6.07s3-3.48,4.47-5.23a19.65,19.65,0,0,0,3-5c.75-1.5.37-2.85-.17-4s-6.75-16.23-9.22-22.28-4.89-5-6.75-5-3.74-.17-5.72-.17a11,11,0,0,0-8,3.75A33.39,33.39,0,0,0,59.46,95.78c0,13.64,10.21,26.83,11.64,28.68s20.09,30.7,48.67,43.09c18,7.76,25.08,8.31,34.08,7s17.67-7.24,20.14-14.2,2.47-12.92,1.72-14.19S178,145.92,175,144.54Z"/>
                         </svg>
                         <div class="channel-info">
                             <span class="channel-name">WhatsApp</span>
