@@ -11,8 +11,8 @@
 
 body.landing-body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #fafafa;
-    color: #1a1a1a;
+    background: #0a0a0a;
+    color: #ffffff;
     line-height: 1.6;
     min-height: 100vh;
     padding: 40px 20px;
@@ -28,8 +28,8 @@ body.landing-body::before {
     right: 0;
     bottom: 0;
     background:
-        radial-gradient(circle at 10% 20%, rgba(211, 47, 47, 0.03) 0%, transparent 50%),
-        radial-gradient(circle at 90% 80%, rgba(211, 47, 47, 0.03) 0%, transparent 50%);
+        radial-gradient(circle at 10% 20%, rgba(211, 47, 47, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(211, 47, 47, 0.05) 0%, transparent 50%);
     pointer-events: none;
 }
 
@@ -73,7 +73,7 @@ body.landing-body::before {
 }
 
 .offer-text {
-    color: #666;
+    color: #8892b0;
     font-size: 16px;
     font-weight: 500;
 }
@@ -82,7 +82,7 @@ body.landing-body::before {
 .main-headline {
     font-size: 64px;
     font-weight: 800;
-    color: #000;
+    color: #ffffff;
     line-height: 1.1;
     margin-bottom: 20px;
     letter-spacing: -1px;
@@ -95,13 +95,13 @@ body.landing-body::before {
 }
 
 .headline-secondary {
-    color: #666;
+    color: #8892b0;
     font-weight: 700;
 }
 
 .main-subheadline {
     font-size: 18px;
-    color: #555;
+    color: #8892b0;
     line-height: 1.6;
     margin-bottom: 50px;
     animation: fadeIn 0.8s ease 0.4s both;
@@ -156,13 +156,13 @@ body.landing-body::before {
 
 /* ========== SCARCITY SECTION ========== */
 .scarcity-container {
-    background: white;
-    border: 1px solid #e8e8e8;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
     border-radius: 12px;
     padding: 24px 32px;
     margin: 40px auto;
     max-width: 700px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     animation: scaleIn 0.5s ease 0.8s both;
 }
 
@@ -189,7 +189,7 @@ body.landing-body::before {
 .scarcity-text {
     font-size: 16px;
     font-weight: 600;
-    color: #1a1a1a;
+    color: #ffffff;
 }
 
 .scarcity-count {
@@ -201,7 +201,7 @@ body.landing-body::before {
 .progress-bar {
     width: 100%;
     height: 28px;
-    background: #f5f5f5;
+    background: #0a0a0a;
     border-radius: 14px;
     overflow: hidden;
     margin-bottom: 12px;
@@ -217,7 +217,7 @@ body.landing-body::before {
     display: flex;
     justify-content: space-between;
     font-size: 14px;
-    color: #666;
+    color: #8892b0;
 }
 
 .progress-claimed {
@@ -244,7 +244,7 @@ body.landing-body::before {
 .selection-title {
     font-size: 18px;
     font-weight: 600;
-    color: #1a1a1a;
+    color: #ffffff;
     margin-bottom: 20px;
 }
 
@@ -264,8 +264,8 @@ body.landing-body::before {
     align-items: center;
     gap: 12px;
     padding: 16px 24px;
-    background: white;
-    border: 1px solid #e8e8e8;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
     border-radius: 10px;
     transition: all 0.2s ease;
     width: 100%;
@@ -274,14 +274,15 @@ body.landing-body::before {
 .model-option:hover,
 .channel-option:hover {
     border-color: #d32f2f;
-    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.1);
+    background: #1f1f1f;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
 }
 
 .model-option.selected,
 .channel-option.selected {
     border-color: #d32f2f;
-    background: #fff5f5;
-    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.08);
+    background: rgba(211, 47, 47, 0.1);
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
 }
 
 .model-option input[type="radio"],
@@ -307,18 +308,19 @@ body.landing-body::before {
 .channel-name {
     font-size: 16px;
     font-weight: 600;
-    color: #1a1a1a;
+    color: #ffffff;
 }
 
 /* Disabled channel options */
 .channel-option.disabled {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
     pointer-events: none;
 }
 
 .channel-option.disabled:hover {
-    border-color: #e8e8e8;
+    border-color: #2a2a2a;
+    background: #1a1a1a;
     box-shadow: none;
     transform: none;
 }
@@ -333,7 +335,7 @@ body.landing-body::before {
 .coming-soon {
     font-size: 12px;
     font-weight: 500;
-    color: #999;
+    color: #666;
     font-style: italic;
 }
 
@@ -349,15 +351,15 @@ body.landing-body::before {
     cursor: pointer;
     margin-top: 40px;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.15);
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
     text-transform: none;
     animation: fadeIn 0.8s ease 1.2s both;
 }
 
 .cta-button:hover {
-    background: #b71c1c;
-    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.25);
-    transform: translateY(-1px);
+    background: #e53935;
+    box-shadow: 0 6px 20px rgba(211, 47, 47, 0.4);
+    transform: translateY(-2px);
 }
 
 .cta-button:active {
@@ -367,7 +369,7 @@ body.landing-body::before {
 .cta-subtext {
     margin-top: 16px;
     font-size: 14px;
-    color: #666;
+    color: #8892b0;
     font-weight: 500;
 }
 
@@ -375,13 +377,13 @@ body.landing-body::before {
 .auth-section {
     margin-top: 60px;
     padding-top: 40px;
-    border-top: 1px solid #e8e8e8;
+    border-top: 1px solid #2a2a2a;
     animation: fadeIn 0.8s ease 1.4s both;
 }
 
 .auth-prompt {
     font-size: 16px;
-    color: #666;
+    color: #8892b0;
     margin-bottom: 16px;
 }
 
@@ -394,9 +396,9 @@ body.landing-body::before {
 }
 
 .auth-btn {
-    background: white;
-    color: #1a1a1a;
-    border: 1px solid #e8e8e8;
+    background: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #2a2a2a;
     padding: 12px 32px;
     border-radius: 8px;
     font-size: 15px;
@@ -407,12 +409,12 @@ body.landing-body::before {
 
 .auth-btn:hover {
     border-color: #d32f2f;
-    color: #d32f2f;
-    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.1);
+    background: #1f1f1f;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.15);
 }
 
 .auth-divider {
-    color: #999;
+    color: #666;
     font-size: 14px;
 }
 
@@ -435,7 +437,7 @@ body.landing-body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(4px);
 }
 
@@ -459,9 +461,10 @@ body.landing-body::before {
 }
 
 .modal-box {
-    background: white;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
     border-radius: 16px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     overflow: hidden;
 }
 
@@ -470,20 +473,20 @@ body.landing-body::before {
     justify-content: space-between;
     align-items: center;
     padding: 24px 32px;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid #2a2a2a;
 }
 
 .modal-header h2 {
     font-size: 24px;
     font-weight: 700;
-    color: #1a1a1a;
+    color: #ffffff;
 }
 
 .modal-close {
     background: none;
     border: none;
     font-size: 32px;
-    color: #999;
+    color: #666;
     cursor: pointer;
     line-height: 1;
     padding: 0;
@@ -505,7 +508,7 @@ body.landing-body::before {
 
 .modal-description {
     font-size: 15px;
-    color: #666;
+    color: #8892b0;
     margin-bottom: 24px;
 }
 
@@ -519,7 +522,7 @@ body.landing-body::before {
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: #1a1a1a;
+    color: #ffffff;
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -528,17 +531,19 @@ body.landing-body::before {
 .form-group input {
     width: 100%;
     padding: 14px 16px;
-    border: 2px solid #e0e0e0;
+    background: #0a0a0a;
+    border: 1px solid #2a2a2a;
     border-radius: 8px;
     font-size: 15px;
     font-family: 'Inter', sans-serif;
+    color: #ffffff;
     transition: all 0.2s ease;
 }
 
 .form-group input:focus {
     outline: none;
     border-color: #d32f2f;
-    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
 }
 
 .btn-submit {
@@ -589,7 +594,7 @@ body.landing-body::before {
     text-align: center;
     margin-top: 20px;
     font-size: 14px;
-    color: #666;
+    color: #8892b0;
 }
 
 .switch-auth a {
