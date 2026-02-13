@@ -20,10 +20,7 @@
 
 body {
     font-family: 'IBM Plex Mono', 'Courier New', monospace;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-    background-attachment: fixed;
-    background-size: 200% 200%;
-    animation: gradientShift 15s ease infinite;
+    background: #0F172A;
     color: var(--text-dark);
     overflow-x: hidden;
     position: relative;
@@ -38,16 +35,11 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    background:
+        radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(211, 47, 47, 0.04) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 /* ========== Animated Background ========== */
@@ -621,11 +613,11 @@ body::before {
 
 .glitch-small {
     font-family: 'Rajdhani', sans-serif;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--primary-green);
     margin-bottom: 10px;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
     text-transform: uppercase;
 }
 
