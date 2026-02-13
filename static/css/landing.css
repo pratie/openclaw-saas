@@ -297,6 +297,12 @@ body.landing-body::before {
     flex-shrink: 0;
 }
 
+/* Handle both SVG and IMG icons */
+.model-option img.model-icon,
+.channel-option img.channel-icon {
+    object-fit: contain;
+}
+
 .model-name,
 .channel-name {
     font-size: 16px;
