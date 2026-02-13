@@ -156,7 +156,7 @@ def deploy_bot():
             telegram_token=data['telegram_token'],
             openrouter_key=api_keys['anthropic_key'],  # Column name stays same, semantically OpenRouter key
             region='nyc3',  # Hardcoded
-            size='s-2vcpu-4gb',  # Hardcoded
+            size='s-2vcpu-2gb',  # Starter Plan: 2 vCPU · 2 GB RAM · 20 GB SSD
             bot_name=safe_bot_name
         )
 
@@ -420,7 +420,7 @@ def create_checkout():
         return jsonify({
             'success': True,
             'checkout_url': checkout_session.checkout_url,
-            'price': '$3/day'
+            'price': '$49/month'
         })
 
     except Exception as e:
@@ -475,12 +475,12 @@ def payment_webhook():
                 # Try to update existing user first
                 user = db.get_user_by_email(customer_email)
                 if user:
-                    # User exists, activate payment immediately (daily subscription)
-                    db.update_payment_status(customer_email, payment_id, 'daily')
+                    # User exists, activate payment immediately (monthly subscription)
+                    db.update_payment_status(customer_email, payment_id, 'monthly')
                 else:
                     # User doesn't exist yet, store as pending payment
                     # Will be auto-activated when they register
-                    db.store_pending_payment(customer_email, payment_id, 'daily')
+                    db.store_pending_payment(customer_email, payment_id, 'monthly')
 
         return jsonify({'status': 'ok'})
 
@@ -501,7 +501,7 @@ def payment_success():
     if email:
         user = db.get_user_by_email(email)
         if user and not user.get('has_paid'):
-            db.update_payment_status(email, payment_id or 'manual', 'daily')
+            db.update_payment_status(email, payment_id or 'manual', 'monthly')
 
     return jsonify({'success': True})
 

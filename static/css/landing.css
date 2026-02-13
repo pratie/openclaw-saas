@@ -373,12 +373,60 @@ body.landing-body::before {
     font-weight: 500;
 }
 
+/* ========== PRICING FEATURES ========== */
+.pricing-features {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 32px;
+    animation: fadeIn 0.8s ease 1.4s both;
+}
+
+.plan-header {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.plan-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+.plan-specs {
+    font-size: 14px;
+    color: #8892b0;
+    font-weight: 500;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-item {
+    font-size: 16px;
+    color: #ffffff;
+    padding: 12px 0;
+    border-bottom: 1px solid #2a2a2a;
+}
+
+.feature-item:last-child {
+    border-bottom: none;
+}
+
 /* ========== AUTH SECTION ========== */
 .auth-section {
     margin-top: 60px;
     padding-top: 40px;
     border-top: 1px solid #2a2a2a;
-    animation: fadeIn 0.8s ease 1.4s both;
+    animation: fadeIn 0.8s ease 1.6s both;
 }
 
 .auth-prompt {
