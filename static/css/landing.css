@@ -421,6 +421,172 @@ body.landing-body::before {
     border-bottom: none;
 }
 
+/* ========== COMPARISON SECTION ========== */
+.comparison-section {
+    max-width: 1000px;
+    margin: 80px auto;
+}
+
+.comparison-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+
+.comparison-column {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 32px;
+}
+
+.column-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.steps-list {
+    margin-bottom: 20px;
+}
+
+.step-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #2a2a2a;
+    font-size: 14px;
+}
+
+.step-name {
+    color: #8892b0;
+    flex: 1;
+}
+
+.step-time {
+    color: #ffffff;
+    font-weight: 600;
+    margin-left: 16px;
+}
+
+.step-total {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 0;
+    margin-top: 12px;
+    border-top: 2px solid #d32f2f;
+    font-size: 16px;
+}
+
+.total-label {
+    color: #ffffff;
+    font-weight: 700;
+}
+
+.total-time {
+    color: #d32f2f;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.comparison-note {
+    font-size: 13px;
+    color: #8892b0;
+    font-style: italic;
+    line-height: 1.6;
+}
+
+.simpleclaw {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.simple-time {
+    font-size: 72px;
+    font-weight: 800;
+    color: #d32f2f;
+    margin: 20px 0;
+    line-height: 1;
+}
+
+.simple-description {
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.simple-explanation {
+    font-size: 14px;
+    color: #8892b0;
+    line-height: 1.6;
+}
+
+/* ========== USE CASES SECTION ========== */
+.use-cases-section {
+    max-width: 1200px;
+    margin: 80px auto;
+}
+
+.use-cases-title {
+    font-size: 36px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.use-cases-subtitle {
+    font-size: 18px;
+    color: #8892b0;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.use-cases-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.use-case {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #ffffff;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.use-case:hover {
+    background: #1f1f1f;
+    border-color: #d32f2f;
+    transform: translateY(-2px);
+}
+
+.use-cases-note {
+    font-size: 14px;
+    color: #8892b0;
+    text-align: center;
+    font-style: italic;
+}
+
 /* ========== AUTH SECTION ========== */
 .auth-section {
     margin-top: 60px;
@@ -661,6 +827,23 @@ body.landing-body::before {
         grid-template-columns: 1fr;
         gap: 30px;
     }
+
+    .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .comparison-title {
+        font-size: 28px;
+    }
+
+    .use-cases-title {
+        font-size: 28px;
+    }
+
+    .use-cases-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
 }
 
 @media (max-width: 768px) {
@@ -712,5 +895,22 @@ body.landing-body::before {
 
     .scarcity-container {
         padding: 16px;
+    }
+
+    .comparison-section,
+    .use-cases-section {
+        margin: 60px auto;
+    }
+
+    .comparison-column {
+        padding: 24px;
+    }
+
+    .simple-time {
+        font-size: 56px;
+    }
+
+    .use-cases-grid {
+        grid-template-columns: 1fr;
     }
 }
