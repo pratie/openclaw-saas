@@ -947,7 +947,8 @@ body.landing-body::before {
     }
 
     .selections-container {
-        padding: var(--space-6);
+        padding: var(--space-6) var(--space-4);
+        max-width: 100%;
     }
 
     .selection-section:first-child {
@@ -955,11 +956,19 @@ body.landing-body::before {
         padding-bottom: var(--space-8);
     }
 
+    .model-options,
+    .channel-options {
+        gap: var(--space-2);
+        justify-content: center;
+    }
+
     .model-option,
     .channel-option {
-        min-width: 90px;
-        padding: var(--space-3) var(--space-4);
-        gap: var(--space-1);
+        min-width: 0;
+        flex: 1 1 calc(50% - var(--space-2));
+        max-width: calc(50% - var(--space-2));
+        padding: var(--space-4) var(--space-2);
+        gap: var(--space-2);
     }
 
     .model-icon,
@@ -970,11 +979,11 @@ body.landing-body::before {
 
     .model-name,
     .channel-name {
-        font-size: var(--text-sm);
+        font-size: var(--text-xs);
     }
 
     .model-provider {
-        font-size: 11px;
+        font-size: 10px;
     }
 
     .cta-button {
@@ -1015,6 +1024,25 @@ body.landing-body::before {
     .main-headline {
         font-size: var(--text-4xl);
         line-height: 48px;
+    }
+
+    .selections-container {
+        padding: var(--space-5) var(--space-3);
+    }
+
+    .selection-title {
+        font-size: var(--text-sm);
+    }
+
+    .model-option,
+    .channel-option {
+        padding: var(--space-3) var(--space-1);
+    }
+
+    .model-icon,
+    .channel-icon {
+        width: 22px;
+        height: 22px;
     }
 
     .comparison-column {
