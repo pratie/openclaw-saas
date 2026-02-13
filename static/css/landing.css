@@ -265,13 +265,13 @@ body.landing-body::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: var(--space-3);
-    padding: var(--space-5) var(--space-6);
+    gap: var(--space-2);
+    padding: var(--space-4) var(--space-5);
     background: var(--slate-900);
     border: 2px solid var(--border-default);
     border-radius: var(--radius-lg);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    min-width: 160px;
+    min-width: 140px;
     flex: 0 1 auto;
     text-align: center;
 }
@@ -299,8 +299,8 @@ body.landing-body::before {
 
 .model-icon,
 .channel-icon {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     flex-shrink: 0;
 }
 
@@ -957,14 +957,15 @@ body.landing-body::before {
 
     .model-option,
     .channel-option {
-        min-width: 100px;
+        min-width: 90px;
         padding: var(--space-3) var(--space-4);
+        gap: var(--space-1);
     }
 
     .model-icon,
     .channel-icon {
-        width: 28px;
-        height: 28px;
+        width: 24px;
+        height: 24px;
     }
 
     .model-name,
