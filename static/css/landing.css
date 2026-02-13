@@ -220,12 +220,12 @@ body.landing-body::before {
 
 /* ========== SELECTIONS CONTAINER ========== */
 .selections-container {
-    max-width: 900px;
+    max-width: 1080px;
     margin: var(--space-16) auto;
     background: var(--bg-card);
     border: 1px solid var(--border-emphasis);
     border-radius: var(--radius-xl);
-    padding: var(--space-10);
+    padding: var(--space-10) var(--space-12);
     animation: fadeIn 0.8s ease 0.6s both;
     box-shadow: var(--shadow-md);
 }
@@ -252,8 +252,8 @@ body.landing-body::before {
 .channel-options {
     display: flex;
     flex-direction: row;
-    gap: var(--space-3);
-    justify-content: flex-start;
+    gap: var(--space-4);
+    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -266,12 +266,13 @@ body.landing-body::before {
     align-items: center;
     justify-content: center;
     gap: var(--space-3);
-    padding: var(--space-4) var(--space-5);
+    padding: var(--space-5) var(--space-6);
     background: var(--slate-900);
     border: 2px solid var(--border-default);
     border-radius: var(--radius-lg);
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    min-width: 140px;
+    min-width: 160px;
+    flex: 0 1 auto;
     text-align: center;
 }
 
