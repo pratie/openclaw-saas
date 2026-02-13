@@ -195,8 +195,8 @@ body.landing-body::before {
 }
 
 .headline-highlight {
-    background: var(--slate-700);
-    color: var(--text-primary);
+    background: var(--accent-danger);
+    color: white;
     padding: var(--space-2) var(--space-4);
     border-radius: var(--radius-sm);
     font-weight: var(--font-extrabold);
