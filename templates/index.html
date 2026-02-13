@@ -51,23 +51,25 @@
                 <h3 class="selection-title">Which model do you want as default?</h3>
                 <div class="model-options">
                     <label class="model-option selected">
-                        <input type="radio" name="model" value="kimi" checked>
-                        <span class="model-icon">🌙</span>
-                        <span class="model-name">Kimi K2.5</span>
-                    </label>
-                    <label class="model-option">
-                        <input type="radio" name="model" value="claude">
-                        <span class="model-icon">🔶</span>
-                        <span class="model-name">Claude Opus 4.6</span>
+                        <input type="radio" name="model" value="claude" checked>
+                        <svg class="model-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="4" y="4" width="16" height="16" rx="2" fill="#CC9B7A" stroke="#CC9B7A" stroke-width="2"/>
+                        </svg>
+                        <span class="model-name">Claude Opus 4.5</span>
                     </label>
                     <label class="model-option">
                         <input type="radio" name="model" value="gpt">
-                        <span class="model-icon">🟢</span>
+                        <svg class="model-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="8" fill="#10A37F"/>
+                            <path d="M8 12h8M12 8v8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
                         <span class="model-name">GPT-5.2</span>
                     </label>
                     <label class="model-option">
                         <input type="radio" name="model" value="gemini">
-                        <span class="model-icon">🔷</span>
+                        <svg class="model-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <polygon points="12,2 22,12 12,22 2,12" fill="#4285F4"/>
+                        </svg>
                         <span class="model-name">Gemini 3 Flash</span>
                     </label>
                 </div>
@@ -79,18 +81,29 @@
                 <div class="channel-options">
                     <label class="channel-option selected">
                         <input type="radio" name="channel" value="telegram" checked>
-                        <span class="channel-icon">📱</span>
+                        <svg class="channel-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" fill="#0088CC"/>
+                            <path d="M9 12l3 3 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
                         <span class="channel-name">Telegram</span>
                     </label>
-                    <label class="channel-option">
-                        <input type="radio" name="channel" value="discord">
-                        <span class="channel-icon">💬</span>
-                        <span class="channel-name">Discord</span>
+                    <label class="channel-option disabled">
+                        <svg class="channel-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" fill="#7289DA" opacity="0.4"/>
+                        </svg>
+                        <div class="channel-info">
+                            <span class="channel-name">Discord</span>
+                            <span class="coming-soon">Coming soon</span>
+                        </div>
                     </label>
-                    <label class="channel-option">
-                        <input type="radio" name="channel" value="whatsapp">
-                        <span class="channel-icon">📲</span>
-                        <span class="channel-name">WhatsApp</span>
+                    <label class="channel-option disabled">
+                        <svg class="channel-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" fill="#25D366" opacity="0.4"/>
+                        </svg>
+                        <div class="channel-info">
+                            <span class="channel-name">WhatsApp</span>
+                            <span class="coming-soon">Coming soon</span>
+                        </div>
                     </label>
                 </div>
             </div>

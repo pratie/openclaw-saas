@@ -11,21 +11,13 @@
 
 body.landing-body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-    background-size: 200% 200%;
-    animation: gradientShift 15s ease infinite;
+    background: #fafafa;
     color: #1a1a1a;
     line-height: 1.6;
     min-height: 100vh;
     padding: 40px 20px;
     position: relative;
     overflow-x: hidden;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
 }
 
 body.landing-body::before {
@@ -35,8 +27,9 @@ body.landing-body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    background:
+        radial-gradient(circle at 10% 20%, rgba(211, 47, 47, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(211, 47, 47, 0.03) 0%, transparent 50%);
     pointer-events: none;
 }
 
@@ -80,22 +73,20 @@ body.landing-body::before {
 }
 
 .offer-text {
-    color: rgba(255,255,255,0.95);
+    color: #666;
     font-size: 16px;
     font-weight: 500;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 /* ========== HEADLINES ========== */
 .main-headline {
     font-size: 64px;
     font-weight: 800;
-    color: #fff;
+    color: #000;
     line-height: 1.1;
     margin-bottom: 20px;
     letter-spacing: -1px;
     animation: fadeIn 0.8s ease 0.2s both;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 @keyframes fadeIn {
@@ -104,17 +95,16 @@ body.landing-body::before {
 }
 
 .headline-secondary {
-    color: rgba(255,255,255,0.9);
+    color: #666;
     font-weight: 700;
 }
 
 .main-subheadline {
     font-size: 18px;
-    color: rgba(255,255,255,0.95);
+    color: #555;
     line-height: 1.6;
     margin-bottom: 50px;
     animation: fadeIn 0.8s ease 0.4s both;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 /* ========== POWERED BY / AVAILABLE ON ========== */
@@ -166,15 +156,14 @@ body.landing-body::before {
 
 /* ========== SCARCITY SECTION ========== */
 .scarcity-container {
-    background: rgba(255,255,255,0.95);
-    border: 2px solid rgba(255,255,255,0.3);
+    background: white;
+    border: 1px solid #e8e8e8;
     border-radius: 12px;
     padding: 24px 32px;
     margin: 40px auto;
     max-width: 700px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     animation: scaleIn 0.5s ease 0.8s both;
-    backdrop-filter: blur(10px);
 }
 
 @keyframes scaleIn {
@@ -255,9 +244,8 @@ body.landing-body::before {
 .selection-title {
     font-size: 18px;
     font-weight: 600;
-    color: #fff;
+    color: #1a1a1a;
     margin-bottom: 20px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 .model-options,
@@ -276,26 +264,24 @@ body.landing-body::before {
     align-items: center;
     gap: 12px;
     padding: 16px 24px;
-    background: rgba(255,255,255,0.95);
-    border: 2px solid rgba(255,255,255,0.3);
+    background: white;
+    border: 1px solid #e8e8e8;
     border-radius: 10px;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     width: 100%;
-    backdrop-filter: blur(10px);
 }
 
 .model-option:hover,
 .channel-option:hover {
     border-color: #d32f2f;
-    box-shadow: 0 8px 24px rgba(211, 47, 47, 0.25);
-    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.1);
 }
 
 .model-option.selected,
 .channel-option.selected {
     border-color: #d32f2f;
-    background: rgba(211, 47, 47, 0.1);
-    box-shadow: 0 8px 24px rgba(211, 47, 47, 0.3);
+    background: #fff5f5;
+    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.08);
 }
 
 .model-option input[type="radio"],
@@ -306,7 +292,9 @@ body.landing-body::before {
 
 .model-icon,
 .channel-icon {
-    font-size: 24px;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
 }
 
 .model-name,
@@ -314,6 +302,33 @@ body.landing-body::before {
     font-size: 16px;
     font-weight: 600;
     color: #1a1a1a;
+}
+
+/* Disabled channel options */
+.channel-option.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.channel-option.disabled:hover {
+    border-color: #e8e8e8;
+    box-shadow: none;
+    transform: none;
+}
+
+.channel-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.coming-soon {
+    font-size: 12px;
+    font-weight: 500;
+    color: #999;
+    font-style: italic;
 }
 
 /* ========== CTA BUTTON ========== */
@@ -327,16 +342,16 @@ body.landing-body::before {
     border-radius: 10px;
     cursor: pointer;
     margin-top: 40px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 16px rgba(211, 47, 47, 0.3);
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.15);
     text-transform: none;
     animation: fadeIn 0.8s ease 1.2s both;
 }
 
 .cta-button:hover {
     background: #b71c1c;
-    box-shadow: 0 6px 24px rgba(211, 47, 47, 0.4);
-    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.25);
+    transform: translateY(-1px);
 }
 
 .cta-button:active {
@@ -354,15 +369,14 @@ body.landing-body::before {
 .auth-section {
     margin-top: 60px;
     padding-top: 40px;
-    border-top: 1px solid rgba(255,255,255,0.3);
+    border-top: 1px solid #e8e8e8;
     animation: fadeIn 0.8s ease 1.4s both;
 }
 
 .auth-prompt {
     font-size: 16px;
-    color: rgba(255,255,255,0.95);
+    color: #666;
     margin-bottom: 16px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
 .auth-buttons {
@@ -374,27 +388,25 @@ body.landing-body::before {
 }
 
 .auth-btn {
-    background: rgba(255,255,255,0.95);
+    background: white;
     color: #1a1a1a;
-    border: 2px solid rgba(255,255,255,0.3);
+    border: 1px solid #e8e8e8;
     padding: 12px 32px;
     border-radius: 8px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
+    transition: all 0.2s ease;
 }
 
 .auth-btn:hover {
     border-color: #d32f2f;
     color: #d32f2f;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(211, 47, 47, 0.2);
+    box-shadow: 0 2px 8px rgba(211, 47, 47, 0.1);
 }
 
 .auth-divider {
-    color: rgba(255,255,255,0.8);
+    color: #999;
     font-size: 14px;
 }
 

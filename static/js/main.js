@@ -210,9 +210,16 @@ window.addEventListener('DOMContentLoaded', () => {
     const channelOptions = document.querySelectorAll('.channel-option');
     channelOptions.forEach(option => {
         option.addEventListener('click', function() {
+            // Don't select disabled options
+            if (this.classList.contains('disabled')) {
+                return;
+            }
             channelOptions.forEach(opt => opt.classList.remove('selected'));
             this.classList.add('selected');
-            this.querySelector('input[type="radio"]').checked = true;
+            const radioInput = this.querySelector('input[type="radio"]');
+            if (radioInput) {
+                radioInput.checked = true;
+            }
         });
     });
 
