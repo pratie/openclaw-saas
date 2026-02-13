@@ -402,6 +402,44 @@ body.landing-body::before {
     border-bottom: none;
 }
 
+/* ========== TRUST BADGES ========== */
+.trust-badges {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+    max-width: 960px;
+    margin: var(--space-16) auto;
+    padding: 0 var(--space-6);
+}
+
+.trust-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--space-6);
+}
+
+.trust-icon {
+    font-size: 48px;
+    margin-bottom: var(--space-4);
+    line-height: 1;
+}
+
+.trust-text {
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
+    line-height: 24px;
+    margin: 0;
+}
+
+.trust-subtext {
+    font-size: var(--text-sm);
+    font-weight: var(--font-normal);
+    color: var(--text-secondary);
+}
+
 /* ========== COMPARISON SECTION ========== */
 .comparison-section {
     max-width: 1120px;
@@ -868,6 +906,11 @@ body.landing-body::before {
         width: 100%;
         padding: var(--space-4) var(--space-6);
         font-size: var(--text-base);
+    }
+
+    .trust-badges {
+        grid-template-columns: 1fr;
+        gap: var(--space-8);
     }
 
     .auth-buttons {
