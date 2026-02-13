@@ -274,10 +274,10 @@ async function logout() {
 }
 
 async function saveSettings() {
-    const anthropicKey = document.getElementById('settings-anthropic').value.trim();
+    const openrouterKey = document.getElementById('settings-openrouter').value.trim();
 
-    if (!anthropicKey) {
-        alert('⚠️ Anthropic API key is required');
+    if (!openrouterKey) {
+        alert('⚠️ OpenRouter API key is required');
         return;
     }
 
@@ -288,7 +288,7 @@ async function saveSettings() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                anthropic_key: anthropicKey
+                openrouter_key: openrouterKey
             })
         });
 
@@ -297,7 +297,7 @@ async function saveSettings() {
         if (data.success) {
             alert('✅ API key saved successfully!');
             // Clear field for security
-            document.getElementById('settings-anthropic').value = '';
+            document.getElementById('settings-openrouter').value = '';
         } else {
             alert('❌ ' + (data.message || 'Failed to save API key'));
         }

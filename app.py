@@ -119,12 +119,12 @@ def deploy_bot():
             'requires_payment': True
         }), 402  # 402 Payment Required
 
-    # Get stored Anthropic API key
+    # Get stored OpenRouter API key
     api_keys = db.get_api_keys(username)
-    if not api_keys or not api_keys.get('anthropic_key'):
+    if not api_keys or not api_keys.get('anthropic_key'):  # Column name stays same
         return jsonify({
             'success': False,
-            'message': 'Please configure your Anthropic API key in Settings first'
+            'message': 'Please configure your OpenRouter API key in Settings first'
         }), 400
 
     try:
@@ -154,7 +154,7 @@ def deploy_bot():
 
         result = deployer.deploy(
             telegram_token=data['telegram_token'],
-            anthropic_key=api_keys['anthropic_key'],
+            openrouter_key=api_keys['anthropic_key'],  # Column name stays same, semantically OpenRouter key
             region='nyc3',  # Hardcoded
             size='s-2vcpu-4gb',  # Hardcoded
             bot_name=safe_bot_name
@@ -339,13 +339,13 @@ def get_settings():
         return jsonify({
             'success': True,
             'has_do_token': bool(api_keys.get('do_token')),
-            'has_anthropic_key': bool(api_keys.get('anthropic_key'))
+            'has_openrouter_key': bool(api_keys.get('anthropic_key'))  # Column name stays same
         })
 
     return jsonify({
         'success': True,
         'has_do_token': False,
-        'has_anthropic_key': False
+        'has_openrouter_key': False
     })
 
 @app.route('/api/settings', methods=['POST'])
@@ -357,15 +357,15 @@ def save_settings():
     data = request.json
     username = session['username']
 
-    anthropic_key = data.get('anthropic_key', '').strip()
+    openrouter_key = data.get('openrouter_key', '').strip()
 
-    if not anthropic_key:
+    if not openrouter_key:
         return jsonify({
             'success': False,
-            'message': 'Anthropic API key is required'
+            'message': 'OpenRouter API key is required'
         }), 400
 
-    if db.save_api_keys(username, anthropic_key=anthropic_key):
+    if db.save_api_keys(username, anthropic_key=openrouter_key):  # Column name stays same
         return jsonify({'success': True, 'message': 'API key saved successfully'})
 
     return jsonify({'success': False, 'message': 'Failed to save API key'}), 500

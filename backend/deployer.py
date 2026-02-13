@@ -44,7 +44,7 @@ class BotDeployer:
             pass
         return 'unknown_bot'
 
-    def create_cloud_init_script(self, telegram_token, anthropic_key, gateway_token):
+    def create_cloud_init_script(self, telegram_token, openrouter_key, gateway_token):
         """Create cloud-init script for bot deployment"""
         return f"""#!/bin/bash
 set -e
@@ -92,8 +92,8 @@ cat > /root/.openclaw/openclaw.json << 'EOF'
   "agents": {{
     "defaults": {{
       "model": {{
-        "primary": "anthropic/claude-opus-4-6",
-        "fallbacks": ["anthropic/claude-3-5-haiku-20241022"]
+        "primary": "openrouter/moonshotai/kimi-k2.5",
+        "fallbacks": ["openrouter/moonshotai/kimi-k2-turbo-preview"]
       }},
       "workspace": "~/.openclaw/workspace",
       "memorySearch": {{
@@ -129,8 +129,8 @@ cat > /root/.openclaw/openclaw.json << 'EOF'
   }},
   "auth": {{
     "profiles": {{
-      "anthropic-main": {{
-        "provider": "anthropic",
+      "openrouter:default": {{
+        "provider": "openrouter",
         "mode": "token"
       }}
     }}
@@ -160,7 +160,7 @@ EOF
 
 # Write environment file
 cat > /root/.openclaw/.env << 'EOF'
-ANTHROPIC_API_KEY={anthropic_key}
+OPENROUTER_API_KEY={openrouter_key}
 OPENCLAW_GATEWAY_TOKEN={gateway_token}
 NODE_ENV=production
 EOF
@@ -201,7 +201,7 @@ systemctl start openclaw-gateway
 echo "OpenClaw deployment completed!"
 """
 
-    def deploy(self, telegram_token, anthropic_key, region='nyc3', size='s-2vcpu-4gb', bot_name='openclaw-bot'):
+    def deploy(self, telegram_token, openrouter_key, region='nyc3', size='s-2vcpu-4gb', bot_name='openclaw-bot'):
         """Deploy a new bot"""
         try:
             # Generate gateway token
@@ -219,7 +219,7 @@ echo "OpenClaw deployment completed!"
                 pass
 
             # Create cloud-init script
-            user_data = self.create_cloud_init_script(telegram_token, anthropic_key, gateway_token)
+            user_data = self.create_cloud_init_script(telegram_token, openrouter_key, gateway_token)
 
             # Create droplet
             droplet_name = f"{bot_name}-{int(time.time())}"
