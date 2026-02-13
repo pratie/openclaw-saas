@@ -45,7 +45,7 @@ class BotDeployer:
         return 'unknown_bot'
 
     def create_cloud_init_script(self, telegram_token, openrouter_key, gateway_token):
-        """Create cloud-init script for bot deployment"""
+        """Create cloud-init script for bot deployment with security hardening"""
         return f"""#!/bin/bash
 set -e
 
@@ -64,23 +64,25 @@ apt-get install -y nodejs
 npm install -g pnpm@latest
 npm install -g openclaw@latest
 
-# Configure firewall
+# Configure firewall - SECURE: Only allow SSH, block gateway port
 ufw default deny incoming
 ufw default allow outgoing
 ufw allow ssh
-ufw allow 18789/tcp
+# Gateway port 18789 is NOT exposed to internet (only localhost/LAN access)
 ufw --force enable
 
-# Create OpenClaw directories
-mkdir -p /root/.openclaw/workspace
+# Create dedicated user for security
+useradd -r -m -s /bin/false -d /var/lib/openclaw openclaw || true
+mkdir -p /var/lib/openclaw/.openclaw/workspace
+chown -R openclaw:openclaw /var/lib/openclaw
 
 # Write OpenClaw configuration
-cat > /root/.openclaw/openclaw.json << 'EOF'
+cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
 {{
   "gateway": {{
     "port": 18789,
     "mode": "local",
-    "bind": "lan",
+    "bind": "127.0.0.1",
     "auth": {{
       "mode": "token",
       "token": "{gateway_token}"
@@ -159,16 +161,22 @@ cat > /root/.openclaw/openclaw.json << 'EOF'
 EOF
 
 # Write environment file
-cat > /root/.openclaw/.env << 'EOF'
+cat > /var/lib/openclaw/.openclaw/.env << 'EOF'
 OPENROUTER_API_KEY={openrouter_key}
 OPENCLAW_GATEWAY_TOKEN={gateway_token}
 NODE_ENV=production
 EOF
 
-# Run openclaw doctor to enable Telegram
-cd /root && openclaw doctor --fix --yes || true
+# Set secure permissions on sensitive files
+chmod 600 /var/lib/openclaw/.openclaw/.env
+chmod 600 /var/lib/openclaw/.openclaw/openclaw.json
+chown openclaw:openclaw /var/lib/openclaw/.openclaw/.env
+chown openclaw:openclaw /var/lib/openclaw/.openclaw/openclaw.json
 
-# Create systemd service
+# Run openclaw doctor to enable Telegram (as openclaw user)
+su - openclaw -s /bin/bash -c "cd /var/lib/openclaw && openclaw doctor --fix --yes" || true
+
+# Create systemd service with security hardening
 cat > /etc/systemd/system/openclaw-gateway.service << 'EOF'
 [Unit]
 Description=OpenClaw Gateway
@@ -177,17 +185,29 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-User=root
-WorkingDirectory=/root
+User=openclaw
+Group=openclaw
+WorkingDirectory=/var/lib/openclaw
 Environment="NODE_ENV=production"
-Environment="HOME=/root"
-EnvironmentFile=/root/.openclaw/.env
-ExecStart=/usr/bin/openclaw gateway --bind lan --port 18789
+Environment="HOME=/var/lib/openclaw"
+EnvironmentFile=/var/lib/openclaw/.openclaw/.env
+ExecStart=/usr/bin/openclaw gateway --bind 127.0.0.1 --port 18789
 Restart=always
 RestartSec=10
 StandardOutput=journal
 StandardError=journal
 SyslogIdentifier=openclaw
+
+# Security hardening
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/openclaw
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictRealtime=true
+RestrictNamespaces=true
 
 [Install]
 WantedBy=multi-user.target
@@ -198,7 +218,7 @@ systemctl daemon-reload
 systemctl enable openclaw-gateway
 systemctl start openclaw-gateway
 
-echo "OpenClaw deployment completed!"
+echo "OpenClaw deployment completed with security hardening!"
 """
 
     def deploy(self, telegram_token, openrouter_key, region='nyc3', size='s-2vcpu-4gb', bot_name='openclaw-bot'):
@@ -271,7 +291,7 @@ echo "OpenClaw deployment completed!"
                 'ip_address': ip_address,
                 'gateway_token': gateway_token,
                 'bot_username': bot_username,
-                'gateway_url': f'ws://{ip_address}:18789'
+                'gateway_url': f'ws://127.0.0.1:18789'  # Gateway is localhost-only for security
             }
 
         except Exception as e:
