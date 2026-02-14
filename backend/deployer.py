@@ -196,7 +196,7 @@ WorkingDirectory=/var/lib/openclaw
 Environment="NODE_ENV=production"
 Environment="HOME=/var/lib/openclaw"
 EnvironmentFile=/var/lib/openclaw/.openclaw/.env
-ExecStart=/usr/bin/openclaw gateway --bind 127.0.0.1 --port 18789
+ExecStart=/usr/bin/openclaw gateway --bind loopback --port 18789
 Restart=always
 RestartSec=10
 StandardOutput=journal
