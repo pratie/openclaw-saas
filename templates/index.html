@@ -3,341 +3,285 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OpenClaw | Talk to your private Claw in under 2 mins</title>
+    <title>i built an AI assistant in 60 seconds | OpenClaw</title>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://open-claw.space/">
-    <meta property="og:title" content="OpenClaw | Talk to your private Claw in under 2 mins">
-    <meta property="og:description" content="Pick a model, connect Telegram, deploy. Your AI assistant goes live in under 2 minutes - working 24/7 for you. Deploy Claude, GPT, Gemini, or Kimi on your own private server.">
+    <meta property="og:title" content="i built an AI assistant in 60 seconds">
+    <meta property="og:description" content="no coding. no servers to manage. no API keys to juggle. just pick an AI model, connect Telegram, and deploy. done in under a minute.">
     <meta property="og:image" content="{{ url_for('static', filename='og-image.png', _external=True) }}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://open-claw.space/">
-    <meta property="twitter:title" content="OpenClaw | Talk to your private Claw in under 2 mins">
-    <meta property="twitter:description" content="Pick a model, connect Telegram, deploy. Your AI assistant goes live in under 2 minutes - working 24/7 for you.">
+    <meta property="twitter:title" content="i built an AI assistant in 60 seconds">
+    <meta property="twitter:description" content="no coding. no servers to manage. no API keys to juggle. just pick an AI model, connect Telegram, and deploy.">
     <meta property="twitter:image" content="{{ url_for('static', filename='og-image.png', _external=True) }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jack.css') }}">
 </head>
-<body class="landing-body">
-    <div class="landing-container">
-        <!-- Offer Badge -->
-        <div class="offer-badge-container">
-            <span class="offer-badge">FOUNDER'S PRICING</span>
-            <span class="offer-text">First 10 customers get $49/mo (lock in forever)</span>
-        </div>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="trust-line">first 10 customers lock in $49/mo forever • cancel anytime • 24hr money-back guarantee</div>
 
-        <!-- Main Headline -->
-        <h1 class="main-headline">
-            Talk to your private <span class="headline-highlight">Claw</span><br>
-            <span class="headline-secondary">in under 2 mins</span>
-        </h1>
+            <h1 class="headline">
+                i built an AI assistant in 60 seconds.<br><br>
+                my data never leaves my server.<br><br>
+                it cost me <span class="mono">$49/mo</span>.
+            </h1>
 
-        <!-- Subheadline -->
-        <p class="main-subheadline">
-            Pick a model, connect Telegram, deploy. Your AI assistant goes live in under 2 minutes - working 24/7 for you.
-        </p>
+            <p class="subhead">
+                no coding. no servers to manage. no API keys to juggle.<br>
+                just pick an AI model, connect Telegram, and deploy.<br><br>
+                done in under a minute.
+            </p>
 
-        <!-- Model and Channel Selection -->
-        <div class="selections-container">
-            <!-- Model Selection -->
-            <div class="selection-section">
-                <h3 class="selection-title">Choose your AI model</h3>
-                <div class="model-options">
-                    <label class="model-option selected">
-                        <input type="radio" name="model" value="claude" checked>
-                        <svg class="model-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                            <path fill="#CC9B7A" d="M 5 5 L 5 45 L 45 45 L 45 5 L 5 5 z M 20.03125 16.96875 L 23.722656 16.96875 L 29.818359 33.03125 L 26.306641 33.03125 L 25.253906 29.935547 L 18.648438 29.935547 L 17.5625 32.96875 L 14.03125 32.96875 L 20.03125 16.96875 z M 26.777344 16.978516 C 26.801344 16.954516 30.033203 16.978516 30.033203 16.978516 L 35.96875 33.015625 L 32.642578 33.015625 L 26.777344 16.978516 z M 21.966797 20.96875 L 19.765625 26.648438 L 24.041016 26.648438 L 21.966797 20.96875 z"/>
-                        </svg>
-                        <div>
-                            <div class="model-name">Claude Opus 4.5</div>
-                            <div class="model-provider">Anthropic</div>
-                        </div>
-                    </label>
-                    <label class="model-option">
-                        <input type="radio" name="model" value="gpt">
-                        <img class="model-icon" src="{{ url_for('static', filename='icons8-chatgpt-50.png') }}" alt="ChatGPT">
-                        <div>
-                            <div class="model-name">GPT-5.2</div>
-                            <div class="model-provider">OpenAI</div>
-                        </div>
-                    </label>
-                    <label class="model-option">
-                        <input type="radio" name="model" value="gemini">
-                        <svg class="model-icon" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M32.447 0c.68 0 1.273.465 1.439 1.125a38.904 38.904 0 001.999 5.905c2.152 5 5.105 9.376 8.854 13.125 3.751 3.75 8.126 6.703 13.125 8.855a38.98 38.98 0 005.906 1.999c.66.166 1.124.758 1.124 1.438 0 .68-.464 1.273-1.125 1.439a38.902 38.902 0 00-5.905 1.999c-5 2.152-9.375 5.105-13.125 8.854-3.749 3.751-6.702 8.126-8.854 13.125a38.973 38.973 0 00-2 5.906 1.485 1.485 0 01-1.438 1.124c-.68 0-1.272-.464-1.438-1.125a38.913 38.913 0 00-2-5.905c-2.151-5-5.103-9.375-8.854-13.125-3.75-3.749-8.125-6.702-13.125-8.854a38.973 38.973 0 00-5.905-2A1.485 1.485 0 010 32.448c0-.68.465-1.272 1.125-1.438a38.903 38.903 0 005.905-2c5-2.151 9.376-5.104 13.125-8.854 3.751-3.749 6.703-8.125 8.854-13.125a38.907 38.907 0 002-5.906A1.485 1.485 0 0132.447 0z" fill="#4285F4"/>
-                        </svg>
-                        <div>
-                            <div class="model-name">Gemini 3 Flash</div>
-                            <div class="model-provider">Google</div>
-                        </div>
-                    </label>
-                    <label class="model-option">
-                        <input type="radio" name="model" value="kimi">
-                        <svg class="model-icon" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M32.447 0c.68 0 1.273.465 1.439 1.125a38.904 38.904 0 001.999 5.905c2.152 5 5.105 9.376 8.854 13.125 3.751 3.75 8.126 6.703 13.125 8.855a38.98 38.98 0 005.906 1.999c.66.166 1.124.758 1.124 1.438 0 .68-.464 1.273-1.125 1.439a38.902 38.902 0 00-5.905 1.999c-5 2.152-9.375 5.105-13.125 8.854-3.749 3.751-6.702 8.126-8.854 13.125a38.973 38.973 0 00-2 5.906 1.485 1.485 0 01-1.438 1.124c-.68 0-1.272-.464-1.438-1.125a38.913 38.913 0 00-2-5.905c-2.151-5-5.103-9.375-8.854-13.125-3.75-3.749-8.125-6.702-13.125-8.854a38.973 38.973 0 00-5.905-2A1.485 1.485 0 010 32.448c0-.68.465-1.272 1.125-1.438a38.903 38.903 0 005.905-2c5-2.151 9.376-5.104 13.125-8.854 3.751-3.749 6.703-8.125 8.854-13.125a38.907 38.907 0 002-5.906A1.485 1.485 0 0132.447 0z" fill="#FF6B35"/>
-                        </svg>
-                        <div>
-                            <div class="model-name">Kimi</div>
-                            <div class="model-provider">Moonshot</div>
-                        </div>
-                    </label>
-                </div>
-            </div>
+            <button class="cta-btn" onclick="showPaymentModal()">get started — 60 seconds</button>
+        </section>
 
-            <!-- Channel Selection -->
-            <div class="selection-section">
-                <h3 class="selection-title">Choose a channel you want to use for sending messages</h3>
-                <div class="channel-options">
-                    <label class="channel-option selected">
-                        <input type="radio" name="channel" value="telegram" checked>
-                        <svg class="channel-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="256" cy="256" r="256" fill="#0088CC"/>
-                            <path fill="#fff" d="M115.88 253.3c74.63-32.52 124.39-53.95 149.29-64.31 71.1-29.57 85.87-34.71 95.5-34.88 2.12-.03 6.85.49 9.92 2.98 2.59 2.1 3.3 4.94 3.64 6.93.34 2 .77 6.53.43 10.08-3.85 40.48-20.52 138.71-29 184.05-3.59 19.19-10.66 25.62-17.5 26.25-14.86 1.37-26.15-9.83-40.55-19.27-22.53-14.76-35.26-23.96-57.13-38.37-25.28-16.66-8.89-25.81 5.51-40.77 3.77-3.92 69.27-63.5 70.54-68.9.16-.68.31-3.2-1.19-4.53s-3.71-.87-5.3-.51c-2.26.51-38.25 24.3-107.98 71.37-10.22 7.02-19.48 10.43-27.77 10.26-9.14-.2-26.72-5.17-39.79-9.42-16.03-5.21-28.77-7.97-27.66-16.83 1.15-9.21 13.75-18.62 37.78-28.22z"/>
-                        </svg>
-                        <span class="channel-name">Telegram</span>
-                    </label>
-                    <label class="channel-option disabled">
-                        <svg class="channel-icon" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="256" cy="256" r="256" fill="#5865F2" opacity="0.4"/>
-                            <path fill="#fff" fill-opacity="0.4" fill-rule="nonzero" d="M360.932 160.621a250.49 250.49 0 00-62.384-19.182a174.005 174.005 0 00-7.966 16.243a232.677 232.677 0 00-34.618-2.602c-11.569 0-23.196.879-34.623 2.58-2.334-5.509-5.044-10.972-7.986-16.223a252.55 252.55 0 00-62.397 19.222c-39.483 58.408-50.183 115.357-44.833 171.497a251.546 251.546 0 0076.502 38.398c6.169-8.328 11.695-17.193 16.386-26.418a161.718 161.718 0 01-25.813-12.318c2.165-1.569 4.281-3.186 6.325-4.756c23.912 11.23 50.039 17.088 76.473 17.088c26.436 0 52.563-5.858 76.475-17.09c2.069 1.689 4.186 3.306 6.325 4.756a162 162 0 01-25.838 12.318c4.692 9.225 10.218 18.09 16.387 26.418a251.536 251.536 0 0076.502-38.398c6.396-64.961-10.67-121.353-45.155-171.533z"/>
-                        </svg>
-                        <div class="channel-info">
-                            <span class="channel-name">Discord</span>
-                            <span class="coming-soon">soon</span>
-                        </div>
-                    </label>
-                    <label class="channel-option disabled">
-                        <svg class="channel-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="25" cy="25" r="25" fill="#00A884" opacity="0.4"/>
-                            <path fill="#fff" fill-opacity="0.4" d="M12.5 37.5l1.7-6.2c-1.1-1.9-1.7-4.1-1.7-6.3 0-6.9 5.6-12.5 12.5-12.5S37.5 18.1 37.5 25 31.9 37.5 25 37.5c-2.2 0-4.3-.6-6.2-1.7L12.5 37.5z M19 31l.4.2c1.6 1 3.4 1.5 5.3 1.5 5.4 0 9.8-4.4 9.8-9.8S30.1 13.2 25 13.2s-9.8 4.4-9.8 9.8c0 1.9.5 3.7 1.5 5.3l.2.4-.9 3.4 3.5-.9 .5-.2z"/>
-                        </svg>
-                        <div class="channel-info">
-                            <span class="channel-name">WhatsApp</span>
-                            <span class="coming-soon">soon</span>
-                        </div>
-                    </label>
-                    <label class="channel-option disabled">
-                        <svg class="channel-icon" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
-                            <rect width="50" height="50" rx="8" fill="#1E293B" opacity="0.4"/>
-                            <path fill="#64748B" fill-opacity="0.4" d="M25 14c-6.1 0-11 4.9-11 11s4.9 11 11 11 11-4.9 11-11-4.9-11-11-11zm0 18c-3.9 0-7-3.1-7-7s3.1-7 7-7 7 3.1 7 7-3.1 7-7 7z"/>
-                        </svg>
-                        <div class="channel-info">
-                            <span class="channel-name">Slack</span>
-                            <span class="coming-soon">soon</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-        </div>
+        <div class="divider"></div>
 
-        <!-- CTA Button -->
-        <button class="cta-button" onclick="showPaymentModal()">
-            Get My AI Assistant - $49/mo
-        </button>
-        <p class="cta-subtext">
-            Cancel anytime • 24-hour money-back guarantee
-        </p>
+        <!-- The Problem Section -->
+        <section class="section">
+            <h2>last year i tried to build my own AI assistant.</h2>
 
-        <!-- Pricing Features -->
-        <div class="pricing-features">
-            <div class="plan-header">
-                <h3 class="plan-name">Everything Included</h3>
-                <p class="plan-specs">1 AI Assistant • Unlimited Messages • All Features</p>
-            </div>
-            <ul class="features-list">
-                <li class="feature-item">✓ 1 AI Assistant</li>
-                <li class="feature-item">✓ $15/mo API credits included</li>
-                <li class="feature-item">✓ Telegram, Email & more</li>
-                <li class="feature-item">✓ All AI models (Claude, GPT, Gemini, Kimi)</li>
-                <li class="feature-item">✓ Browser automation & web search</li>
-                <li class="feature-item">✓ Cancel anytime</li>
+            <p>wanted a private AI that could read my emails and book my meetings.</p>
+
+            <p>didn't want my data on OpenAI's servers.</p>
+
+            <p>so i looked into self-hosting.</p>
+
+            <h3>what it actually takes (DIY):</h3>
+            <ul class="steps-list">
+                <li><span class="step-name">buy a VPS</span> <span class="mono step-time">15 min</span></li>
+                <li><span class="step-name">figure out SSH keys</span> <span class="mono step-time">10 min</span></li>
+                <li><span class="step-name">install Node.js</span> <span class="mono step-time">5 min</span></li>
+                <li><span class="step-name">install OpenClaw</span> <span class="mono step-time">7 min</span></li>
+                <li><span class="step-name">configure everything</span> <span class="mono step-time">10 min</span></li>
+                <li><span class="step-name">connect to AI provider</span> <span class="mono step-time">4 min</span></li>
+                <li><span class="step-name">pair with Telegram</span> <span class="mono step-time">4 min</span></li>
             </ul>
-        </div>
 
-        <!-- Trust Badges -->
-        <div class="trust-badges">
-            <div class="trust-badge">
-                <div class="trust-icon">🔒</div>
-                <p class="trust-label">Private</p>
-                <p class="trust-text">Your data, your instance<br><span class="trust-subtext">(we can't see it)</span></p>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-icon">💰</div>
-                <p class="trust-label">Risk-Free</p>
-                <p class="trust-text">24-hour<br><span class="trust-subtext">money-back guarantee</span></p>
-            </div>
-            <div class="trust-badge">
-                <div class="trust-icon">⚡</div>
-                <p class="trust-label">Instant</p>
-                <p class="trust-text">Setup in 60 seconds<br><span class="trust-subtext">cancel anytime</span></p>
-            </div>
-        </div>
+            <p class="total-time">total: <span class="mono">60 minutes</span>.</p>
 
-        <!-- Comparison Section -->
-        <div class="comparison-section">
-            <h2 class="comparison-title">Takes 10 hours to set up yourself.<br>Takes 60 seconds with us.</h2>
-            <div class="comparison-grid">
-                <div class="comparison-column traditional">
-                    <h3 class="column-title">Traditional (60 min for developers)</h3>
-                    <div class="steps-list">
-                        <div class="step-item">
-                            <span class="step-name">Purchasing local virtual machine</span>
-                            <span class="step-time">15 min</span>
-                        </div>
-                        <div class="step-item">
-                            <span class="step-name">Creating SSH keys and storing securely</span>
-                            <span class="step-time">10 min</span>
-                        </div>
-                        <div class="step-item">
-                            <span class="step-name">Connecting to the server via SSH</span>
-                            <span class="step-time">5 min</span>
-                        </div>
-                        <div class="step-item">
-                            <span class="step-name">Installing Node.js and NPM</span>
-                            <span class="step-time">5 min</span>
-                        </div>
-                        <div class="step-item">
-                            <span class="step-name">Installing OpenClaw</span>
-                            <span class="step-time">7 min</span>
-                        </div>
-                        <div class="step-item">
-                            <span class="step-name">Setting up OpenClaw</span>
-                            <span class="step-time">10 min</span>
-                        </div>
-                        <div class="step-item">
-                            <span class="step-name">Connecting to AI provider</span>
-                            <span class="step-time">4 min</span>
-                        </div>
-                        <div class="step-item">
-                            <span class="step-name">Pairing with Telegram</span>
-                            <span class="step-time">4 min</span>
-                        </div>
-                        <div class="step-total">
-                            <span class="total-label">Total</span>
-                            <span class="total-time">60 min</span>
-                        </div>
-                    </div>
-                    <p class="comparison-note">⚠️ Non-technical? Multiply by 10 = <strong>10 hours</strong><br>You have to learn each step before doing it.</p>
-                </div>
-                <div class="comparison-column simpleclaw">
-                    <h3 class="column-title">OpenClaw</h3>
-                    <div class="simple-time">&lt;1 min</div>
-                    <p class="simple-description">Pick a model, connect Telegram, deploy - done under 1 minute.</p>
-                    <p class="simple-explanation">Servers, SSH and OpenClaw Environment are already set up, waiting to get assigned. Simple, secure and fast connection to your bot.</p>
-                </div>
-            </div>
-        </div>
+            <p><strong>if you're not technical?</strong><br>multiply by 10.</p>
 
-        <!-- Use Cases Section -->
-        <div class="use-cases-section">
-            <h2 class="use-cases-title">What can OpenClaw do for you?</h2>
-            <p class="use-cases-subtitle">One assistant, thousands of use cases</p>
-            <div class="use-cases-grid">
-                <div class="use-case">Read & summarize email</div>
-                <div class="use-case">Draft replies and follow-ups</div>
-                <div class="use-case">Translate messages in real time</div>
-                <div class="use-case">Organize your inbox</div>
-                <div class="use-case">Answer support tickets</div>
-                <div class="use-case">Summarize long documents</div>
-                <div class="use-case">Notify before a meeting</div>
-                <div class="use-case">Schedule meetings from chat</div>
-                <div class="use-case">Remind you of deadlines</div>
-                <div class="use-case">Plan your week</div>
-                <div class="use-case">Take meeting notes</div>
-                <div class="use-case">Sync across time zones</div>
-                <div class="use-case">Do your taxes</div>
-                <div class="use-case">Track expenses and receipts</div>
-                <div class="use-case">Compare insurance quotes</div>
-                <div class="use-case">Manage subscriptions</div>
-                <div class="use-case">Run payroll calculations</div>
-                <div class="use-case">Negotiate refunds</div>
-                <div class="use-case">Find coupons</div>
-                <div class="use-case">Find best prices online</div>
-                <div class="use-case">Find discount codes</div>
-                <div class="use-case">Price-drop alerts</div>
-                <div class="use-case">Compare product specs</div>
-                <div class="use-case">Negotiate deals</div>
-                <div class="use-case">Write contracts and NDAs</div>
-                <div class="use-case">Research competitors</div>
-                <div class="use-case">Screen and prioritize leads</div>
-                <div class="use-case">Generate invoices</div>
-                <div class="use-case">Create presentations from bullet points</div>
-                <div class="use-case">Book travel and hotels</div>
-                <div class="use-case">Find recipes from ingredients</div>
-                <div class="use-case">Draft social posts</div>
-                <div class="use-case">Monitor news and alerts</div>
-                <div class="use-case">Set and track goals</div>
-                <div class="use-case">Screen cold outreach</div>
-                <div class="use-case">Draft job descriptions</div>
-                <div class="use-case">Run standup summaries</div>
-                <div class="use-case">Track OKRs and KPIs</div>
-            </div>
-            <p class="use-cases-note">PS. You can add as many use cases as you want via natural language</p>
-        </div>
+            <p>that's 10 hours of googling, debugging, and wanting to throw your laptop out the window.</p>
 
-        <!-- Security Section -->
-        <div class="security-section">
-            <h2 class="security-title">Enterprise-Grade Security</h2>
-            <p class="security-subtitle">We take security seriously. Your bot is hardened against common attacks.</p>
+            <p>i did it.</p>
 
-            <div class="security-grid">
-                <div class="security-item">
-                    <div class="security-icon">🛡️</div>
-                    <h3 class="security-item-title">Gateway Protection</h3>
-                    <p class="security-item-text">Gateway bound to localhost only - not exposed to internet. Zero external access points.</p>
+            <p>it sucked.</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- The Simple Solution -->
+        <section class="section">
+            <h2>then i built something simpler.</h2>
+
+            <h3>the 60-second version:</h3>
+            <ul class="steps-list simple">
+                <li><span class="step-name">pick your AI model</span> <span class="mono step-time">10s</span></li>
+                <li><span class="step-name">connect Telegram</span> <span class="mono step-time">20s</span></li>
+                <li><span class="step-name">deploy</span> <span class="mono step-time">30s</span></li>
+            </ul>
+
+            <p><strong>done.</strong></p>
+
+            <p>your AI assistant is live.<br>
+            reading emails.<br>
+            drafting replies.<br>
+            booking meetings.</p>
+
+            <p>all running on YOUR server.</p>
+
+            <p>not mine.<br>not OpenAI's.</p>
+
+            <p><strong>yours.</strong></p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- What It Actually Does -->
+        <section class="section">
+            <h2>one assistant. thousands of use cases.</h2>
+
+            <div class="use-case-columns">
+                <div class="use-case-column">
+                    <h3>work stuff</h3>
+                    <ul>
+                        <li>read & summarize email</li>
+                        <li>draft replies</li>
+                        <li>book meetings</li>
+                        <li>take meeting notes</li>
+                        <li>notify before calls</li>
+                    </ul>
                 </div>
 
-                <div class="security-item">
-                    <div class="security-icon">👤</div>
-                    <h3 class="security-item-title">Non-Root Execution</h3>
-                    <p class="security-item-text">Runs as dedicated user with minimal privileges. If compromised, attacker can't take over server.</p>
+                <div class="use-case-column">
+                    <h3>business stuff</h3>
+                    <ul>
+                        <li>answer support tickets</li>
+                        <li>generate invoices</li>
+                        <li>screen leads</li>
+                        <li>write contracts</li>
+                        <li>track expenses</li>
+                    </ul>
                 </div>
 
-                <div class="security-item">
-                    <div class="security-icon">🔒</div>
-                    <h3 class="security-item-title">Encrypted Secrets</h3>
-                    <p class="security-item-text">API keys and tokens stored with 600 permissions. Only your bot can read them.</p>
+                <div class="use-case-column">
+                    <h3>life stuff</h3>
+                    <ul>
+                        <li>find best prices</li>
+                        <li>compare insurance</li>
+                        <li>manage subscriptions</li>
+                        <li>plan your week</li>
+                    </ul>
                 </div>
 
-                <div class="security-item">
-                    <div class="security-icon">🔥</div>
-                    <h3 class="security-item-title">Firewall Hardened</h3>
-                    <p class="security-item-text">UFW configured to deny all incoming except SSH. Fail2ban active to prevent brute force.</p>
-                </div>
-
-                <div class="security-item">
-                    <div class="security-icon">⚙️</div>
-                    <h3 class="security-item-title">Systemd Isolation</h3>
-                    <p class="security-item-text">8 security directives including ProtectSystem, PrivateTmp, and NoNewPrivileges.</p>
-                </div>
-
-                <div class="security-item">
-                    <div class="security-icon">✅</div>
-                    <h3 class="security-item-title">Audited Setup</h3>
-                    <p class="security-item-text">Deployment reviewed against OWASP guidelines. Security score: 9/10.</p>
+                <div class="use-case-column">
+                    <h3>creative stuff</h3>
+                    <ul>
+                        <li>draft social posts</li>
+                        <li>write presentations</li>
+                        <li>research competitors</li>
+                        <li>create content</li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="security-note">
-                <p><strong>Unlike other services</strong> that expose gateways to the internet, run as root, or have weak permissions - we follow security best practices from day one.</p>
-            </div>
-        </div>
+            <p class="note">PS. you can add more via natural language. just ask.</p>
+        </section>
 
-        <!-- Login/Register Section -->
-        <div class="auth-section">
-            <p class="auth-prompt">Already have an account?</p>
-            <div class="auth-buttons">
-                <button class="auth-btn" onclick="showAuthModal('login')">Login</button>
-                <span class="auth-divider">or</span>
-                <button class="auth-btn" onclick="showAuthModal('register')">Register</button>
+        <div class="divider"></div>
+
+        <!-- Privacy Section -->
+        <section class="section">
+            <h2>your data shouldn't be someone else's product.</h2>
+
+            <h3>the uncomfortable truth:</h3>
+            <p>when you use ChatGPT, Claude, or Gemini directly...</p>
+
+            <p>your conversations train their models.</p>
+            <p>your emails get analyzed.</p>
+            <p>your business data lives on their servers.</p>
+
+            <h3>OpenClaw is different:</h3>
+            <ul class="privacy-list">
+                <li><span class="mono">gateway bound to localhost only</span> — not exposed to internet</li>
+                <li><span class="mono">runs as non-root user</span> — minimal privileges</li>
+                <li><span class="mono">API keys encrypted</span> — 600 permissions</li>
+                <li><span class="mono">firewall hardened</span> — UFW + fail2ban</li>
+                <li><span class="mono">systemd isolation</span> — 8 security directives</li>
+                <li><span class="mono">OWASP audited</span> — security score 9/10</li>
+            </ul>
+
+            <p class="translation"><strong>translation:</strong><br>
+            i can't see your data.<br>
+            no one can.<br><br>
+            it stays on your server.</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Pricing -->
+        <section class="section pricing">
+            <h2>one price. no surprises.</h2>
+
+            <div class="price-box">
+                <div class="price"><span class="mono">$49/mo</span></div>
+
+                <ul class="features">
+                    <li>1 AI assistant</li>
+                    <li>$15/mo API credits included</li>
+                    <li>all AI models (Claude, GPT, Gemini, Kimi)</li>
+                    <li>Telegram, Email & more</li>
+                    <li>browser automation</li>
+                    <li>web search</li>
+                    <li>cancel anytime</li>
+                </ul>
+
+                <div class="founders-pricing">
+                    <strong>founder's pricing:</strong><br>
+                    first 10 customers lock in $49/mo forever.<br><br>
+                    after that? price goes up.
+                </div>
+
+                <button class="cta-btn" onclick="showPaymentModal()">sounds fair</button>
             </div>
-        </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- FAQ -->
+        <section class="section faq">
+            <h2>the real questions</h2>
+
+            <div class="faq-item">
+                <h3>do i need to know how to code?</h3>
+                <p>no. if you can use Telegram, you can use this.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>where does my data live?</h3>
+                <p>on your server. not mine. not OpenAI's. yours.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>what if i want to cancel?</h3>
+                <p>cancel anytime. no weird retention periods. no hard feelings.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>is there a free trial?</h3>
+                <p>24-hour money-back guarantee. try it. if it sucks, i'll refund you.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>which AI models can i use?</h3>
+                <p>Claude, GPT, Gemini, Kimi. pick whichever fits your vibe.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>can i use this for my business?</h3>
+                <p>yes. that's literally what i built it for.</p>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Final CTA -->
+        <section class="section final-cta">
+            <h2>stop overthinking it.</h2>
+
+            <p>you could spend 10 hours setting this up yourself.</p>
+
+            <p>or you could spend 60 seconds and get back to work.</p>
+
+            <button class="cta-btn" onclick="showPaymentModal()">start building — $49/mo</button>
+
+            <p class="micro-copy">first 10 customers only. 24hr money-back guarantee. no BS.</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- Footer -->
+        <footer>
+            <p class="founder-note">
+                hey, i'm the guy who built this.<br><br>
+                if something's broken or confusing, email me directly: <a href="mailto:rishi@open-claw.space">rishi@open-claw.space</a><br><br>
+                i actually read and reply to every email.<br>
+                not a bot. promise.
+            </p>
+
+            <p class="auth-prompt">already have an account? <a href="#" onclick="showAuthModal('login'); return false;">login</a></p>
+        </footer>
     </div>
 
     <!-- Email Payment Modal -->
@@ -346,18 +290,18 @@
         <div class="modal-content">
             <div class="modal-box">
                 <div class="modal-header">
-                    <h2>Get Started</h2>
+                    <h2>get started</h2>
                     <button class="modal-close" onclick="closePaymentModal()">×</button>
                 </div>
                 <div class="modal-body">
-                    <p class="modal-description">Enter your email to proceed to checkout</p>
+                    <p class="modal-description">enter your email to proceed to checkout</p>
                     <form onsubmit="createCheckout(event)" id="payment-form">
                         <div class="form-group">
-                            <label>Email Address</label>
+                            <label>email address</label>
                             <input type="email" id="payment-email" placeholder="you@example.com" required>
                         </div>
                         <button type="submit" class="btn-submit">
-                            Continue to Payment
+                            continue to payment
                         </button>
                     </form>
                     <div id="payment-modal-message" class="message"></div>
@@ -372,7 +316,7 @@
         <div class="modal-content">
             <div class="modal-box">
                 <div class="modal-header">
-                    <h2 id="auth-modal-title">Login</h2>
+                    <h2 id="auth-modal-title">login</h2>
                     <button class="modal-close" onclick="closeAuthModal()">×</button>
                 </div>
                 <div class="modal-body">
@@ -380,18 +324,18 @@
                     <div id="login-form" style="display: none;">
                         <form onsubmit="login(event)">
                             <div class="form-group">
-                                <label>Username</label>
+                                <label>username</label>
                                 <input type="text" id="login-username" placeholder="username" required>
                             </div>
                             <div class="form-group">
-                                <label>Password</label>
+                                <label>password</label>
                                 <input type="password" id="login-password" placeholder="••••••••" required>
                             </div>
-                            <button type="submit" class="btn-submit">Login</button>
+                            <button type="submit" class="btn-submit">login</button>
                         </form>
                         <div id="login-message" class="message"></div>
                         <p class="switch-auth">
-                            Don't have an account? <a href="#" onclick="switchToRegister(); return false;">Register</a>
+                            don't have an account? <a href="#" onclick="switchToRegister(); return false;">register</a>
                         </p>
                     </div>
 
@@ -399,26 +343,26 @@
                     <div id="register-form" style="display: none;">
                         <form onsubmit="register(event)">
                             <div class="form-group">
-                                <label>Username</label>
+                                <label>username</label>
                                 <input type="text" id="reg-username" placeholder="username" required>
                             </div>
                             <div class="form-group">
-                                <label>Email</label>
+                                <label>email</label>
                                 <input type="email" id="reg-email" placeholder="you@example.com" required>
                             </div>
                             <div class="form-group">
-                                <label>Password</label>
+                                <label>password</label>
                                 <input type="password" id="reg-password" placeholder="••••••••" required minlength="6">
                             </div>
                             <div class="form-group">
-                                <label>Confirm Password</label>
+                                <label>confirm password</label>
                                 <input type="password" id="reg-confirm" placeholder="••••••••" required minlength="6">
                             </div>
-                            <button type="submit" class="btn-submit">Create Account</button>
+                            <button type="submit" class="btn-submit">create account</button>
                         </form>
                         <div id="register-message" class="message"></div>
                         <p class="switch-auth">
-                            Already have an account? <a href="#" onclick="switchToLogin(); return false;">Login</a>
+                            already have an account? <a href="#" onclick="switchToLogin(); return false;">login</a>
                         </p>
                     </div>
                 </div>
