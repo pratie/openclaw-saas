@@ -64,9 +64,6 @@ apt-get install -y nodejs
 npm install -g pnpm@latest
 npm install -g openclaw@latest
 
-# Install CPU-only Whisper for audio transcription
-pip3 install --break-system-packages openai-whisper
-
 # Configure firewall - SECURE: Only allow SSH, block gateway port
 ufw default deny incoming
 ufw default allow outgoing
