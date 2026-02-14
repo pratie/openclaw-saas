@@ -82,7 +82,7 @@ cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
   "gateway": {{
     "port": 18789,
     "mode": "local",
-    "bind": "127.0.0.1",
+    "bind": "loopback",
     "auth": {{
       "mode": "token",
       "token": "{gateway_token}"
@@ -156,6 +156,11 @@ cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
   "update": {{
     "channel": "stable",
     "checkOnStart": true
+  }},
+  "cron": {{
+    "enabled": true,
+    "store": "~/.openclaw/cron/jobs.json",
+    "maxConcurrentRuns": 1
   }}
 }}
 EOF
