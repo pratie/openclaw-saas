@@ -196,30 +196,32 @@ async function createCheckout(event) {
 
 // Initialize on page load
 window.addEventListener('DOMContentLoaded', () => {
-    // Handle model option clicks
-    const modelOptions = document.querySelectorAll('.model-option');
-    modelOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            modelOptions.forEach(opt => opt.classList.remove('selected'));
-            this.classList.add('selected');
-            this.querySelector('input[type="radio"]').checked = true;
-        });
-    });
-
-    // Handle channel option clicks
-    const channelOptions = document.querySelectorAll('.channel-option');
-    channelOptions.forEach(option => {
-        option.addEventListener('click', function() {
+    // Handle selector card clicks (models and channels)
+    const selectorCards = document.querySelectorAll('.selector-card');
+    selectorCards.forEach(card => {
+        card.addEventListener('click', function() {
             // Don't select disabled options
             if (this.classList.contains('disabled')) {
                 return;
             }
-            channelOptions.forEach(opt => opt.classList.remove('selected'));
-            this.classList.add('selected');
+
+            // Get the radio input
             const radioInput = this.querySelector('input[type="radio"]');
-            if (radioInput) {
-                radioInput.checked = true;
-            }
+            if (!radioInput) return;
+
+            // Remove selected class from siblings with same name
+            const radioName = radioInput.name;
+            const siblings = document.querySelectorAll(`input[name="${radioName}"]`);
+            siblings.forEach(sibling => {
+                const parentCard = sibling.closest('.selector-card');
+                if (parentCard) {
+                    parentCard.classList.remove('selected');
+                }
+            });
+
+            // Add selected class to this card
+            this.classList.add('selected');
+            radioInput.checked = true;
         });
     });
 
