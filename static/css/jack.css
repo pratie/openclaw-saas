@@ -149,13 +149,6 @@ a:hover {
 }
 
 /* ========== Hero Section ========== */
-.trust-line {
-    font-size: 14px;
-    color: var(--text-muted);
-    margin-bottom: 32px;
-    text-transform: lowercase;
-}
-
 .headline {
     font-size: 48px;
     font-weight: 600;
@@ -164,12 +157,28 @@ a:hover {
     text-transform: lowercase;
 }
 
-.subhead {
-    font-size: 20px;
+.hero-story {
+    font-size: 24px;
     color: var(--text);
     line-height: 1.5;
+    margin-bottom: 32px;
+    text-transform: lowercase;
+}
+
+.hero-pitch {
+    font-size: 18px;
+    color: var(--text-muted);
+    line-height: 1.6;
     margin-bottom: 40px;
     text-transform: lowercase;
+}
+
+.trust-line {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 20px;
+    text-transform: lowercase;
+    opacity: 0.7;
 }
 
 @media (max-width: 768px) {
@@ -177,8 +186,16 @@ a:hover {
         font-size: 32px;
     }
 
-    .subhead {
-        font-size: 18px;
+    .hero-story {
+        font-size: 20px;
+    }
+
+    .hero-pitch {
+        font-size: 16px;
+    }
+
+    .trust-line {
+        font-size: 12px;
     }
 }
 
