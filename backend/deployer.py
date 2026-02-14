@@ -54,7 +54,7 @@ apt-get update
 DEBIAN_FRONTEND=noninteractive apt-get upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
 
 # Install dependencies
-apt-get install -y curl git build-essential python3-pip ufw fail2ban jq
+apt-get install -y curl git build-essential python3-pip python3-venv ufw fail2ban jq ffmpeg
 
 # Install Node.js 22
 curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
@@ -63,6 +63,9 @@ apt-get install -y nodejs
 # Install OpenClaw
 npm install -g pnpm@latest
 npm install -g openclaw@latest
+
+# Install CPU-only Whisper for audio transcription
+pip3 install --break-system-packages openai-whisper
 
 # Configure firewall - SECURE: Only allow SSH, block gateway port
 ufw default deny incoming
