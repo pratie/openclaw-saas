@@ -44,8 +44,30 @@ class BotDeployer:
             pass
         return 'unknown_bot'
 
-    def create_cloud_init_script(self, telegram_token, openrouter_key, gateway_token):
+    def create_cloud_init_script(self, telegram_token, openrouter_key, gateway_token, has_ssh_keys=False):
         """Create cloud-init script for bot deployment with security hardening"""
+
+        # Conditional SSH hardening based on whether SSH keys are present
+        ssh_hardening = ""
+        if has_ssh_keys:
+            # Full SSH hardening - disable password auth (safe because SSH keys exist)
+            ssh_hardening = """
+# Harden SSH - Disable root login and password authentication
+sed -i 's/#*PermitRootLogin.*/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
+sed -i 's/#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+sed -i 's/#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+systemctl reload sshd
+"""
+        else:
+            # Partial SSH hardening - keep password auth but disable root login
+            # (User has no SSH keys, so we can't lock them out)
+            ssh_hardening = """
+# Partial SSH hardening - Disable root password login only
+sed -i 's/#*PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i 's/#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+systemctl reload sshd
+"""
+
         return f"""#!/bin/bash
 set -e
 
@@ -70,11 +92,32 @@ ufw default allow outgoing
 ufw allow ssh
 # Gateway port 18789 is NOT exposed to internet (only localhost/LAN access)
 ufw --force enable
+{ssh_hardening}
+# Configure fail2ban for SSH brute force protection
+cat > /etc/fail2ban/jail.local << 'FAIL2BAN_EOF'
+[DEFAULT]
+bantime = 3600
+findtime = 600
+maxretry = 5
+
+[sshd]
+enabled = true
+port = ssh
+logpath = %(sshd_log)s
+backend = %(sshd_backend)s
+FAIL2BAN_EOF
+systemctl enable fail2ban
+systemctl restart fail2ban
 
 # Create dedicated user for security
 useradd -r -m -s /bin/false -d /var/lib/openclaw openclaw || true
 mkdir -p /var/lib/openclaw/.openclaw/workspace
 chown -R openclaw:openclaw /var/lib/openclaw
+
+# Harden directory permissions - prevent world-readable access
+chmod 750 /var/lib/openclaw
+chmod 750 /var/lib/openclaw/.openclaw
+chmod 750 /var/lib/openclaw/.openclaw/workspace
 
 # Write OpenClaw configuration
 cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
@@ -178,6 +221,17 @@ chmod 600 /var/lib/openclaw/.openclaw/openclaw.json
 chown openclaw:openclaw /var/lib/openclaw/.openclaw/.env
 chown openclaw:openclaw /var/lib/openclaw/.openclaw/openclaw.json
 
+# Remove any backup files that may contain secrets
+find /var/lib/openclaw/.openclaw -type f \\( -name "*.bak" -o -name "*.backup" -o -name "*~" \\) -delete
+
+# Create daily cleanup script for backup files
+cat > /etc/cron.daily/openclaw-cleanup << 'CLEANUP_EOF'
+#!/bin/bash
+# Remove backup files with secrets
+find /var/lib/openclaw/.openclaw -type f \\( -name "*.bak" -o -name "*.backup" -o -name "*~" \\) -delete 2>/dev/null || true
+CLEANUP_EOF
+chmod +x /etc/cron.daily/openclaw-cleanup
+
 # Run openclaw doctor to enable Telegram (as openclaw user)
 su - openclaw -s /bin/bash -c "cd /var/lib/openclaw && openclaw doctor --fix --yes" || true
 
@@ -243,8 +297,13 @@ echo "OpenClaw deployment completed with security hardening!"
             except:
                 pass
 
-            # Create cloud-init script
-            user_data = self.create_cloud_init_script(telegram_token, openrouter_key, gateway_token)
+            # Create cloud-init script with conditional SSH hardening
+            user_data = self.create_cloud_init_script(
+                telegram_token,
+                openrouter_key,
+                gateway_token,
+                has_ssh_keys=bool(ssh_key_ids)  # Full hardening only if keys exist
+            )
 
             # Create droplet
             droplet_name = f"{bot_name}-{int(time.time())}"
