@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>i built an OpenClaw AI assistant in 3 mins</title>
+    <title>your OpenClaw setup. done for you in 5 minutes.</title>
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://open-claw.space/">
-    <meta property="og:title" content="i built an OpenClaw AI assistant in 3 mins">
-    <meta property="og:description" content="no coding. no servers to manage. no API keys to juggle. pick a model, connect Telegram, deploy. done in 3 mins.">
+    <meta property="og:title" content="your OpenClaw setup. done for you in 5 minutes.">
+    <meta property="og:description" content="OpenClaw just dropped. i spent days figuring it out so you don't have to. your AI assistant — running on your own server, configured, secured, ready. $49/mo. you don't touch a terminal.">
     <meta property="og:image" content="{{ url_for('static', filename='og-image.png', _external=True) }}">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://open-claw.space/">
-    <meta property="twitter:title" content="i built an OpenClaw AI assistant in 3 mins">
-    <meta property="twitter:description" content="no coding. no servers to manage. no API keys to juggle. pick a model, connect Telegram, deploy. done in 3 mins.">
+    <meta property="twitter:title" content="your OpenClaw setup. done for you in 5 minutes.">
+    <meta property="twitter:description" content="OpenClaw just dropped. i spent days figuring it out so you don't have to. your AI assistant — running on your own server, configured, secured, ready. $49/mo. you don't touch a terminal.">
     <meta property="twitter:image" content="{{ url_for('static', filename='og-image.png', _external=True) }}">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,23 +29,34 @@
         <!-- Hero Section -->
         <section class="hero">
             <h1 class="headline">
-                i built an OpenClaw AI assistant in 3 mins.
+                openclaw just dropped.<br>
+                i'll get yours running in 5 minutes.
             </h1>
 
             <p class="hero-story">
-                my data never leaves my server.<br>
-                it costs me <span class="mono">$49/mo</span>.<br>
-                and it actually works.
+                everyone's talking about it.<br>
+                almost no one's actually running it.
             </p>
 
             <p class="hero-pitch">
-                no coding. no servers to manage. no API keys to juggle.<br>
-                pick a model, connect Telegram, deploy. done.
+                not because they don't want to.<br>
+                because getting it set up takes days if you've never touched a server.<br><br>
+                i know. i spent days figuring it out.<br>
+                the SSH keys. the config. the server setup.<br>
+                getting it to actually talk to Telegram.<br><br>
+                i got it working.<br>
+                now i do your setup in 5 minutes.
             </p>
 
-            <button class="cta-btn" onclick="showPaymentModal()">get started — 3 mins</button>
+            <p class="hero-story">
+                your OpenClaw AI assistant — running on your own server.<br>
+                configured. secured. ready to use.<br>
+                <span class="mono">$49/mo</span>. you don't touch a terminal.
+            </p>
 
-            <div class="trust-line">first 10 customers lock in $49/mo forever • 24hr money-back guarantee</div>
+            <button class="cta-btn" onclick="showPaymentModal()">set mine up — 5 mins</button>
+
+            <div class="trust-line">you don't read a single doc. you just get your AI. • 24hr money-back guarantee</div>
         </section>
 
         <div class="divider"></div>
@@ -169,59 +180,62 @@
 
         <!-- The Problem Section -->
         <section class="section">
-            <h2>last year i tried to build my own AI assistant.</h2>
+            <h2>when OpenClaw launched, i was obsessed.</h2>
 
-            <p>wanted a private AI that could read my emails and book my meetings.</p>
+            <p>private AI. your own server. no data leaving your machine.</p>
 
-            <p>didn't want my data on OpenAI's servers.</p>
+            <p>i had to try it.</p>
 
-            <p>so i looked into self-hosting.</p>
+            <p>so i dug in.</p>
 
-            <h3>what it actually takes (DIY):</h3>
+            <h3>what setting it up actually looks like:</h3>
             <ul class="steps-list">
-                <li><span class="step-name">buy a VPS</span> <span class="mono step-time">15 min</span></li>
+                <li><span class="step-name">spin up a VPS</span> <span class="mono step-time">15 min</span></li>
                 <li><span class="step-name">figure out SSH keys</span> <span class="mono step-time">10 min</span></li>
                 <li><span class="step-name">install Node.js</span> <span class="mono step-time">5 min</span></li>
                 <li><span class="step-name">install OpenClaw</span> <span class="mono step-time">7 min</span></li>
                 <li><span class="step-name">configure everything</span> <span class="mono step-time">10 min</span></li>
                 <li><span class="step-name">connect to AI provider</span> <span class="mono step-time">4 min</span></li>
                 <li><span class="step-name">pair with Telegram</span> <span class="mono step-time">4 min</span></li>
+                <li><span class="step-name">debug why nothing works</span> <span class="mono step-time">???</span></li>
             </ul>
 
-            <p class="total-time">total: <span class="mono">60 minutes</span>.</p>
+            <p class="total-time">for me: <span class="mono">a few days</span> to really get the hang of it.</p>
 
-            <p><strong>if you're not technical?</strong><br>multiply by 10.</p>
+            <p><strong>if you're not technical?</strong><br>probably longer. or you give up halfway.</p>
 
-            <p>that's 10 hours of googling, debugging, and wanting to throw your laptop out the window.</p>
+            <p>i didn't give up.</p>
 
-            <p>i did it.</p>
+            <p>i learned every part of it.</p>
 
-            <p>it sucked.</p>
+            <p>and now i do this for you in 5 minutes flat.</p>
         </section>
 
         <div class="divider"></div>
 
         <!-- The Simple Solution -->
         <section class="section">
-            <h2>then i built something simpler.</h2>
+            <h2>so i automated the whole thing.</h2>
 
-            <h3>the 60-second version:</h3>
+            <p>all those days of learning — i turned into a 5-minute setup for you.</p>
+
+            <h3>what you actually do:</h3>
             <ul class="steps-list simple">
-                <li><span class="step-name">pick your AI model</span> <span class="mono step-time">10s</span></li>
-                <li><span class="step-name">connect Telegram</span> <span class="mono step-time">20s</span></li>
-                <li><span class="step-name">deploy</span> <span class="mono step-time">30s</span></li>
+                <li><span class="step-name">pick your AI model</span> <span class="mono step-time">1 min</span></li>
+                <li><span class="step-name">paste your Telegram bot token</span> <span class="mono step-time">2 min</span></li>
+                <li><span class="step-name">hit deploy</span> <span class="mono step-time">2 min</span></li>
             </ul>
 
-            <p><strong>done.</strong></p>
+            <p><strong>that's it. everything else is handled.</strong></p>
 
-            <p>your AI assistant is live.<br>
-            reading emails.<br>
-            drafting replies.<br>
-            booking meetings.</p>
+            <p>server spins up.<br>
+            OpenClaw installs.<br>
+            firewall configured.<br>
+            Telegram connected.</p>
 
             <p>all running on YOUR server.</p>
 
-            <p>not mine.<br>not OpenAI's.</p>
+            <p>not mine.<br>not OpenAI's.<br>not anyone else's.</p>
 
             <p><strong>yours.</strong></p>
         </section>
@@ -378,13 +392,17 @@
 
         <!-- Final CTA -->
         <section class="section final-cta">
-            <h2>stop overthinking it.</h2>
+            <h2>openclaw is new. this window won't last.</h2>
 
-            <p>you could spend 10 hours setting this up yourself.</p>
+            <p>right now, most people are still figuring out how to set it up.</p>
 
-            <p>or you could spend 60 seconds and get back to work.</p>
+            <p>you could spend days doing what i did.<br>
+            or 5 minutes and have it running tonight.</p>
 
-            <button class="cta-btn" onclick="showPaymentModal()">start building — $49/mo</button>
+            <p>your OpenClaw. your server. your data.<br>
+            <strong>i handle everything else.</strong></p>
+
+            <button class="cta-btn" onclick="showPaymentModal()">set mine up — $49/mo</button>
 
             <p class="micro-copy">first 10 customers only. 24hr money-back guarantee. no BS.</p>
         </section>
