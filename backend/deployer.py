@@ -137,8 +137,8 @@ cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
   "agents": {{
     "defaults": {{
       "model": {{
-        "primary": "openrouter/moonshotai/kimi-k2.5",
-        "fallbacks": ["openrouter/moonshotai/kimi-k2-turbo-preview"]
+        "primary": "openrouter/qwen/qwen3.5-plus-02-15",
+        "fallbacks": ["openrouter/qwen/qwen3-235b-a22b"]
       }},
       "workspace": "~/.openclaw/workspace",
       "memorySearch": {{
