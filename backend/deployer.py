@@ -56,7 +56,8 @@ class BotDeployer:
 sed -i 's/#*PermitRootLogin.*/PermitRootLogin prohibit-password/' /etc/ssh/sshd_config
 sed -i 's/#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
 sed -i 's/#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
-systemctl reload sshd
+# Ubuntu 24.04 uses 'ssh' service name, not 'sshd'
+systemctl reload ssh 2>/dev/null || systemctl reload sshd 2>/dev/null || true
 """
         else:
             # Partial SSH hardening - keep password auth but disable root login
@@ -65,7 +66,8 @@ systemctl reload sshd
 # Partial SSH hardening - Disable root password login only
 sed -i 's/#*PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
 sed -i 's/#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
-systemctl reload sshd
+# Ubuntu 24.04 uses 'ssh' service name, not 'sshd'
+systemctl reload ssh 2>/dev/null || systemctl reload sshd 2>/dev/null || true
 """
 
         return f"""#!/bin/bash
