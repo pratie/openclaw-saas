@@ -235,7 +235,7 @@ def delete_bot(bot_id):
 
 @app.route('/api/logs/<int:bot_id>', methods=['GET'])
 def get_logs(bot_id):
-    """Get bot logs"""
+    """Get bot logs — cloud-init deploy logs + openclaw service logs"""
     if 'username' not in session:
         return jsonify({'success': False, 'message': 'Not authenticated'}), 401
 
@@ -243,31 +243,43 @@ def get_logs(bot_id):
     if not bot:
         return jsonify({'success': False, 'message': 'Bot not found'}), 404
 
-    # Fetch logs via SSH
     import subprocess
+    output_parts = []
+
+    ssh_base = ["ssh", "-o", "StrictHostKeyChecking=no", "-o", "ConnectTimeout=8"]
+
     try:
-        result = subprocess.run(
-            ["ssh", "-o", "StrictHostKeyChecking=no", f"root@{bot['ip_address']}",
-             "journalctl -u openclaw-gateway -n 100 --no-pager"],
-            capture_output=True,
-            text=True,
-            timeout=10
+        # 1. Cloud-init deployment logs (shows what's happening during setup)
+        deploy_result = subprocess.run(
+            ssh_base + [f"root@{bot['ip_address']}",
+             "tail -n 80 /var/log/cloud-init-output.log 2>/dev/null || echo '(cloud-init log not available yet)'"],
+            capture_output=True, text=True, timeout=12
         )
+        if deploy_result.stdout.strip():
+            output_parts.append("=== DEPLOYMENT LOG (cloud-init) ===")
+            output_parts.append(deploy_result.stdout.strip())
 
-        if result.returncode == 0:
-            return jsonify({'success': True, 'logs': result.stdout})
+        # 2. OpenClaw service logs (once service is running)
+        service_result = subprocess.run(
+            ssh_base + [f"root@{bot['ip_address']}",
+             "journalctl -u openclaw-gateway -n 60 --no-pager 2>/dev/null || echo '(service not started yet)'"],
+            capture_output=True, text=True, timeout=12
+        )
+        if service_result.stdout.strip():
+            output_parts.append("\n=== OPENCLAW SERVICE LOG ===")
+            output_parts.append(service_result.stdout.strip())
 
-        return jsonify({'success': False, 'message': 'Could not fetch logs'}), 500
+        if output_parts:
+            return jsonify({'success': True, 'logs': '\n'.join(output_parts)})
+
+        return jsonify({'success': True, 'logs': 'Server is starting up, logs not available yet. Try again in 30 seconds.'})
+
+    except subprocess.TimeoutExpired:
+        return jsonify({'success': True, 'logs': 'Server is still booting. Try again in 30 seconds.'})
 
     except Exception as e:
-        # Log error for debugging (server-side only)
         print(f"❌ Fetch logs error: {str(e)}")
-
-        # Return user-friendly error message
-        return jsonify({
-            'success': False,
-            'message': 'Unable to retrieve logs at this time. Please try again later.'
-        }), 500
+        return jsonify({'success': True, 'logs': 'Unable to connect to server yet. It may still be booting.'})
 
 @app.route('/api/bots/<int:bot_id>/status', methods=['GET'])
 def check_bot_status(bot_id):

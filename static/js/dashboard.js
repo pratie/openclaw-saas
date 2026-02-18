@@ -236,8 +236,14 @@ async function populateBotSelects() {
     }
 }
 
-async function loadLogs() {
-    const botId = document.getElementById('log-bot-select').value;
+// Auto-refresh interval tracker for logs during deployment
+let logAutoRefreshTimer = null;
+
+async function loadLogs(botId) {
+    // If no botId passed, read from dropdown
+    if (!botId) {
+        botId = document.getElementById('log-bot-select').value;
+    }
     const logsContent = document.getElementById('logs-content');
 
     if (!botId) {
@@ -245,7 +251,9 @@ async function loadLogs() {
         return;
     }
 
-    logsContent.textContent = '⏳ Loading logs...';
+    // Keep last content visible while refreshing (don't flash "Loading...")
+    const isFirstLoad = logsContent.textContent === 'Select a bot to view logs...';
+    if (isFirstLoad) logsContent.textContent = '⏳ Loading logs...';
 
     try {
         const response = await fetch(`/api/logs/${botId}`);
@@ -253,7 +261,7 @@ async function loadLogs() {
 
         if (data.success) {
             logsContent.textContent = data.logs || 'No logs available';
-            // Auto-scroll to bottom
+            // Auto-scroll to bottom to follow latest output
             logsContent.scrollTop = logsContent.scrollHeight;
         } else {
             logsContent.textContent = '✗ Failed to load logs: ' + data.message;
@@ -261,6 +269,31 @@ async function loadLogs() {
     } catch (error) {
         logsContent.textContent = '✗ Connection error';
         console.error('Logs error:', error);
+    }
+}
+
+function startLogAutoRefresh(botId) {
+    // If already refreshing for this bot, do nothing (avoid repeated panel switches)
+    if (logAutoRefreshTimer) return;
+
+    // Switch to logs panel automatically (only on first call)
+    document.querySelectorAll('.content-panel').forEach(p => p.classList.remove('active'));
+    const logsPanel = document.getElementById('logs-panel');
+    if (logsPanel) logsPanel.classList.add('active');
+
+    // Select this bot in the dropdown
+    const select = document.getElementById('log-bot-select');
+    if (select) select.value = botId;
+
+    // Load immediately, then every 10 seconds
+    loadLogs(botId);
+    logAutoRefreshTimer = setInterval(() => loadLogs(botId), 10000);
+}
+
+function stopLogAutoRefresh() {
+    if (logAutoRefreshTimer) {
+        clearInterval(logAutoRefreshTimer);
+        logAutoRefreshTimer = null;
     }
 }
 
@@ -404,6 +437,9 @@ async function checkBotStatus(botId, botUsername) {
                 statusElement.style.color = 'var(--primary-green)';
                 console.log(`[Bot ${botId}] ✅ Telegram is ready!`);
 
+                // Stop auto-refreshing logs - bot is fully running
+                stopLogAutoRefresh();
+
                 // Add test button if not already present
                 if (actionsElement && !actionsElement.querySelector('.btn-test')) {
                     const testBtn = `<button class="btn-small btn-test" onclick="window.open('https://t.me/${botUsername}', '_blank')" style="background: var(--primary-cyan); color: var(--bg-dark);">
@@ -417,6 +453,8 @@ async function checkBotStatus(botId, botUsername) {
                 statusElement.textContent = '🟡 Initializing...';
                 statusElement.style.color = '#ffbd2e';
                 console.log(`[Bot ${botId}] Service active, waiting for Telegram... (checking again in 5s)`);
+                // Auto-open logs panel and refresh every 10s so user can see what's happening
+                startLogAutoRefresh(botId);
                 // Check again in 5 seconds - service is running but Telegram not ready yet
                 setTimeout(() => checkBotStatus(botId, botUsername), 5000);
             } else {
@@ -424,6 +462,8 @@ async function checkBotStatus(botId, botUsername) {
                 statusElement.textContent = '🟡 Setting up...';
                 statusElement.style.color = '#ffbd2e';
                 console.log(`[Bot ${botId}] VPS still deploying... (checking again in 10s)`);
+                // Auto-open logs panel and refresh every 10s so user can see what's happening
+                startLogAutoRefresh(botId);
                 // Check again in 10 seconds - VPS still being set up
                 setTimeout(() => checkBotStatus(botId, botUsername), 10000);
             }
