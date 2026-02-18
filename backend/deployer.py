@@ -121,7 +121,11 @@ chmod 750 /var/lib/openclaw
 chmod 750 /var/lib/openclaw/.openclaw
 chmod 750 /var/lib/openclaw/.openclaw/workspace
 
-# Write OpenClaw configuration
+# Run openclaw doctor FIRST so it can do its setup before we write our config
+# (doctor overwrites openclaw.json, so we must run it before writing our version)
+su - openclaw -s /bin/bash -c "cd /var/lib/openclaw && HOME=/var/lib/openclaw openclaw doctor --fix --yes" || true
+
+# Now write our OpenClaw configuration (overwrites whatever doctor wrote)
 cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
 {{
   "gateway": {{
@@ -223,19 +227,16 @@ chmod 600 /var/lib/openclaw/.openclaw/openclaw.json
 chown openclaw:openclaw /var/lib/openclaw/.openclaw/.env
 chown openclaw:openclaw /var/lib/openclaw/.openclaw/openclaw.json
 
-# Remove any backup files that may contain secrets
-find /var/lib/openclaw/.openclaw -type f \\( -name "*.bak" -o -name "*.backup" -o -name "*~" \\) -delete
+# Remove any backup files doctor may have created (they contain secrets)
+find /var/lib/openclaw/.openclaw -type f \( -name "*.bak" -o -name "*.backup" -o -name "*~" \) -delete
 
 # Create daily cleanup script for backup files
 cat > /etc/cron.daily/openclaw-cleanup << 'CLEANUP_EOF'
 #!/bin/bash
 # Remove backup files with secrets
-find /var/lib/openclaw/.openclaw -type f \\( -name "*.bak" -o -name "*.backup" -o -name "*~" \\) -delete 2>/dev/null || true
+find /var/lib/openclaw/.openclaw -type f \( -name "*.bak" -o -name "*.backup" -o -name "*~" \) -delete 2>/dev/null || true
 CLEANUP_EOF
 chmod +x /etc/cron.daily/openclaw-cleanup
-
-# Run openclaw doctor to enable Telegram (as openclaw user)
-su - openclaw -s /bin/bash -c "cd /var/lib/openclaw && openclaw doctor --fix --yes" || true
 
 # Create systemd service with security hardening
 cat > /etc/systemd/system/openclaw-gateway.service << 'EOF'
