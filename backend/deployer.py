@@ -114,12 +114,14 @@ systemctl restart fail2ban
 # Create dedicated user for security
 useradd -r -m -s /bin/false -d /var/lib/openclaw openclaw || true
 mkdir -p /var/lib/openclaw/.openclaw/workspace
+mkdir -p /var/lib/openclaw/.openclaw/cron
 chown -R openclaw:openclaw /var/lib/openclaw
 
 # Harden directory permissions - prevent world-readable access
 chmod 750 /var/lib/openclaw
 chmod 750 /var/lib/openclaw/.openclaw
 chmod 750 /var/lib/openclaw/.openclaw/workspace
+chmod 750 /var/lib/openclaw/.openclaw/cron
 
 # Run openclaw doctor FIRST so it can do its setup before we write our config
 # (doctor overwrites openclaw.json, so we must run it before writing our version)
