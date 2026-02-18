@@ -259,15 +259,25 @@ def get_logs(bot_id):
             output_parts.append("=== DEPLOYMENT LOG (cloud-init) ===")
             output_parts.append(deploy_result.stdout.strip())
 
-        # 2. OpenClaw service logs (once service is running)
-        service_result = subprocess.run(
+        # 2. OpenClaw service startup logs (first 30 lines — shows initial Telegram connection)
+        startup_result = subprocess.run(
             ssh_base + [f"root@{bot['ip_address']}",
-             "journalctl -u openclaw-gateway -n 60 --no-pager 2>/dev/null || echo '(service not started yet)'"],
+             "journalctl -u openclaw-gateway --no-pager 2>/dev/null | head -30 || echo '(service not started yet)'"],
             capture_output=True, text=True, timeout=12
         )
-        if service_result.stdout.strip():
-            output_parts.append("\n=== OPENCLAW SERVICE LOG ===")
-            output_parts.append(service_result.stdout.strip())
+        if startup_result.stdout.strip():
+            output_parts.append("\n=== OPENCLAW STARTUP LOG ===")
+            output_parts.append(startup_result.stdout.strip())
+
+        # 3. Recent service logs filtered (no bonjour spam)
+        recent_result = subprocess.run(
+            ssh_base + [f"root@{bot['ip_address']}",
+             "journalctl -u openclaw-gateway --no-pager 2>/dev/null | grep -v 'bonjour' | tail -30"],
+            capture_output=True, text=True, timeout=12
+        )
+        if recent_result.stdout.strip():
+            output_parts.append("\n=== RECENT ACTIVITY (bonjour filtered) ===")
+            output_parts.append(recent_result.stdout.strip())
 
         if output_parts:
             return jsonify({'success': True, 'logs': '\n'.join(output_parts)})
