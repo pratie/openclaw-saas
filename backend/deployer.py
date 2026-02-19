@@ -145,8 +145,8 @@ cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
   "agents": {{
     "defaults": {{
       "model": {{
-        "primary": "openrouter/minimax/minimax-m2.5",
-        "fallbacks": ["openrouter/qwen/qwen3-235b-a22b"]
+        "primary": "openrouter/anthropic/claude-sonnet-4.6",
+        "fallbacks": ["openrouter/anthropic/claude-sonnet-4.5"]
       }},
       "workspace": "~/.openclaw/workspace",
       "memorySearch": {{
