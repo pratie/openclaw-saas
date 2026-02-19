@@ -6,7 +6,7 @@ Handles bot deployment to DigitalOcean
 import os
 import sys
 import time
-import random
+import secrets
 import string
 import subprocess
 import requests
@@ -27,9 +27,9 @@ class BotDeployer:
         self.client = Client(token=do_token)
 
     def generate_token(self, length=32):
-        """Generate secure random token"""
+        """Generate cryptographically secure random token"""
         chars = string.ascii_letters + string.digits + '_-'
-        return ''.join(random.choice(chars) for _ in range(length))
+        return ''.join(secrets.choice(chars) for _ in range(length))
 
     def get_bot_username(self, telegram_token):
         """Get Telegram bot username from token"""
@@ -160,8 +160,8 @@ cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
       "botToken": "{telegram_token}",
       "dmPolicy": "open",
       "allowFrom": ["*"],
-      "groupPolicy": "open",
-      "groupAllowFrom": ["*"],
+      "groupPolicy": "closed",
+      "groupAllowFrom": [],
       "textChunkLimit": 4000,
       "chunkMode": "length",
       "linkPreview": true,
