@@ -160,7 +160,7 @@ cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
       "botToken": "{telegram_token}",
       "dmPolicy": "open",
       "allowFrom": ["*"],
-      "groupPolicy": "closed",
+      "groupPolicy": "disabled",
       "groupAllowFrom": [],
       "textChunkLimit": 4000,
       "chunkMode": "length",
