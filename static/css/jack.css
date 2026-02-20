@@ -157,10 +157,6 @@ a:hover {
     text-transform: lowercase;
 }
 
-.brand-highlight {
-    color: #ff7373;
-}
-
 .hero-story {
     font-size: 24px;
     color: var(--text);
