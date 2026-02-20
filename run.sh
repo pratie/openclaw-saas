@@ -29,5 +29,11 @@ echo "Press Ctrl+C to stop"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo ""
 
+# Load .env file if present (local development)
+if [ -f ".env" ]; then
+    export $(grep -v '^#' .env | xargs)
+    echo "✅ Loaded .env"
+fi
+
 # Run the app
 python app.py

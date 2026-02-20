@@ -44,7 +44,7 @@ class BotDeployer:
             pass
         return 'unknown_bot'
 
-    def create_cloud_init_script(self, telegram_token, openrouter_key, gateway_token, has_ssh_keys=False):
+    def create_cloud_init_script(self, telegram_token, nvidia_key, gateway_token, openrouter_key=None, has_ssh_keys=False):
         """Create cloud-init script for bot deployment with security hardening"""
 
         # Conditional SSH hardening based on whether SSH keys are present
@@ -69,6 +69,20 @@ sed -i 's/#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_conf
 # Ubuntu 24.04 uses 'ssh' service name, not 'sshd'
 systemctl reload ssh 2>/dev/null || systemctl reload sshd 2>/dev/null || true
 """
+
+        # Build model fallbacks — only use OpenRouter if key is provided
+        if openrouter_key:
+            model_fallbacks = '["openrouter/anthropic/claude-sonnet-4.6", "openrouter/anthropic/claude-sonnet-4.5"]'
+            openrouter_auth = f"""
+      "openrouter:default": {{
+        "provider": "openrouter",
+        "mode": "token"
+      }}"""
+            openrouter_env = f"\nOPENROUTER_API_KEY={openrouter_key}"
+        else:
+            model_fallbacks = '[]'
+            openrouter_auth = ''
+            openrouter_env = ''
 
         return f"""#!/bin/bash
 set -e
@@ -142,11 +156,29 @@ cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
       "enabled": true
     }}
   }},
+  "models": {{
+    "mode": "merge",
+    "providers": {{
+      "nvidia": {{
+        "baseUrl": "https://integrate.api.nvidia.com/v1",
+        "apiKey": "${{NVIDIA_API_KEY}}",
+        "api": "openai-completions",
+        "models": [
+          {{
+            "id": "moonshotai/kimi-k2.5",
+            "name": "Kimi K2.5 (NVIDIA NIM)",
+            "contextWindow": 131072,
+            "maxTokens": 16384
+          }}
+        ]
+      }}
+    }}
+  }},
   "agents": {{
     "defaults": {{
       "model": {{
-        "primary": "openrouter/anthropic/claude-sonnet-4.6",
-        "fallbacks": ["openrouter/anthropic/claude-sonnet-4.5"]
+        "primary": "nvidia/moonshotai/kimi-k2.5",
+        "fallbacks": {model_fallbacks}
       }},
       "workspace": "~/.openclaw/workspace",
       "memorySearch": {{
@@ -181,11 +213,7 @@ cat > /var/lib/openclaw/.openclaw/openclaw.json << 'EOF'
     }}
   }},
   "auth": {{
-    "profiles": {{
-      "openrouter:default": {{
-        "provider": "openrouter",
-        "mode": "token"
-      }}
+    "profiles": {{{openrouter_auth}
     }}
   }},
   "plugins": {{
@@ -218,9 +246,9 @@ EOF
 
 # Write environment file
 cat > /var/lib/openclaw/.openclaw/.env << 'EOF'
-OPENROUTER_API_KEY={openrouter_key}
+NVIDIA_API_KEY={nvidia_key}
 OPENCLAW_GATEWAY_TOKEN={gateway_token}
-NODE_ENV=production
+NODE_ENV=production{openrouter_env}
 EOF
 
 # Set secure permissions on sensitive files
@@ -285,7 +313,7 @@ systemctl start openclaw-gateway
 echo "OpenClaw deployment completed with security hardening!"
 """
 
-    def deploy(self, telegram_token, openrouter_key, region='nyc3', size='s-2vcpu-4gb', bot_name='openclaw-bot'):
+    def deploy(self, telegram_token, nvidia_key, openrouter_key=None, region='nyc3', size='s-2vcpu-4gb', bot_name='openclaw-bot'):
         """Deploy a new bot"""
         try:
             # Generate gateway token
@@ -305,8 +333,9 @@ echo "OpenClaw deployment completed with security hardening!"
             # Create cloud-init script with conditional SSH hardening
             user_data = self.create_cloud_init_script(
                 telegram_token,
-                openrouter_key,
+                nvidia_key,
                 gateway_token,
+                openrouter_key=openrouter_key,
                 has_ssh_keys=bool(ssh_key_ids)  # Full hardening only if keys exist
             )
 

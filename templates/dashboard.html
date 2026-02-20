@@ -169,7 +169,7 @@
 
                     <div style="margin-top: 24px; padding: 16px; background: rgba(0, 255, 65, 0.1); border: 1px solid var(--primary-green); border-radius: 4px;">
                         <p style="color: var(--primary-green); margin: 0;">
-                            ⚙️ Configure your OpenRouter API key in <a href="#" onclick="showPanel('settings')" style="color: var(--primary-cyan); text-decoration: underline;">Settings</a> first
+                            ⚡ Powered by <strong>Kimi K2.5 via NVIDIA NIM</strong> — no API key required
                         </p>
                     </div>
                 </div>
@@ -219,19 +219,22 @@
                     <span class="terminal-title">// API CONFIGURATION</span>
                 </div>
                 <div class="terminal-body">
-                    <p class="info-text">Configure your OpenRouter API key for Kimi AI (cheaper than Claude!)</p>
+                    <p class="info-text">Your bots run on <strong>Kimi K2.5 via NVIDIA NIM</strong> by default — no API key needed.</p>
+                    <p class="info-text" style="color: var(--text-muted); font-size: 14px;">
+                        Optionally add an OpenRouter key to enable Claude fallback models.
+                    </p>
 
                     <div class="input-group">
-                        <label>OPENROUTER API KEY</label>
-                        <input type="password" id="settings-openrouter" placeholder="sk-or-v1-...">
+                        <label>OPENROUTER API KEY <span style="color: var(--text-muted); font-weight: normal;">(optional)</span></label>
+                        <input type="password" id="settings-openrouter" placeholder="sk-or-v1-... (optional)">
                         <small style="color: var(--primary-cyan); margin-top: 8px; display: block;">
-                            Get your API key from openrouter.ai/keys
+                            Get your key from openrouter.ai/keys — enables Claude fallback models
                         </small>
                     </div>
 
                     <button onclick="saveSettings()" class="btn-primary">
                         <span class="btn-glow"></span>
-                        💾 SAVE API KEY
+                        💾 SAVE SETTINGS
                     </button>
                 </div>
             </div>

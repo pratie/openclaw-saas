@@ -309,11 +309,7 @@ async function logout() {
 async function saveSettings() {
     const openrouterKey = document.getElementById('settings-openrouter').value.trim();
 
-    if (!openrouterKey) {
-        alert('⚠️ OpenRouter API key is required');
-        return;
-    }
-
+    // OpenRouter key is optional — bots run on NVIDIA NIM by default
     try {
         const response = await fetch('/api/settings', {
             method: 'POST',
@@ -328,11 +324,11 @@ async function saveSettings() {
         const data = await response.json();
 
         if (data.success) {
-            alert('✅ API key saved successfully!');
+            alert('✅ ' + (data.message || 'Settings saved!'));
             // Clear field for security
             document.getElementById('settings-openrouter').value = '';
         } else {
-            alert('❌ ' + (data.message || 'Failed to save API key'));
+            alert('❌ ' + (data.message || 'Failed to save settings'));
         }
     } catch (error) {
         alert('❌ Connection error');

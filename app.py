@@ -39,6 +39,9 @@ db = Database()
 # Platform DigitalOcean token (must be set in environment variables)
 DIGITALOCEAN_TOKEN = os.environ.get('DIGITALOCEAN_TOKEN')
 
+# Platform NVIDIA NIM API key — used for all customer bot deployments
+NVIDIA_API_KEY = os.environ.get('NVIDIA_API_KEY')
+
 @app.route('/')
 def index():
     """Main landing page"""
@@ -119,21 +122,23 @@ def deploy_bot():
             'requires_payment': True
         }), 402  # 402 Payment Required
 
-    # Get stored OpenRouter API key
-    api_keys = db.get_api_keys(username)
-    if not api_keys or not api_keys.get('anthropic_key'):  # Column name stays same
-        return jsonify({
-            'success': False,
-            'message': 'Please configure your OpenRouter API key in Settings first'
-        }), 400
-
     try:
-        # Check if platform DO token is configured
+        # Check if platform keys are configured
         if not DIGITALOCEAN_TOKEN or DIGITALOCEAN_TOKEN == 'YOUR_DO_TOKEN_HERE':
             return jsonify({
                 'success': False,
                 'message': 'Platform DigitalOcean token not configured. Please contact administrator.'
             }), 500
+
+        if not NVIDIA_API_KEY:
+            return jsonify({
+                'success': False,
+                'message': 'Platform AI key not configured. Please contact administrator.'
+            }), 500
+
+        # Get optional user-provided OpenRouter key (for fallback models)
+        api_keys = db.get_api_keys(username)
+        openrouter_key = api_keys.get('anthropic_key') if api_keys else None  # Column name stays same
 
         # Use platform's DigitalOcean token
         deployer = BotDeployer(DIGITALOCEAN_TOKEN)
@@ -154,7 +159,8 @@ def deploy_bot():
 
         result = deployer.deploy(
             telegram_token=data['telegram_token'],
-            openrouter_key=api_keys['anthropic_key'],  # Column name stays same, semantically OpenRouter key
+            nvidia_key=NVIDIA_API_KEY,           # Platform NVIDIA NIM key (default AI provider)
+            openrouter_key=openrouter_key,        # User's OpenRouter key (optional fallback)
             region='nyc3',  # Hardcoded
             size='s-2vcpu-2gb',  # Starter Plan: 2 vCPU · 2 GB RAM · 20 GB SSD
             bot_name=safe_bot_name
@@ -381,16 +387,13 @@ def save_settings():
 
     openrouter_key = data.get('openrouter_key', '').strip()
 
-    if not openrouter_key:
-        return jsonify({
-            'success': False,
-            'message': 'OpenRouter API key is required'
-        }), 400
+    # OpenRouter key is optional — bots run on NVIDIA NIM by default
+    # Providing it enables Claude fallback models
+    if db.save_api_keys(username, anthropic_key=openrouter_key or None):  # Column name stays same
+        msg = 'OpenRouter key saved (Claude fallbacks enabled)' if openrouter_key else 'Settings saved'
+        return jsonify({'success': True, 'message': msg})
 
-    if db.save_api_keys(username, anthropic_key=openrouter_key):  # Column name stays same
-        return jsonify({'success': True, 'message': 'API key saved successfully'})
-
-    return jsonify({'success': False, 'message': 'Failed to save API key'}), 500
+    return jsonify({'success': False, 'message': 'Failed to save settings'}), 500
 
 # ========== PAYMENT ROUTES ==========
 
