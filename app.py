@@ -68,15 +68,21 @@ def dashboard():
 
     username = session['username']
     user = db.get_user(username)
+
+    # If user doesn't exist in database, clear session and redirect to index
+    if not user:
+        session.clear()
+        return redirect(url_for('index'))
+
     bots = db.get_user_bots(username)
 
     return render_template('dashboard.html',
                          username=username,
-                         email=session.get('email', user['email']),
+                         email=session.get('email', user.get('email', '')),
                          bots=bots,
                          bot_count=len(bots),
                          active_count=len([b for b in bots if b['status'] == 'running']),
-                         has_paid=user.get('has_paid', 0) if user else 0)
+                         has_paid=user.get('has_paid', 0))
 
 @app.route('/api/login', methods=['POST'])
 def login():
