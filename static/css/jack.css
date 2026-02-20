@@ -45,8 +45,8 @@ body {
 
 /* ========== Top Banner ========== */
 .top-banner {
-    background: var(--accent);
-    color: var(--bg);
+    background: transparent;
+    color: var(--accent);
     text-align: center;
     padding: 8px 20px;
     font-size: 13px;
