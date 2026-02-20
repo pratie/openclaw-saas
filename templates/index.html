@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>deploy your OpenClaw in under 1 minute.</title>
+    <meta name="description" content="Skip the technical setup. One-click deploy your own OpenClaw AI assistant running 24/7 on your server. $49/month with $15 AI credits. No terminal required.">
+    <link rel="canonical" href="https://open-claw.space/">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -25,6 +27,86 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/jack.css') }}">
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "OpenClaw SaaS",
+      "applicationCategory": "BusinessApplication",
+      "offers": {
+        "@type": "Offer",
+        "price": "49.00",
+        "priceCurrency": "USD",
+        "priceSpecification": {
+          "@type": "UnitPriceSpecification",
+          "price": "49.00",
+          "priceCurrency": "USD",
+          "billingDuration": "P1M"
+        }
+      },
+      "description": "One-click deploy your own OpenClaw AI assistant running 24/7 on your server. Skip the technical setup.",
+      "operatingSystem": "Cloud-based",
+      "url": "https://open-claw.space/"
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I need to know how to code?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. If you can use Telegram, you can use this."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Where does my data live?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On your server. Not mine. Not OpenAI's. Yours."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What if I want to cancel?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cancel anytime. No weird retention periods. No hard feelings."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a free trial?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "7-day money-back guarantee. Try it. If it doesn't work for you, I'll refund you — no questions."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which AI models can I use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Claude, GPT, Gemini, Kimi. Pick whichever fits your vibe."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I use this for my business?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. That's literally what I built it for."
+          }
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
     <!-- Top Banner -->
@@ -45,7 +127,7 @@
 
             <!-- Selection Box -->
             <div class="selection-box">
-                <h3 class="selector-title">Which model do you want as default?</h3>
+                <h2 class="selector-title">Which model do you want as default?</h2>
             <div class="model-selector">
                 <label class="selector-card selected" data-model="claude">
                     <input type="radio" name="model" value="claude" checked hidden>
@@ -92,7 +174,7 @@
             </div>
 
 
-                <h3 class="selector-title">Which channel do you want to use for sending messages?</h3>
+                <h2 class="selector-title">Which channel do you want to use for sending messages?</h2>
             <div class="channel-selector">
                 <label class="selector-card selected" data-channel="telegram">
                     <input type="radio" name="channel" value="telegram" checked hidden>

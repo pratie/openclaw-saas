@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://open-claw.space/static/sitemap.xml
+
+# Block admin/private routes
+Disallow: /api/
+Disallow: /dashboard
+Disallow: /deploy
+Disallow: /connect/
