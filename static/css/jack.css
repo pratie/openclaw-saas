@@ -150,19 +150,22 @@ a:hover {
 
 /* ========== Hero Section ========== */
 .headline {
-    font-size: 48px;
+    font-size: 56px;
     font-weight: 600;
     line-height: 1.2;
-    margin-bottom: 32px;
-    text-transform: lowercase;
+    margin-bottom: 24px;
+    text-transform: none;
 }
 
 .hero-story {
-    font-size: 24px;
-    color: var(--text);
+    font-size: 18px;
+    color: var(--text-muted);
     line-height: 1.5;
-    margin-bottom: 32px;
-    text-transform: lowercase;
+    margin-bottom: 40px;
+    text-transform: none;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .hero-pitch {
@@ -715,6 +718,83 @@ footer {
     text-transform: lowercase;
     font-style: italic;
     margin-left: auto;
+}
+
+/* ========== Selection Box ========== */
+.selection-box {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px;
+    background: rgba(23, 23, 23, 0.6);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+}
+
+.selection-box .selector-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 0;
+    margin-bottom: 16px;
+    text-align: left;
+    text-transform: none;
+    color: var(--text);
+}
+
+.selection-box .selector-title:first-child {
+    margin-top: 0;
+}
+
+.selection-box .selector-title:not(:first-child) {
+    margin-top: 32px;
+}
+
+/* ========== Google Sign-in Button ========== */
+.google-signin-btn {
+    width: 100%;
+    max-width: 400px;
+    margin: 32px auto 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 14px 24px;
+    background: white;
+    color: #1f1f1f;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    font-family: var(--font-base);
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.google-signin-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
+}
+
+.google-signin-btn:active {
+    transform: scale(0.98);
+}
+
+.google-icon {
+    flex-shrink: 0;
+}
+
+/* ========== Selection Pricing ========== */
+.selection-pricing {
+    text-align: center;
+    margin-top: 16px;
+    font-size: 14px;
+    color: var(--text);
+}
+
+.scarcity-text {
+    display: block;
+    margin-top: 8px;
+    color: #60a5fa;
+    font-weight: 500;
 }
 
 /* ========== Touch Targets (Mobile) ========== */
