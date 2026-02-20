@@ -220,12 +220,63 @@ def google_callback():
         session['google_id'] = google_id
         session['email'] = email
 
-        # Redirect to dashboard (will later redirect to Telegram connection screen)
-        return redirect(url_for('dashboard'))
+        # Check if user has already connected Telegram
+        # If not, redirect to Telegram connection screen
+        # For now, always redirect to Telegram connection (we'll add a check later)
+        return redirect(url_for('connect_telegram_page'))
 
     except Exception as e:
         print(f"❌ Google OAuth error: {str(e)}")
         return f"Authentication failed: {str(e)}", 500
+
+# ========== TELEGRAM CONNECTION ROUTES ==========
+
+@app.route('/connect/telegram')
+def connect_telegram_page():
+    """Telegram connection page - shown after Google OAuth"""
+    if 'username' not in session:
+        return redirect(url_for('index'))
+
+    return render_template('connect-telegram.html')
+
+@app.route('/api/connect-telegram', methods=['POST'])
+def connect_telegram():
+    """Save Telegram token to session"""
+    if 'username' not in session:
+        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
+
+    data = request.json
+    telegram_token = data.get('telegram_token', '').strip()
+
+    if not telegram_token or ':' not in telegram_token:
+        return jsonify({'success': False, 'message': 'Invalid Telegram bot token'}), 400
+
+    # Store in session (we'll validate it during deployment)
+    session['telegram_token'] = telegram_token
+
+    return jsonify({'success': True, 'message': 'Telegram connected'})
+
+@app.route('/deploy')
+def deploy_page():
+    """Deploy screen - shown after Telegram connection"""
+    if 'username' not in session:
+        return redirect(url_for('index'))
+
+    if 'telegram_token' not in session:
+        return redirect(url_for('connect_telegram_page'))
+
+    # For now, just show a simple message (we'll build the full deploy screen in Phase 4)
+    return f"""
+    <html>
+    <head><title>Deploy - OpenClaw</title></head>
+    <body style="background: #0a0a0a; color: #fafafa; font-family: 'Inter', sans-serif; padding: 60px; text-align: center;">
+        <h1>✅ Telegram Connected!</h1>
+        <p>Next step: Deploy your OpenClaw bot</p>
+        <p>(Phase 4 - Coming next!)</p>
+        <p><a href="/dashboard" style="color: #22c55e;">Go to Dashboard</a></p>
+    </body>
+    </html>
+    """
 
 @app.route('/api/deploy', methods=['POST'])
 def deploy_bot():

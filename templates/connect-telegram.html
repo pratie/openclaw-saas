@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Telegram - OpenClaw</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jack.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/connect-telegram.css') }}">
+</head>
+<body>
+    <div class="connect-container">
+        <div class="connect-content">
+            <!-- Left Panel - Instructions -->
+            <div class="instructions-panel">
+                <div class="telegram-icon">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                        <circle cx="24" cy="24" r="24" fill="#0088cc"/>
+                        <path d="M10 24l28-10-4 24-24-14z" fill="white"/>
+                    </svg>
+                </div>
+
+                <h1>Connect Telegram</h1>
+
+                <div class="instructions">
+                    <h3>How to get your bot token?</h3>
+
+                    <ol class="steps">
+                        <li>
+                            <span class="step-number">1</span>
+                            <span class="step-text">Open Telegram and go to <a href="https://t.me/BotFather" target="_blank">@BotFather</a></span>
+                        </li>
+                        <li>
+                            <span class="step-number">2</span>
+                            <span class="step-text">Start a chat and type <code>/newbot</code></span>
+                        </li>
+                        <li>
+                            <span class="step-number">3</span>
+                            <span class="step-text">Follow the prompts to name your bot and choose a username</span>
+                        </li>
+                        <li>
+                            <span class="step-number">4</span>
+                            <span class="step-text">BotFather will send you a message with your bot token. Copy the entire token (it looks like a long string of numbers and letters)</span>
+                        </li>
+                        <li>
+                            <span class="step-number">5</span>
+                            <span class="step-text">Paste the token in the field below and click Save & Connect</span>
+                        </li>
+                    </ol>
+                </div>
+
+                <form id="telegram-form" onsubmit="connectTelegram(event)">
+                    <div class="form-group">
+                        <label>Enter bot token</label>
+                        <input
+                            type="text"
+                            id="telegram-token"
+                            placeholder="1234567890:ABCdefGHIjklMNOpqrsTUVwxyz"
+                            required
+                            autocomplete="off"
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-connect">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M13.5 8L8.5 13L6.5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        Save & Connect
+                    </button>
+                </form>
+
+                <div id="connect-message" class="message"></div>
+
+                <p class="scarcity-notice">
+                    Limited cloud servers — only <span class="servers-count">11</span> left
+                </p>
+            </div>
+
+            <!-- Right Panel - Video -->
+            <div class="video-panel">
+                <div class="video-wrapper">
+                    <iframe
+                        src="https://www.youtube.com/embed/2NFq8AaBWUc"
+                        title="How to create a Telegram bot"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+
+                <p class="video-caption">
+                    Watch: How to create your Telegram bot in 30 seconds
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function connectTelegram(event) {
+            event.preventDefault();
+
+            const token = document.getElementById('telegram-token').value.trim();
+            const messageEl = document.getElementById('connect-message');
+            const submitBtn = event.target.querySelector('button[type="submit"]');
+
+            // Basic validation
+            if (!token.includes(':')) {
+                showMessage(messageEl, 'error', 'Invalid token format. Token should contain a colon (:)');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<svg class="spinner" width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="2" fill="none"/></svg> Connecting...';
+
+            try {
+                const response = await fetch('/api/connect-telegram', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ telegram_token: token })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showMessage(messageEl, 'success', '✓ Telegram connected! Redirecting...');
+
+                    // Redirect to deploy screen after 1 second
+                    setTimeout(() => {
+                        window.location.href = '/deploy';
+                    }, 1000);
+                } else {
+                    showMessage(messageEl, 'error', '✗ ' + (data.message || 'Failed to connect Telegram'));
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 8L8.5 13L6.5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Save & Connect';
+                }
+            } catch (error) {
+                showMessage(messageEl, 'error', '✗ Connection error. Please try again.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.5 8L8.5 13L6.5 11" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg> Save & Connect';
+            }
+        }
+
+        function showMessage(element, type, message) {
+            element.innerHTML = message;
+            element.className = 'message ' + type;
+            element.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
