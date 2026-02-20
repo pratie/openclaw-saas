@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🦊 OpenClaw OS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;800&display=swap');
+        
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-card: #1a1a28;
+            --accent-pink: #e94560;
+            --accent-green: #00ff88;
+            --accent-blue: #00d4ff;
+            --accent-orange: #ffa500;
+            --text-primary: #ffffff;
+            --text-secondary: #8b8b9e;
+            --border: #2a2a3e;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent-pink), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .status-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .status-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .status-dot.online { background: var(--accent-green); box-shadow: 0 0 10px var(--accent-green); }
+        .status-dot.active { background: var(--accent-blue); box-shadow: 0 0 10px var(--accent-blue); }
+        .status-dot.idle { background: var(--accent-orange); box-shadow: 0 0 10px var(--accent-orange); }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .status-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        
+        .tab:hover {
+            border-color: var(--accent-pink);
+            color: var(--text-primary);
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, var(--accent-pink), #ff6b6b);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.5s ease; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+        
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+        
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .card-change {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+        
+        .card-change.positive { color: var(--accent-green); }
+        
+        .activity-log, .tool-category, .session-info, .agent-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .activity-header, .session-info h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent-pink);
+        }
+        
+        .activity-item {
+            display: flex;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .activity-item:last-child { border-bottom: none; }
+        
+        .activity-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            min-width: 80px;
+        }
+        
+        .activity-text { flex: 1; }
+        
+        .activity-status {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--accent-green);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .tool-category h3 {
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        
+        .tool-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tool-tag {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-blue);
+        }
+        
+        .agent-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .agent-info h4 {
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+        
+        .agent-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        
+        .agent-status {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .agent-status.complete {
+            background: rgba(0, 255, 136, 0.15);
+            color: var(--accent-green);
+        }
+        
+        .agent-status.running {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--accent-blue);
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .info-row:last-child { border-bottom: none; }
+        
+        .info-label {
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .info-value { font-weight: 600; }
+        
+        .footer {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .status-bar { grid-template-columns: repeat(2, 1fr); }
+            .header h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🦊 OpenClaw OS</h1>
+            <p>Visual Operations Center for AI Agent Systems</p>
+        </div>
+        
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-dot online"></div>
+                <span class="status-text">System: ONLINE</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot idle"></div>
+                <span class="status-text" id="clock">00:00:00</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot active"></div>
+                <span class="status-text">Gateway: ACTIVE</span>
+            </div>
+            <div class="status-item">
+                <div class="status-dot online"></div>
+                <span class="status-text">Load: NORMAL</span>
+            </div>
+        </div>
+        
+        <!-- Tabs -->
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('overview')">📊 System Overview</div>
+            <div class="tab" onclick="switchTab('tools')">🔧 Tools & Actions</div>
+            <div class="tab" onclick="switchTab('agents')">🤖 Agents & Sessions</div>
+            <div class="tab" onclick="switchTab('memory')">📜 Skills & Memory</div>
+        </div>
+        
+        <!-- Overview Tab -->
+        <div id="overview" class="tab-content active">
+            <div class="cards-grid">
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Active Sessions</span></div>
+                    <div class="card-value">1</div>
+                    <div class="card-subtitle">Main Direct Session</div>
+                    <div class="card-change positive">✓ Telegram connected</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Total Messages</span></div>
+                    <div class="card-value">23</div>
+                    <div class="card-subtitle">Session lifetime</div>
+                    <div class="card-change positive">+4 this hour</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Subagents Run</span></div>
+                    <div class="card-value">2</div>
+                    <div class="card-subtitle">Completed tasks</div>
+                    <div class="card-change positive">Both successful</div>
+                </div>
+                <div class="card">
+                    <div class="card-header"><span class="card-title">Tools Executed</span></div>
+                    <div class="card-value">15</div>
+                    <div class="card-subtitle">Across all sessions</div>
+                    <div class="card-change positive">Most recent: exec</div>
+                </div>
+            </div>
+            
+            <div class="activity-log">
+                <div class="activity-header">Recent Activity Log</div>
+                <div class="activity-item">
+                    <div class="activity-time">09:04:15</div>
+                    <div class="activity-text">🎙️ Voice transcription completed via Whisper</div>
+                    <div class="activity-status">success</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">09:03:42</div>
+                    <div class="activity-text">🤖 Subagent spawned for Whisper install</div>
+                    <div class="activity-status">success</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">09:00:18</div>
+                    <div class="activity-text">📄 Web fetch: open-claw.space analyzed</div>
+                    <div class="activity-status">success</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">08:58:02</div>
+                    <div class="activity-text">🔍 User profile: X/@prthpdev lookup</div>
+                    <div class="activity-status">success</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">08:55:33</div>
+                    <div class="activity-text">💬 Initial voice message received</div>
+                    <div class="activity-status">success</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tools Tab -->
+        <div id="tools" class="tab-content">
+            <div class="cards-grid">
+                <div class="tool-category">
+                    <h3>🌐 Web & Search</h3>
+                    <div class="tool-list">
+                        <span class="tool-tag">web_search</span>
+                        <span class="tool-tag">web_fetch</span>
+                        <span class="tool-tag">browser</span>
+                    </div>
+                </div>
+                <div class="tool-category">
+                    <h3>📝 File Operations</h3>
+                    <div class="tool-list">
+                        <span class="tool-tag">read</span>
+                        <span class="tool-tag">write</span>
+                        <span class="tool-tag">edit</span>
+                    </div>
+                </div>
+                <div class="tool-category">
+                    <h3>⚡ System & Execution</h3>
+                    <div class="tool-list">
+                        <span class="tool-tag">exec</span>
+                        <span class="tool-tag">process</span>
+                        <span class="tool-tag">gateway</span>
+                    </div>
+                </div>
+                <div class="tool-category">
+                    <h3>🤖 Agent Orchestration</h3>
+                    <div class="tool-list">
+                        <span class="tool-tag">sessions_spawn</span>
+                        <span class="tool-tag">sessions_send</span>
+                        <span class="tool-tag">subagents</span>
+                        <span class="tool-tag">agents_list</span>
+                    </div>
+                </div>
+                <div class="tool-category">
+                    <h3>📊 Memory & State</h3>
+                    <div class="tool-list">
+                        <span class="tool-tag">memory_search

@@ -12,6 +12,9 @@ from backend.database import Database
 from backend.deployer import BotDeployer
 from backend.auth import hash_password, verify_password
 import secrets
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from google_auth_oauthlib.flow import Flow
 
 app = Flask(__name__)
 
@@ -41,6 +44,14 @@ DIGITALOCEAN_TOKEN = os.environ.get('DIGITALOCEAN_TOKEN')
 
 # Platform NVIDIA NIM API key — used for all customer bot deployments
 NVIDIA_API_KEY = os.environ.get('NVIDIA_API_KEY')
+
+# Google OAuth configuration
+GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.environ.get('GOOGLE_CLIENT_SECRET')
+GOOGLE_REDIRECT_URI = os.environ.get('GOOGLE_REDIRECT_URI', 'http://localhost:5000/auth/google/callback')
+
+# Disable HTTPS requirement for local development
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 @app.route('/')
 def index():
@@ -102,7 +113,119 @@ def register():
 def logout():
     """Logout endpoint"""
     session.pop('username', None)
+    session.pop('google_id', None)
+    session.pop('email', None)
     return jsonify({'success': True})
+
+# ========== GOOGLE OAUTH ROUTES ==========
+
+@app.route('/auth/google')
+def google_auth():
+    """Initiate Google OAuth flow"""
+    if not GOOGLE_CLIENT_ID or not GOOGLE_CLIENT_SECRET:
+        return "Google OAuth not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.", 500
+
+    # Create flow instance
+    flow = Flow.from_client_config(
+        client_config={
+            "web": {
+                "client_id": GOOGLE_CLIENT_ID,
+                "client_secret": GOOGLE_CLIENT_SECRET,
+                "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                "token_uri": "https://oauth2.googleapis.com/token",
+                "redirect_uris": [GOOGLE_REDIRECT_URI]
+            }
+        },
+        scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']
+    )
+
+    flow.redirect_uri = GOOGLE_REDIRECT_URI
+
+    # Generate authorization URL
+    authorization_url, state = flow.authorization_url(
+        access_type='offline',
+        include_granted_scopes='true'
+    )
+
+    # Store state in session for CSRF protection
+    session['state'] = state
+
+    return redirect(authorization_url)
+
+@app.route('/auth/google/callback')
+def google_callback():
+    """Handle Google OAuth callback"""
+    # Verify state to prevent CSRF
+    state = session.get('state')
+    if not state:
+        return "Invalid session state", 400
+
+    try:
+        # Create flow instance
+        flow = Flow.from_client_config(
+            client_config={
+                "web": {
+                    "client_id": GOOGLE_CLIENT_ID,
+                    "client_secret": GOOGLE_CLIENT_SECRET,
+                    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+                    "token_uri": "https://oauth2.googleapis.com/token",
+                    "redirect_uris": [GOOGLE_REDIRECT_URI]
+                }
+            },
+            scopes=['openid', 'https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile'],
+            state=state
+        )
+
+        flow.redirect_uri = GOOGLE_REDIRECT_URI
+
+        # Exchange authorization code for tokens
+        flow.fetch_token(authorization_response=request.url)
+
+        # Get user info from Google
+        credentials = flow.credentials
+        id_info = id_token.verify_oauth2_token(
+            credentials.id_token,
+            google_requests.Request(),
+            GOOGLE_CLIENT_ID
+        )
+
+        # Extract user information
+        google_id = id_info['sub']
+        email = id_info['email']
+        name = id_info.get('name', email.split('@')[0])
+
+        # Check if user exists
+        user = db.get_user_by_google_id(google_id)
+
+        if not user:
+            # User doesn't exist, create new account
+            # Generate username from email
+            username = email.split('@')[0].replace('.', '_').replace('-', '_')
+
+            # Ensure username is unique
+            base_username = username
+            counter = 1
+            while db.get_user(username):
+                username = f"{base_username}{counter}"
+                counter += 1
+
+            # Create user account (no password needed for OAuth users)
+            db.create_google_user(username, email, google_id, name)
+        else:
+            username = user['username']
+
+        # Log user in
+        session.permanent = True
+        session['username'] = username
+        session['google_id'] = google_id
+        session['email'] = email
+
+        # Redirect to dashboard (will later redirect to Telegram connection screen)
+        return redirect(url_for('dashboard'))
+
+    except Exception as e:
+        print(f"❌ Google OAuth error: {str(e)}")
+        return f"Authentication failed: {str(e)}", 500
 
 @app.route('/api/deploy', methods=['POST'])
 def deploy_bot():

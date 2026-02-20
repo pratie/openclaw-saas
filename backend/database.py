@@ -106,6 +106,17 @@ class Database:
         except sqlite3.OperationalError:
             pass
 
+        # Add Google OAuth columns (UNIQUE constraints can't be added via ALTER TABLE in SQLite)
+        try:
+            cursor.execute('ALTER TABLE users ADD COLUMN google_id TEXT')
+        except sqlite3.OperationalError:
+            pass
+
+        try:
+            cursor.execute('ALTER TABLE users ADD COLUMN google_name TEXT')
+        except sqlite3.OperationalError:
+            pass
+
         conn.commit()
         conn.close()
 
@@ -328,6 +339,57 @@ class Database:
         if user:
             return dict(user)
         return None
+
+    def get_user_by_google_id(self, google_id):
+        """Get user by Google ID"""
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT * FROM users WHERE google_id = ?', (google_id,))
+        user = cursor.fetchone()
+
+        conn.close()
+
+        if user:
+            return dict(user)
+        return None
+
+    def create_google_user(self, username, email, google_id, google_name):
+        """Create a new user via Google OAuth"""
+        try:
+            from datetime import timedelta
+
+            conn = self.get_connection()
+            cursor = conn.cursor()
+
+            # Check for pending payment
+            pending = self.get_pending_payment(email)
+
+            if pending:
+                # Create user with payment already activated
+                plan_expires_at = datetime.now() + timedelta(days=1)
+                cursor.execute('''
+                    INSERT INTO users (username, email, password_hash, google_id, google_name,
+                                     has_paid, payment_date, dodo_payment_id, subscription_plan, plan_expires_at)
+                    VALUES (?, ?, ?, ?, ?, 1, ?, ?, ?, ?)
+                ''', (username, email, '', google_id, google_name, datetime.now(),
+                      pending['payment_id'], pending['subscription_plan'], plan_expires_at))
+
+                # Clear pending payment
+                self.clear_pending_payment(email)
+            else:
+                # Create user normally (password_hash is empty for OAuth users)
+                cursor.execute('''
+                    INSERT INTO users (username, email, password_hash, google_id, google_name)
+                    VALUES (?, ?, ?, ?, ?)
+                ''', (username, email, '', google_id, google_name))
+
+            conn.commit()
+            conn.close()
+            return True
+        except sqlite3.IntegrityError as e:
+            print(f"Database error: {e}")
+            return False
 
     def update_payment_status(self, email, payment_id, subscription_plan='daily'):
         """Update user payment status"""
