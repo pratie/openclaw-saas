@@ -350,32 +350,20 @@ function showMessage(element, type, message) {
     element.style.display = 'block';
 }
 
-function subscribeToDeploy() {
-    // Show the beautiful payment modal instead of ugly prompt
-    document.getElementById('dashboard-payment-modal').style.display = 'flex';
-}
+async function subscribeToDeploy() {
+    // Get email from template (passed from backend via session)
+    const email = document.querySelector('[data-user-email]')?.dataset.userEmail;
 
-function closeDashboardPaymentModal() {
-    document.getElementById('dashboard-payment-modal').style.display = 'none';
-}
-
-// Close modal if clicked outside
-window.onclick = function(event) {
-    const modal = document.getElementById('dashboard-payment-modal');
-    if (event.target === modal) {
-        closeDashboardPaymentModal();
+    if (!email) {
+        alert('❌ Error: Email not found. Please try logging in again.');
+        return;
     }
-}
 
-async function dashboardCreateCheckout(event) {
-    event.preventDefault();
-
-    const email = document.getElementById('dashboard-payment-email').value;
-    const messageEl = document.getElementById('dashboard-payment-modal-message');
-    const submitBtn = event.target.querySelector('button[type="submit"]');
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'PROCESSING...';
+    // Disable subscribe button temporarily
+    const subscribeBtn = event.target;
+    const originalText = subscribeBtn.innerHTML;
+    subscribeBtn.disabled = true;
+    subscribeBtn.innerHTML = '<span class="btn-glow"></span>REDIRECTING...';
 
     try {
         const response = await fetch('/api/payment/create-checkout', {
@@ -389,20 +377,17 @@ async function dashboardCreateCheckout(event) {
         const data = await response.json();
 
         if (data.success) {
-            // Store email for post-payment
-            sessionStorage.setItem('payment_email', email);
-
             // Redirect to Dodo checkout
             window.location.href = data.checkout_url;
         } else {
-            showMessage(messageEl, 'error', '✗ ' + data.message);
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span class="btn-glow"></span>CONTINUE TO PAYMENT';
+            alert('❌ ' + data.message);
+            subscribeBtn.disabled = false;
+            subscribeBtn.innerHTML = originalText;
         }
     } catch (error) {
-        showMessage(messageEl, 'error', '✗ Connection error');
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span class="btn-glow"></span>CONTINUE TO PAYMENT';
+        alert('❌ Connection error. Please try again.');
+        subscribeBtn.disabled = false;
+        subscribeBtn.innerHTML = originalText;
         console.error('Payment error:', error);
     }
 }

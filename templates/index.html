@@ -324,7 +324,7 @@
                     after that? price goes up.
                 </div>
 
-                <button class="cta-btn" onclick="showPaymentModal()">sounds fair</button>
+                <button class="cta-btn" onclick="window.location.href='/auth/google'">sounds fair</button>
             </div>
         </section>
 
@@ -381,7 +381,7 @@
             your data.<br><br>
             <strong>i handle everything else.</strong></p>
 
-            <button class="cta-btn" onclick="showPaymentModal()">set mine up — $49/month &rarr;</button>
+            <button class="cta-btn" onclick="window.location.href='/auth/google'">set mine up — $49/month &rarr;</button>
 
             <p class="micro-copy">first 10 customers only &nbsp;•&nbsp; 7-day money-back guarantee &nbsp;•&nbsp; no BS</p>
         </section>
@@ -397,94 +397,8 @@
                 not a bot. promise.
             </p>
 
-            <p class="auth-prompt">already have an account? <a href="#" onclick="showAuthModal('login'); return false;">login</a></p>
+            <p class="auth-prompt">already have an account? <a href="/auth/google">login</a></p>
         </footer>
-    </div>
-
-    <!-- Email Payment Modal -->
-    <div id="payment-modal" class="modal" style="display: none;">
-        <div class="modal-overlay" onclick="closePaymentModal()"></div>
-        <div class="modal-content">
-            <div class="modal-box">
-                <div class="modal-header">
-                    <h2>get started</h2>
-                    <button class="modal-close" onclick="closePaymentModal()">×</button>
-                </div>
-                <div class="modal-body">
-                    <p class="modal-description">enter your email to proceed to checkout</p>
-                    <form onsubmit="createCheckout(event)" id="payment-form">
-                        <div class="form-group">
-                            <label>email address</label>
-                            <input type="email" id="payment-email" placeholder="you@example.com" required>
-                        </div>
-                        <button type="submit" class="btn-submit">
-                            continue to payment
-                        </button>
-                    </form>
-                    <div id="payment-modal-message" class="message"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Auth Modal (Login/Register) -->
-    <div id="auth-modal" class="modal" style="display: none;">
-        <div class="modal-overlay" onclick="closeAuthModal()"></div>
-        <div class="modal-content">
-            <div class="modal-box">
-                <div class="modal-header">
-                    <h2 id="auth-modal-title">login</h2>
-                    <button class="modal-close" onclick="closeAuthModal()">×</button>
-                </div>
-                <div class="modal-body">
-                    <!-- Login Form -->
-                    <div id="login-form" style="display: none;">
-                        <form onsubmit="login(event)">
-                            <div class="form-group">
-                                <label>username</label>
-                                <input type="text" id="login-username" placeholder="username" required>
-                            </div>
-                            <div class="form-group">
-                                <label>password</label>
-                                <input type="password" id="login-password" placeholder="••••••••" required>
-                            </div>
-                            <button type="submit" class="btn-submit">login</button>
-                        </form>
-                        <div id="login-message" class="message"></div>
-                        <p class="switch-auth">
-                            don't have an account? <a href="#" onclick="switchToRegister(); return false;">register</a>
-                        </p>
-                    </div>
-
-                    <!-- Register Form -->
-                    <div id="register-form" style="display: none;">
-                        <form onsubmit="register(event)">
-                            <div class="form-group">
-                                <label>username</label>
-                                <input type="text" id="reg-username" placeholder="username" required>
-                            </div>
-                            <div class="form-group">
-                                <label>email</label>
-                                <input type="email" id="reg-email" placeholder="you@example.com" required>
-                            </div>
-                            <div class="form-group">
-                                <label>password</label>
-                                <input type="password" id="reg-password" placeholder="••••••••" required minlength="6">
-                            </div>
-                            <div class="form-group">
-                                <label>confirm password</label>
-                                <input type="password" id="reg-confirm" placeholder="••••••••" required minlength="6">
-                            </div>
-                            <button type="submit" class="btn-submit">create account</button>
-                        </form>
-                        <div id="register-message" class="message"></div>
-                        <p class="switch-auth">
-                            already have an account? <a href="#" onclick="switchToLogin(); return false;">login</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>

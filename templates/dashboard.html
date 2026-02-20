@@ -15,7 +15,7 @@
         <div class="sidebar-header">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="OpenClaw Logo" class="sidebar-logo">
             <h2 class="glitch-small" data-text="OPENCLAW Space">OPENCLAW Space</h2>
-            <p class="user-badge">{{ username }}</p>
+            <p class="user-badge" data-user-email="{{ email }}">{{ username }}</p>
         </div>
 
         <nav class="sidebar-nav">
@@ -252,35 +252,6 @@
             </div>
         </div>
 
-        <!-- Payment Modal (for unpaid users in dashboard) -->
-        <div id="dashboard-payment-modal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <span class="terminal-title">// GET STARTED</span>
-                        <div class="terminal-controls">
-                            <span class="dot red" onclick="closeDashboardPaymentModal()"></span>
-                            <span class="dot yellow"></span>
-                            <span class="dot green"></span>
-                        </div>
-                    </div>
-                    <div class="terminal-body">
-                        <p style="color: #5BC0BE; margin-bottom: 20px;">Enter your email to proceed to checkout</p>
-                        <form onsubmit="dashboardCreateCheckout(event)" id="dashboard-payment-form">
-                            <div class="input-group">
-                                <label>EMAIL ADDRESS</label>
-                                <input type="email" id="dashboard-payment-email" placeholder="you@example.com" required>
-                            </div>
-                            <button type="submit" class="btn-primary">
-                                <span class="btn-glow"></span>
-                                CONTINUE TO PAYMENT
-                            </button>
-                        </form>
-                        <div id="dashboard-payment-modal-message" class="message"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/dashboard.js') }}?v={{ range(1, 999999) | random }}"></script>

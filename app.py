@@ -72,6 +72,7 @@ def dashboard():
 
     return render_template('dashboard.html',
                          username=username,
+                         email=session.get('email', user['email']),
                          bots=bots,
                          bot_count=len(bots),
                          active_count=len([b for b in bots if b['status'] == 'running']),
@@ -265,18 +266,14 @@ def deploy_page():
     if 'telegram_token' not in session:
         return redirect(url_for('connect_telegram_page'))
 
-    # For now, just show a simple message (we'll build the full deploy screen in Phase 4)
-    return f"""
-    <html>
-    <head><title>Deploy - OpenClaw</title></head>
-    <body style="background: #0a0a0a; color: #fafafa; font-family: 'Inter', sans-serif; padding: 60px; text-align: center;">
-        <h1>✅ Telegram Connected!</h1>
-        <p>Next step: Deploy your OpenClaw bot</p>
-        <p>(Phase 4 - Coming next!)</p>
-        <p><a href="/dashboard" style="color: #22c55e;">Go to Dashboard</a></p>
-    </body>
-    </html>
-    """
+    username = session['username']
+    user = db.get_user(username)
+
+    return render_template('deploy.html',
+                         username=username,
+                         email=session.get('email', user['email']),
+                         telegram_token=session['telegram_token'],
+                         has_paid=user.get('has_paid', 0))
 
 @app.route('/api/deploy', methods=['POST'])
 def deploy_bot():
