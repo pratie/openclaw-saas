@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} | OpenClaw Blog</title>
+    <meta name="description" content="{{ description }}">
+    <link rel="canonical" href="https://open-claw.space/blog/{{ slug }}">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://open-claw.space/blog/{{ slug }}">
+    <meta property="og:title" content="{{ title }}">
+    <meta property="og:description" content="{{ description }}">
+    <meta property="og:image" content="https://open-claw.space/static/og-image.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://open-claw.space/blog/{{ slug }}">
+    <meta property="twitter:title" content="{{ title }}">
+    <meta property="twitter:description" content="{{ description }}">
+    <meta property="twitter:image" content="https://open-claw.space/static/og-image.png">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jack.css') }}">
+
+    <style>
+        .blog-header {
+            max-width: 720px;
+            margin: 0 auto 40px auto;
+            padding-top: 40px;
+        }
+
+        .blog-title {
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 16px;
+            text-transform: none;
+        }
+
+        .blog-meta {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .blog-content {
+            max-width: 720px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.7;
+        }
+
+        .blog-content h2 {
+            font-size: 32px;
+            margin-top: 48px;
+            margin-bottom: 20px;
+            text-transform: none;
+        }
+
+        .blog-content h3 {
+            font-size: 24px;
+            margin-top: 32px;
+            margin-bottom: 16px;
+            text-transform: none;
+        }
+
+        .blog-content h4 {
+            font-size: 20px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            text-transform: none;
+        }
+
+        .blog-content p {
+            margin-bottom: 20px;
+        }
+
+        .blog-content ul, .blog-content ol {
+            margin-bottom: 20px;
+            padding-left: 24px;
+        }
+
+        .blog-content li {
+            margin-bottom: 8px;
+            color: var(--text-muted);
+        }
+
+        .blog-content code {
+            font-family: var(--font-mono);
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            color: var(--accent);
+        }
+
+        .blog-content pre {
+            background: var(--code-bg);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        .blog-content pre code {
+            background: none;
+            padding: 0;
+            color: var(--text);
+        }
+
+        .blog-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .blog-content th,
+        .blog-content td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .blog-content th {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .blog-content td {
+            color: var(--text-muted);
+        }
+
+        .blog-content blockquote {
+            border-left: 3px solid var(--accent);
+            padding-left: 20px;
+            margin: 20px 0;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+
+        .blog-content strong {
+            color: var(--text);
+        }
+
+        .tldr {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-bottom: 32px;
+        }
+
+        .tldr strong {
+            color: var(--accent);
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 24px;
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .blog-title {
+                font-size: 32px;
+            }
+
+            .blog-content {
+                font-size: 16px;
+            }
+
+            .blog-content h2 {
+                font-size: 28px;
+            }
+
+            .blog-content h3 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-link">← back to home</a>
+
+        <div class="blog-header">
+            <h1 class="blog-title">{{ title }}</h1>
+            <div class="blog-meta">{{ date }} · {{ read_time }} min read</div>
+        </div>
+
+        <div class="blog-content">
+            {{ content|safe }}
+        </div>
+
+        <div class="divider" style="margin: 60px 0;"></div>
+
+        <footer style="text-align: center; padding-bottom: 40px;">
+            <p style="color: var(--text-muted); font-size: 14px;">
+                Questions? Email <a href="mailto:rishi@open-claw.space">rishi@open-claw.space</a>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

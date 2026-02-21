@@ -72,6 +72,344 @@ def sitemap():
     from flask import send_from_directory
     return send_from_directory('static', 'sitemap.xml', mimetype='application/xml')
 
+@app.route('/blog/setup-guide')
+def blog_setup_guide():
+    """OpenClaw setup guide blog post"""
+    from markupsafe import Markup
+
+    content = Markup('''
+<div class="tldr">
+<strong>TL;DR:</strong> This guide covers three ways to get OpenClaw running — from 5-minute automated deploy to full manual setup. Includes free Kimi setup on Nvidia for zero API costs.
+</div>
+
+<h2>What is OpenClaw?</h2>
+
+<p>OpenClaw is an open-source AI assistant gateway that runs on your own server. Unlike ChatGPT or Claude where your conversations train their models, OpenClaw keeps everything on your infrastructure.</p>
+
+<ul>
+<li><strong>Private:</strong> Your data never leaves your machine</li>
+<li><strong>Flexible:</strong> Connect multiple AI providers (Claude, GPT, Gemini, Kimi)</li>
+<li><strong>Multi-platform:</strong> Telegram, Discord, WhatsApp, Email, Slack</li>
+<li><strong>Open source:</strong> <a href="https://github.com/openclaw/openclaw">github.com/openclaw/openclaw</a></li>
+</ul>
+
+<h2>Method 1: 5-Minute Deploy (Recommended)</h2>
+
+<p>The fastest way to get OpenClaw running without touching a terminal.</p>
+
+<p><strong>What you need:</strong></p>
+<ul>
+<li>A Telegram account (for bot integration)</li>
+<li>An AI provider API key (we'll use free Kimi)</li>
+</ul>
+
+<p><strong>Steps:</strong></p>
+<ol>
+<li>Go to <a href="https://open-claw.space">open-claw.space</a></li>
+<li>Choose your AI model (recommend: Kimi via Nvidia for free credits)</li>
+<li>Paste your Telegram bot token</li>
+<li>Click "Deploy"</li>
+<li>Wait 5 minutes</li>
+</ol>
+
+<p><strong>Behind the scenes:</strong></p>
+<ul>
+<li>Server spins up (Ubuntu VPS)</li>
+<li>OpenClaw installs automatically</li>
+<li>Security configured (UFW firewall, fail2ban, non-root user)</li>
+<li>Encrypted API keys</li>
+<li>Telegram webhook connected</li>
+</ul>
+
+<p><strong>Result:</strong> Your OpenClaw instance running 24/7 on your own server.</p>
+
+<p><strong>Cost:</strong> $49/month (includes deployment + $15 API credits)</p>
+
+<h2>Method 2: Manual Setup (1-2 Hours)</h2>
+
+<p>Want to understand every component? Do it yourself.</p>
+
+<h3>Prerequisites</h3>
+<ul>
+<li>A VPS (DigitalOcean, Linode, Hetzner — $5-10/month)</li>
+<li>SSH access</li>
+<li>Basic Linux knowledge</li>
+</ul>
+
+<h3>Step 1: Spin Up VPS (15 min)</h3>
+<pre><code># Ubuntu 22.04 LTS recommended
+# Create droplet, get IP, SSH in
+ssh root@your-vps-ip</code></pre>
+
+<h3>Step 2: Install Node.js (5 min)</h3>
+<pre><code>curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node --version  # v20.x.x</code></pre>
+
+<h3>Step 3: Install OpenClaw (7 min)</h3>
+<pre><code>git clone https://github.com/openclaw/openclaw.git
+cd openclaw
+npm install
+npm run build</code></pre>
+
+<h3>Step 4: Configure Everything (10 min)</h3>
+<pre><code># Copy example config
+cp config.example.json config.json
+
+# Edit with your settings
+nano config.json</code></pre>
+
+<p><strong>Key settings:</strong></p>
+<ul>
+<li><code>gateway.host</code>: Set to <code>localhost</code> (security)</li>
+<li><code>telegram.botToken</code>: From @BotFather</li>
+<li><code>ai.provider</code>: Choose your provider</li>
+<li><code>ai.apiKey</code>: Your API key</li>
+</ul>
+
+<h3>Step 5: Set Up AI Provider (10 min)</h3>
+
+<h4>Option A: Kimi (Free via Nvidia)</h4>
+<ol>
+<li>Go to <a href="https://build.nvidia.com/moonshot">build.nvidia.com/moonshot</a></li>
+<li>Create free account</li>
+<li>Generate API key</li>
+<li>Paste into config</li>
+</ol>
+
+<p><strong>Free tier:</strong> 50,000 tokens/day</p>
+
+<h4>Option B: Anthropic Claude</h4>
+<ol>
+<li><a href="https://console.anthropic.com">console.anthropic.com</a></li>
+<li>Add billing</li>
+<li>Generate API key</li>
+</ol>
+
+<h4>Option C: OpenAI</h4>
+<ol>
+<li><a href="https://platform.openai.com">platform.openai.com</a></li>
+<li>Add billing</li>
+<li>Generate API key</li>
+</ol>
+
+<h3>Step 6: Connect Telegram (10 min)</h3>
+<ol>
+<li>Message @BotFather → <code>/newbot</code></li>
+<li>Name your bot</li>
+<li>Copy token to config</li>
+<li>Start OpenClaw: <code>npm start</code></li>
+<li>Message your bot — it should reply</li>
+</ol>
+
+<h3>Step 7: Security Hardening (10 min)</h3>
+<pre><code># Firewall
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp  # SSH
+sudo ufw enable
+
+# fail2ban
+sudo apt install fail2ban
+sudo systemctl enable fail2ban
+
+# Non-root user
+sudo useradd -m openclaw
+sudo usermod -aG sudo openclaw
+# Run OpenClaw as this user, not root</code></pre>
+
+<h3>Step 8: Debug Why Nothing Works (?? min)</h3>
+
+<p>This is where most people get stuck.</p>
+
+<p><strong>Common issues:</strong></p>
+<ul>
+<li>Telegram webhook URL wrong</li>
+<li>Firewall blocking requests</li>
+<li>API key permissions</li>
+<li>Node version mismatch</li>
+<li>Config syntax errors</li>
+</ul>
+
+<p><strong>Debug steps:</strong></p>
+<pre><code># Check logs
+npm start 2>&1 | tee openclaw.log
+
+# Test Telegram webhook
+curl -X POST https://api.telegram.org/bot&lt;TOKEN&gt;/getMe
+
+# Check if gateway is listening
+netstat -tlnp | grep 3000</code></pre>
+
+<p><strong>Total time:</strong> 1-2 hours if nothing goes wrong. Days if you're learning as you go.</p>
+
+<h2>Method 3: Docker Deploy (30 min)</h2>
+
+<p>For those who know Docker.</p>
+
+<pre><code># Pull image
+docker pull openclaw/openclaw:latest
+
+# Run with config
+docker run -d \\
+  --name openclaw \\
+  -v $(pwd)/config.json:/app/config.json \\
+  -p 3000:3000 \\
+  openclaw/openclaw:latest</code></pre>
+
+<p><strong>Pros:</strong> Isolated, reproducible<br>
+<strong>Cons:</strong> Still need to configure everything manually</p>
+
+<h2>Which Method Should You Choose?</h2>
+
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Time</th>
+<th>Cost</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5-Min Deploy</td>
+<td>5 min</td>
+<td>$49/mo</td>
+<td>Zero</td>
+</tr>
+<tr>
+<td>Manual</td>
+<td>1-2 hrs (or days)</td>
+<td>$5-10/mo VPS + API costs</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>30 min</td>
+<td>Same as manual</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+
+<p><strong>My recommendation:</strong> If you value your time, use the 5-minute deploy. If you want to learn OpenClaw's internals, do it manually once — then you'll appreciate the automation.</p>
+
+<h2>Free AI: Kimi on Nvidia Explained</h2>
+
+<p>Most guides skip this. Here's the exact setup.</p>
+
+<p><strong>Why Kimi?</strong></p>
+<ul>
+<li>50,000 free tokens/day</li>
+<li>Good quality (Moonshot's model)</li>
+<li>No credit card required</li>
+</ul>
+
+<p><strong>Setup steps:</strong></p>
+<ol>
+<li>Go to <a href="https://build.nvidia.com/moonshot">build.nvidia.com/moonshot</a></li>
+<li>Sign up with email</li>
+<li>Click "Get API Key"</li>
+<li>Copy key starting with <code>nvapi-...</code></li>
+<li>In config.json:</li>
+</ol>
+
+<pre><code>{
+  "ai": {
+    "provider": "nvidia",
+    "apiKey": "nvapi-xxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "model": "kimi-k2.5"
+  }
+}</code></pre>
+
+<ol start="6">
+<li>Restart OpenClaw</li>
+</ol>
+
+<p><strong>Monitoring usage:</strong> Dashboard shows daily token usage. If you hit 50k/day, switch to another free tier or add paid credits.</p>
+
+<h2>Troubleshooting Common Errors</h2>
+
+<h3>"Webhook failed"</h3>
+<ul>
+<li>Check webhook URL in config</li>
+<li>Ensure VPS IP is public</li>
+<li>Verify SSL certificate (letsencrypt)</li>
+</ul>
+
+<h3>"API key invalid"</h3>
+<ul>
+<li>Check key has correct permissions</li>
+<li>Ensure billing is active (for paid providers)</li>
+<li>Verify key format (some need "Bearer" prefix)</li>
+</ul>
+
+<h3>"Gateway connection refused"</h3>
+<ul>
+<li>Check if OpenClaw is running: <code>pm2 status</code> or <code>ps aux | grep openclaw</code></li>
+<li>Verify port 3000 isn't blocked</li>
+<li>Check firewall rules</li>
+</ul>
+
+<h3>"Bot not responding"</h3>
+<ul>
+<li>Message @BotFather, ensure bot isn't blocked</li>
+<li>Check webhook is set: <code>https://api.telegram.org/bot&lt;TOKEN&gt;/getWebhookInfo</code></li>
+<li>Verify your VPS can reach Telegram servers</li>
+</ul>
+
+<h3>"Rate limited"</h3>
+<ul>
+<li>You're hitting API limits</li>
+<li>Add API key for additional provider</li>
+<li>Check token usage dashboard</li>
+</ul>
+
+<h2>Next Steps After Setup</h2>
+
+<ol>
+<li><strong>Add integrations:</strong> Connect Discord, WhatsApp, Email</li>
+<li><strong>Configure skills:</strong> Enable browser automation, web search</li>
+<li><strong>Set up cron:</strong> Schedule automated tasks</li>
+<li><strong>Secure:</strong> Add 2FA to your VPS</li>
+<li><strong>Backup:</strong> Export your config regularly</li>
+</ol>
+
+<h2>Resources</h2>
+
+<ul>
+<li><strong>OpenClaw Docs:</strong> <a href="https://docs.openclaw.ai">docs.openclaw.ai</a></li>
+<li><strong>Community:</strong> <a href="https://github.com/openclaw/openclaw/discussions">github.com/openclaw/openclaw/discussions</a></li>
+<li><strong>Nvidia Build:</strong> <a href="https://build.nvidia.com">build.nvidia.com</a></li>
+</ul>
+
+<h2>Summary</h2>
+
+<p>Three ways to OpenClaw:</p>
+<ul>
+<li><strong>Fast:</strong> 5-minute deploy at open-claw.space</li>
+<li><strong>Manual:</strong> 1-2 hours learning every component</li>
+<li><strong>Docker:</strong> 30 minutes if you know containers</li>
+</ul>
+
+<p>The fastest route to private AI? 5-minute deploy. The most educational? Do it manually once, then automate.</p>
+
+<p>Want to skip the headache? I built the 5-minute deploy after spending 3 days on manual setup so you don't have to.</p>
+
+<hr>
+
+<p style="font-style: italic; color: var(--text-muted);">Last updated: February 2026</p>
+    ''')
+
+    return render_template('blog-post.html',
+                         title='How to Set Up OpenClaw: Complete Guide (2026)',
+                         description='Three ways to get OpenClaw running — from 5-minute automated deploy to full manual setup. Includes free Kimi setup on Nvidia for zero API costs.',
+                         slug='setup-guide',
+                         date='February 21, 2026',
+                         read_time='12',
+                         content=content)
+
 @app.route('/dashboard')
 def dashboard():
     """Dashboard page - requires auth"""
