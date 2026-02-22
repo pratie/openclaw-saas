@@ -594,9 +594,10 @@ body::before {
 }
 
 .sidebar-logo {
-    width: 120px;
-    height: auto;
+    width: 80px;
+    height: 80px;
     margin-bottom: 15px;
+    filter: drop-shadow(0 0 20px rgba(255, 77, 77, 0.3));
 }
 
 .glitch-small {
