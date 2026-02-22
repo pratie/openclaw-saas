@@ -157,13 +157,23 @@ a:hover {
 
 /* ========== Product Preview ========== */
 .product-preview {
-    max-width: 100%;
+    max-width: 960px;
     margin: 48px auto;
     text-align: center;
+    margin-left: calc((720px - 960px) / 2);
+    width: 960px;
+}
+
+@media (max-width: 1024px) {
+    .product-preview {
+        max-width: 100%;
+        width: 100%;
+        margin-left: auto;
+    }
 }
 
 .preview-img {
-    max-width: 100%;
+    width: 100%;
     border-radius: 12px;
     border: 1px solid var(--border);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
