@@ -8,16 +8,16 @@
 }
 
 :root {
-    --primary-green: #D32F2F;
+    --primary-green: #22c55e;
     --primary-cyan: #5BC0BE;
     --primary-purple: #b24bf3;
     --primary-pink: #ff006e;
     --bg-dark: #0a0a0a;
     --bg-darker: #141414;
-    --border-glow: rgba(211, 47, 47, 0.3);
+    --border-glow: rgba(34, 197, 94, 0.3);
     --text-dark: #F1F5F9;
     --text-secondary: #94A3B8;
-    --border-color: #2a2a2a;
+    --border-color: #262626;
 }
 
 body {
@@ -41,7 +41,7 @@ body::before {
     bottom: 0;
     background:
         radial-gradient(circle at 10% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
-        radial-gradient(circle at 90% 80%, rgba(211, 47, 47, 0.04) 0%, transparent 50%);
+        radial-gradient(circle at 90% 80%, rgba(34, 197, 94, 0.04) 0%, transparent 50%);
     pointer-events: none;
     z-index: 0;
 }
@@ -82,7 +82,7 @@ body::before {
 .logo {
     width: 80px;
     height: auto;
-    filter: drop-shadow(0 0 20px rgba(237, 106, 90, 0.3));
+    filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.3));
     transition: transform 0.3s ease;
 }
 
@@ -349,7 +349,7 @@ body::before {
 .input-group input:focus,
 .input-group select:focus {
     border-color: var(--primary-green);
-    box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
 }
 
 /* ========== Buttons ========== */
@@ -372,7 +372,7 @@ body::before {
 }
 
 .btn-primary:hover {
-    background: #B71C1C;
+    background: #16a34a;
 }
 
 .btn-glow {
@@ -399,7 +399,7 @@ body::before {
 }
 
 .btn-secondary:hover {
-    background: rgba(211, 47, 47, 0.08);
+    background: rgba(34, 197, 94, 0.08);
     border-color: var(--primary-green);
     color: var(--primary-green);
 }
@@ -424,7 +424,7 @@ body::before {
 
 /* ========== Payment CTA Button ========== */
 .btn-payment-cta {
-    background: linear-gradient(90deg, var(--primary-green) 0%, #D95748 100%);
+    background: linear-gradient(90deg, var(--primary-green) 0%, #16a34a 100%);
     border: none;
     color: white;
     padding: 18px 48px;
@@ -437,12 +437,12 @@ body::before {
     text-transform: uppercase;
     margin: 30px auto;
     border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(237, 106, 90, 0.25);
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.25);
 }
 
 .btn-payment-cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(237, 106, 90, 0.4);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
 }
 
 /* ========== Modal ========== */
@@ -527,7 +527,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(91, 192, 190, 0.05), rgba(237, 106, 90, 0.05));
+    background: linear-gradient(135deg, rgba(91, 192, 190, 0.05), rgba(34, 197, 94, 0.05));
     border-radius: 12px;
     opacity: 0;
     transition: opacity 0.4s ease;
@@ -638,7 +638,7 @@ body::before {
 }
 
 .nav-item:hover, .nav-item.active {
-    background: rgba(211, 47, 47, 0.08);
+    background: rgba(34, 197, 94, 0.08);
     border-left: 2px solid var(--primary-green);
     color: var(--text-dark);
 }
@@ -820,7 +820,7 @@ body::before {
     font-size: 11px;
     letter-spacing: 1px;
     font-weight: bold;
-    background: rgba(237, 106, 90, 0.1);
+    background: rgba(34, 197, 94, 0.1);
     border: 1px solid var(--primary-green);
 }
 
@@ -1091,7 +1091,7 @@ body::before {
 .use-case-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    border-color: rgba(237, 106, 90, 0.6);
+    border-color: rgba(34, 197, 94, 0.6);
 }
 
 .use-case-icon {
