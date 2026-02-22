@@ -75,7 +75,7 @@ class Database:
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 email TEXT NOT NULL,
                 payment_id TEXT NOT NULL,
-                subscription_plan TEXT DEFAULT 'daily',
+                subscription_plan TEXT DEFAULT 'monthly',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
         ''')
@@ -132,8 +132,8 @@ class Database:
             pending = self.get_pending_payment(email)
 
             if pending:
-                # Create user with payment already activated (daily subscription)
-                plan_expires_at = datetime.now() + timedelta(days=1)
+                # Create user with payment already activated (monthly subscription)
+                plan_expires_at = datetime.now() + timedelta(days=30)
                 cursor.execute('''
                     INSERT INTO users (username, email, password_hash, has_paid,
                                      payment_date, dodo_payment_id, subscription_plan, plan_expires_at)
@@ -366,8 +366,8 @@ class Database:
             pending = self.get_pending_payment(email)
 
             if pending:
-                # Create user with payment already activated
-                plan_expires_at = datetime.now() + timedelta(days=1)
+                # Create user with payment already activated (monthly subscription)
+                plan_expires_at = datetime.now() + timedelta(days=30)
                 cursor.execute('''
                     INSERT INTO users (username, email, password_hash, google_id, google_name,
                                      has_paid, payment_date, dodo_payment_id, subscription_plan, plan_expires_at)
@@ -391,16 +391,15 @@ class Database:
             print(f"Database error: {e}")
             return False
 
-    def update_payment_status(self, email, payment_id, subscription_plan='daily'):
+    def update_payment_status(self, email, payment_id, subscription_plan='monthly'):
         """Update user payment status"""
         from datetime import timedelta
 
         conn = self.get_connection()
         cursor = conn.cursor()
 
-        # For daily subscriptions, set expiration to 1 day from now
-        # Note: Dodo handles the recurring billing automatically
-        plan_expires_at = datetime.now() + timedelta(days=1)
+        # Monthly subscription — expires in 30 days (Dodo handles recurring billing)
+        plan_expires_at = datetime.now() + timedelta(days=30)
 
         cursor.execute('''
             UPDATE users
@@ -416,7 +415,7 @@ class Database:
         conn.close()
         return True
 
-    def store_pending_payment(self, email, payment_id, subscription_plan='daily'):
+    def store_pending_payment(self, email, payment_id, subscription_plan='monthly'):
         """Store pending payment for users who haven't registered yet"""
         conn = self.get_connection()
         cursor = conn.cursor()
@@ -427,7 +426,7 @@ class Database:
             cursor.execute('''
                 UPDATE users
                 SET dodo_payment_id = ?,
-                    subscription_plan = 'pending_daily'
+                    subscription_plan = 'pending_monthly'
                 WHERE email = ?
             ''', (payment_id, email))
         else:

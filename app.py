@@ -2018,6 +2018,7 @@ def create_checkout():
         )
 
         # Create checkout session (correct method for subscription products)
+        # billing_address omitted — Dodo's checkout page collects it from the user
         checkout_session = client.checkout_sessions.create(
             product_cart=[
                 {"product_id": dodo_product_id, "quantity": 1}
@@ -2025,13 +2026,6 @@ def create_checkout():
             customer={
                 "email": email,
                 "name": email.split("@")[0],
-            },
-            billing_address={
-                "city": "New York",
-                "country": "US",
-                "state": "NY",
-                "street": "123 Example Street",
-                "zipcode": "10001",
             },
             return_url=os.environ.get('DODO_SUCCESS_URL', 'https://open-claw.space/?payment=success')
         )
@@ -2114,14 +2108,17 @@ def payment_webhook():
 @app.route('/api/payment/success', methods=['POST'])
 def payment_success():
     """Called by frontend after user returns from Dodo checkout"""
-    data = request.json
-    email = data.get('email')
+    # Require valid session — prevent anyone from granting themselves free access
+    email = session.get('email')
+    if not email:
+        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
+
+    data = request.json or {}
     payment_id = data.get('paymentId')
 
-    if email:
-        user = db.get_user_by_email(email)
-        if user and not user.get('has_paid'):
-            db.update_payment_status(email, payment_id or 'manual', 'monthly')
+    user = db.get_user_by_email(email)
+    if user and not user.get('has_paid'):
+        db.update_payment_status(email, payment_id or 'manual', 'monthly')
 
     return jsonify({'success': True})
 
